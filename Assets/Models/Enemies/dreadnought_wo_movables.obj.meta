@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: b3059c22745108340be65ec0f9ca14c9
-timeCreated: 1524350964
+guid: 2970f6c936229644c9da73360e392f82
+timeCreated: 1524351536
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: flak36_base
+    100000: dreadnought_wo_movables
     100002: //RootNode
-    400000: flak36_base
+    400000: dreadnought_wo_movables
     400002: //RootNode
-    2100000: flak36_baseMat
-    2300000: flak36_base
-    3300000: flak36_base
-    4300000: flak36_base
+    2100000: dreadnought_wo_movablesMat
+    2300000: dreadnought_wo_movables
+    3300000: dreadnought_wo_movables
+    4300000: dreadnought_wo_movables
   externalObjects: {}
   materials:
     importMaterials: 1

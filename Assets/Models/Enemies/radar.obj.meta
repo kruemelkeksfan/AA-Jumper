@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: b3059c22745108340be65ec0f9ca14c9
-timeCreated: 1524350964
+guid: 61c8634a2d629ec4f9f038876beaaf7d
+timeCreated: 1524351536
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: flak36_base
+    100000: radar
     100002: //RootNode
-    400000: flak36_base
+    400000: radar
     400002: //RootNode
-    2100000: flak36_baseMat
-    2300000: flak36_base
-    3300000: flak36_base
-    4300000: flak36_base
+    2100000: radarMat
+    2300000: radar
+    3300000: radar
+    4300000: radar
   externalObjects: {}
   materials:
     importMaterials: 1
