@@ -7,10 +7,16 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] float Speed = 10f;
-    [SerializeField] float xRange = 7.4f;
+    [SerializeField] float jumpPower = 100f;
 
     float horizontalThrow;
-    bool movementEnabled;
+    bool movementEnabled, verticalThrow;
+    Rigidbody rigidBody;
+
+    void Start()
+    {
+        rigidBody = GetComponent<Rigidbody>();
+    }
 
 
     void Update ()
@@ -18,6 +24,12 @@ public class PlayerMovement : MonoBehaviour
     if (movementEnabled == true)
         {
             horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
+            if (CrossPlatformInputManager.GetButtonDown("Jump") == true)
+            {
+                print("ja");
+                rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            }
+                
 
         }
 
