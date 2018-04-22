@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemieSpawner : MonoBehaviour {
+public class EnemieSpawner : MonoBehaviour
+{
 
     [SerializeField] GameObject Dreadnought;
     [SerializeField] Vector3 spawnPosition;

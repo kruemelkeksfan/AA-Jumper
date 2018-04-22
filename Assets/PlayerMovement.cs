@@ -6,7 +6,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float Speed = 10f;
+    [SerializeField] float speed = 10f;
     [SerializeField] float jumpPower = 100f;
 
     float horizontalThrow;
@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
     void HorizontalMovement()
     {
         
-        float xOffset = horizontalThrow * Speed * Time.deltaTime;
+        float xOffset = horizontalThrow * speed * Time.deltaTime;
         float NewXPos = transform.localPosition.x + xOffset;
         transform.localPosition = new Vector3(NewXPos, transform.localPosition.y, transform.localPosition.z);
     }

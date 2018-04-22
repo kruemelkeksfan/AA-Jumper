@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rotator : MonoBehaviour {
+public class Rotator : MonoBehaviour
+{
 
     [SerializeField] float movementSpeed = 1f;
     [SerializeField] Vector3 rotationSpeed;
