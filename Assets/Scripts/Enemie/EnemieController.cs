@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemieController : MonoBehaviour
 {
-
     [SerializeField] float movementSpeed;
+    [SerializeField] float spawnPoint = 65.0f;
+    [SerializeField] float despawnPoint = -5.0f;
     [Tooltip ("in sec")][SerializeField] int restartTime;
 
     private Rigidbody rigidBody;
@@ -19,7 +20,7 @@ public class EnemieController : MonoBehaviour
 
     void Update()
     {
-        if (gameObject.transform.position.x <= -5)
+        if (gameObject.transform.position.x <= despawnPoint)
         {
             Invoke("Restart", restartTime);
         }
@@ -27,6 +28,6 @@ public class EnemieController : MonoBehaviour
 
     void Restart()
     {
-        gameObject.transform.position = new Vector3 (65, gameObject.transform.position.y, gameObject.transform.position.z);
+        gameObject.transform.position = new Vector3 (spawnPoint, gameObject.transform.position.y, gameObject.transform.position.z);
     }
 }

@@ -4,23 +4,21 @@ using UnityEngine;
 
 public class BombSpawner : MonoBehaviour
 { 
-
-    [SerializeField] float bombDropLocation = 4f;
+    [SerializeField] float bombDropLocation = 4.0f;
+    [SerializeField] float rearmPoint = 60.0f;
     [SerializeField] GameObject Bomb;
 
-    bool bombeDropped;
-
+    bool bombDropped;
 
     void Update ()
     {
-        if (gameObject.transform.position.x >= 60)
+        if (bombDropped == true && gameObject.transform.position.x >= rearmPoint)
         {
-            bombeDropped = false;
+            bombDropped = false;
         }
-
-        if (bombeDropped == false && gameObject.transform.position.x <= bombDropLocation)
+        else if (bombDropped == false && gameObject.transform.position.x <= bombDropLocation)
         {
-            bombeDropped = true;
+            bombDropped = true;
             Instantiate (Bomb, gameObject.transform.position, Quaternion.identity);
         }
     }
