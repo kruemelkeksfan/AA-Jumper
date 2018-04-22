@@ -10,6 +10,7 @@ ModelImporter:
     400000: flak36
     400002: //RootNode
     2100000: palette
+    2100002: flak36Mat
     2300000: flak36
     3300000: flak36
     4300000: flak36

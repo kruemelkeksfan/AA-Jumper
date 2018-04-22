@@ -10,6 +10,7 @@ ModelImporter:
     400000: flak38quad_base
     400002: //RootNode
     2100000: palette
+    2100002: flak38quad_baseMat
     2300000: flak38quad_base
     3300000: flak38quad_base
     4300000: flak38quad_base

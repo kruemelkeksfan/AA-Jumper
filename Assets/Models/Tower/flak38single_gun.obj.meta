@@ -10,6 +10,7 @@ ModelImporter:
     400000: flak38single_gun
     400002: //RootNode
     2100000: palette
+    2100002: flak38single_gunMat
     2300000: flak38single_gun
     3300000: flak38single_gun
     4300000: flak38single_gun
