@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemieController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     [SerializeField] float movementSpeed;
     [SerializeField] float spawnPoint = 65.0f;
