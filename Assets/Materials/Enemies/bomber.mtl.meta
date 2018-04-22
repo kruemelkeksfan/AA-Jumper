@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< .merge_file_a15196
 guid: d667cc4b27b39134bb8198d176e5340e
 timeCreated: 1524423507
+=======
+guid: 362dd8dee381b1146a9f30bf8d62b5d5
+timeCreated: 1524423747
+>>>>>>> .merge_file_a12056
 licenseType: Free
 DefaultImporter:
   externalObjects: {}

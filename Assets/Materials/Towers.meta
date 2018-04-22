@@ -1,6 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< .merge_file_a03628
 guid: 984f2af3e4435904499143ea6f1ad71a
 folderAsset: yes
+=======
+guid: a1e346ffe2305b7449770455dc530bd6
+folderAsset: yes
+timeCreated: 1524423747
+licenseType: Free
+>>>>>>> .merge_file_a11068
 DefaultImporter:
   externalObjects: {}
   userData: 
