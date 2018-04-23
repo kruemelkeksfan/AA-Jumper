@@ -64,8 +64,11 @@ public class EnemySpawner : MonoBehaviour
                 int enemyType = rnd.Next(AIRSHIP, gamelevel % enemies.Length);
                 int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
-                if()
-                typequeue[spawnlane].Add(enemyType);
+                if(cost(enemyType) <= wealth)
+                {
+                    typequeue[spawnlane].Add(enemyType);
+                    wealth -= cost(enemyType);
+                }
             }
 
             for (int I = 0; I < lanes.Length; ++I)
@@ -113,22 +116,19 @@ public class EnemySpawner : MonoBehaviour
         {
             case EnemySpawner.AIRSHIP:
                 {
-                    return 
+                    return 1;
                 }
             case EnemySpawner.BIPLANE:
                 {
-                    specificPosition.z += 4;
-                    break;
+                    return 2;
                 }
             case EnemySpawner.BOMBER:
                 {
-                    specificPosition.z += 2;
-                    break;
+                    return 4;
                 }
             default:
                 {
-                    specificPosition.z += 0;
-                    break;
+                    return 8;
                 }
         }
     }
