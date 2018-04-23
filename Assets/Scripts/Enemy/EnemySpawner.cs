@@ -12,7 +12,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Quaternion spawnRotation = Quaternion.identity;
     [SerializeField] byte spawnlevels;
     [SerializeField] byte unobstructedlevels;
-    [SerializeField] byte levelheight;
+    [SerializeField] float levelheight;
     [SerializeField] int gameleveltime;
 
     GameObject[] enemies = new GameObject[4];
