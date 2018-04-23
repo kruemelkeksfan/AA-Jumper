@@ -5,6 +5,7 @@ using UnityEngine;
 public class BuildingManager : MonoBehaviour
 {
     public GameObject[] Towers;
+
     TowerPlacement towerPlacement;
 
 	void Start ()
