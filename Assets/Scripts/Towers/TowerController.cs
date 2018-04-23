@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TowerController : MonoBehaviour
 {
+    public int range;
+
     void Start()
     {
 
@@ -12,13 +14,22 @@ public class TowerController : MonoBehaviour
     void Update()
     {
         List<GameObject> enemies = EnemySpawner.enemies;
-        GameObject target;
-        for(int I = 0; I < enemies.Count; ++I)
+        for (int I = 0; I < enemies.Count; ++I)
         {
-            if(enemies[I].transform.position.y > gameObject.transform.position.y && enemies[I].transform.position.x > gameObject.transform.position.x)
+            if (enemies[I].transform.position.y > gameObject.transform.position.y && enemies[I].transform.position.x > gameObject.transform.position.x)
             {
-                target = enemies[I];
-                break;
+                float height = enemies[I].transform.position.y - gameObject.transform.position.y;
+                float horizontaldistance = enemies[I].transform.position.x - gameObject.transform.position.x;
+
+                if (Mathf.Sqrt(height*height+horizontaldistance*horizontaldistance) < range)
+                {
+                    GameObject target = enemies[I];
+
+                    float alpha = height / horizontaldistance;
+                    gameObject.transform.Rotate(new Vector3(0, 0, alpha));
+
+                    break;
+                }
             }
         }
     }
