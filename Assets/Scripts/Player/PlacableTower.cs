@@ -4,32 +4,36 @@ using UnityEngine;
 
 public class PlacableTower : MonoBehaviour
 {
-    [HideInInspector]
-    public List<Collider> hitting = new List<Collider>();
-    public int Count;
-
-    private void Update()
-    {
-
-        print(hitting.Count);
-    }
+    //[HideInInspector]
+    public List<Collider> hittingTower = new List<Collider>();
+    public List <Collider> hittingEnvironment = new List<Collider>();
+    public static int TowerCCount;
+    public static int EnvironmentCCount;
 
     void OnTriggerEnter (Collider c)
     {
-        print("a");
         if (c.tag == "Tower")
         {
-            print("b");
-            hitting.Add(c);
-            Count = hitting.Count;
+            hittingTower.Add(c);
+            TowerCCount = hittingTower.Count;
+        }
+        else if (c.tag == "Environment")
+        {
+            hittingEnvironment.Add(c);
+            EnvironmentCCount = hittingEnvironment.Count;
         }
     }
     void OnTriggerExit(Collider c)
     {
         if (c.tag == "Tower")
         {
-            hitting.Remove(c);
-            Count = hitting.Count;
+            hittingTower.Remove(c);
+            TowerCCount = hittingTower.Count;
+        }
+        else if (c.tag == "Environment")
+        {
+            hittingEnvironment.Remove(c);
+            EnvironmentCCount = hittingEnvironment.Count;
         }
     }
 }

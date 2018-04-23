@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TowerPlacement : MonoBehaviour
 {
-    int CCount;
     [SerializeField] GameObject Player;
 
     float playerHight;
@@ -12,13 +11,9 @@ public class TowerPlacement : MonoBehaviour
     float cameraDistance = 63.5f;
     bool hasPlaced;
     Transform currentTower;
-    PlacableTower placableTower;
 
     void Update()
     {
-        CCount = placableTower.Count;
-        print(CCount);
-
         if (currentTower != null && !hasPlaced)
         {
             playerHight = Player.transform.position.y;
@@ -31,7 +26,6 @@ public class TowerPlacement : MonoBehaviour
             {
                 if (IsLegalPosition())
                 {
-                    print("Legal");
                     hasPlaced = true;
                 }
             }
@@ -39,21 +33,16 @@ public class TowerPlacement : MonoBehaviour
     }
     bool IsLegalPosition()
     {
-        print(CCount);
-        if (CCount > 0)
+        if (PlacableTower.TowerCCount == 0 && PlacableTower.EnvironmentCCount == 3)
         {
-            print("false");
-            return false;
+            return true;
         }
-        print("true");
-        return true;
+        return false;
     }
 
     public void SetItem(GameObject T)
     {
         hasPlaced = false;
         currentTower = ((GameObject)Instantiate(T)).transform;
-        placableTower = T.GetComponent<PlacableTower>();
-        
     }
 }
