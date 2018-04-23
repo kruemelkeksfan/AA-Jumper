@@ -14,7 +14,7 @@ public class PlayerControls : MonoBehaviour
     bool movementEnabled, verticalThrow, collectable;
     Rigidbody rigidBody;
 
-    List<Collider> hittingWreck = new List<Collider>();
+    [SerializeField]List<Collider> hittingWreck = new List<Collider>();
 
     void Start()
     {
@@ -33,7 +33,15 @@ public class PlayerControls : MonoBehaviour
         }
         if (hittingWreck.Count > 0 && Input.GetKeyDown("e"))
         {
-            ScrapManager.scrapCount = wreckValue * hittingWreck.Count;
+            ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
+            for (int I = hittingWreck.Count - 1; I > -1; --I)
+            {
+                Debug.Log("for");
+                Destroy(hittingWreck[I].gameObject);
+                hittingWreck.Remove(hittingWreck[I]);
+            }
+            
+            
         }
     HorizontalMovement();
     }
@@ -58,7 +66,7 @@ public class PlayerControls : MonoBehaviour
         }
         if (other.tag == "Scrap")
         {
-            hittingWreck.Add(other);
+            hittingWreck.Remove(other);
         }
     }
 
