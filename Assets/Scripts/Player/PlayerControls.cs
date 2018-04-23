@@ -4,14 +4,17 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerControls : MonoBehaviour
 {
     [SerializeField] float speed = 10.0f;
     [SerializeField] float jumpPower = 100.0f;
+    [SerializeField] int wreckValue = 10;
 
     float horizontalThrow;
-    bool movementEnabled, verticalThrow;
+    bool movementEnabled, verticalThrow, collectable;
     Rigidbody rigidBody;
+
+    List<Collider> hittingWreck = new List<Collider>();
 
     void Start()
     {
@@ -28,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
                 rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             }
         }
+        if (hittingWreck.Count > 0 && Input.GetKeyDown("e"))
+        {
+            ScrapManager.scrapCount = wreckValue * hittingWreck.Count;
+        }
     HorizontalMovement();
     }
 
@@ -37,6 +44,10 @@ public class PlayerMovement : MonoBehaviour
         {
             movementEnabled = true;
         }
+        if (other.tag == "Scrap")
+        {
+            hittingWreck.Add(other);
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -44,6 +55,10 @@ public class PlayerMovement : MonoBehaviour
         if (other.tag == "Environment")
         {
             movementEnabled = false;
+        }
+        if (other.tag == "Scrap")
+        {
+            hittingWreck.Add(other);
         }
     }
 

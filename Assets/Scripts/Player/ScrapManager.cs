@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthDisplayer : MonoBehaviour
+public class ScrapManager : MonoBehaviour
 {
+    public static int scrapCount;
     Text text;
 
     void Start()
     {
         text = GetComponent<Text>();
     }
-    void Update ()
+    void Update()
     {
-        text.text = "Health: " + FactoryManager.baseHealth;
+        text.text = "Scrap: " + scrapCount;
     }
 }
