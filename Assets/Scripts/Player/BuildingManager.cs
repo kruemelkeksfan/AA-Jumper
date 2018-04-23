@@ -12,10 +12,6 @@ public class BuildingManager : MonoBehaviour
     {
         towerPlacement = GetComponent<TowerPlacement>();
 	}
-	void Update ()
-    {
-		
-	}
     void OnGUI()
     {
         for (int i = 0; i < Towers.Length; i++)

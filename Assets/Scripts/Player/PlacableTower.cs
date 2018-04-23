@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlacableTower : MonoBehaviour
 {
-    //[HideInInspector]
-    public List<Collider> hittingTower = new List<Collider>();
-    public List <Collider> hittingEnvironment = new List<Collider>();
     public static int TowerCCount;
     public static int EnvironmentCCount;
+
+    List<Collider> hittingTower = new List<Collider>();
+    List<Collider> hittingEnvironment = new List<Collider>();
 
     void OnTriggerEnter (Collider c)
     {
