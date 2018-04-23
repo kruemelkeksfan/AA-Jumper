@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TowerPlacement : MonoBehaviour
 {
+    [Tooltip("Machine Cannon")][SerializeField] int prizeTower1 = 25;
+    [Tooltip("Quadruple Machine Cannon")][SerializeField] int prizeTower2 = 100;
+    [Tooltip("Heavy Anti Air Artillery")][SerializeField] int prizeTower3 = 125;
+    [Tooltip("Mine Launcher")][SerializeField] int prizeTower4 = 50;
+    [Tooltip("Rocket Launcher")][SerializeField] int prizeTower5 = 75;
     [SerializeField] GameObject Player;
 
     float towerLaneDepth = -1.5f;
@@ -14,7 +19,6 @@ public class TowerPlacement : MonoBehaviour
     float buildArea;
     public static bool hasPlaced = true;
     Transform currentTower;
-    GameObject T;
 
     void FixedUpdate()
     {
@@ -35,22 +39,61 @@ public class TowerPlacement : MonoBehaviour
             {
                 if (IsLegalPosition())
                 {
-                  /*  switch (T.name)
+                    Debug.Log(currentTower.name);
+                    switch (currentTower.name)
                     {
-                        case "":
+                        case "Machine Cannon(25)(Clone)":
                             {
+                                if (prizeTower1 <= ScrapManager.scrapCount)
+                                {
+                                    ScrapManager.scrapCount -= prizeTower1;
+                                    hasPlaced = true;
+                                }
                                 break;
                             }
-
+                        case "Quadruple Machine Cannon(100)(Clone)":
+                            {
+                                if (prizeTower2 <= ScrapManager.scrapCount)
+                                {
+                                    ScrapManager.scrapCount -= prizeTower2;
+                                    hasPlaced = true;
+                                }
+                                break;
+                            }
+                        case "Heavy Anti Air Artillery(125)(Clone)":
+                            {
+                                if (prizeTower3 <= ScrapManager.scrapCount)
+                                {
+                                    ScrapManager.scrapCount -= prizeTower3;
+                                    hasPlaced = true;
+                                }
+                                break;
+                            }
+                        case "Mine Launcher(50)(Clone)":
+                            {
+                                if (prizeTower4 <= ScrapManager.scrapCount)
+                                {
+                                    ScrapManager.scrapCount -= prizeTower4;
+                                    hasPlaced = true;
+                                }
+                                break;
+                            }
+                        case "Rocket Launcher(75)(Clone)":
+                            {
+                                if (prizeTower5 < ScrapManager.scrapCount)
+                                {
+                                    ScrapManager.scrapCount -= prizeTower5;
+                                    hasPlaced = true;
+                                }
+                                break;
+                            }
                         default:
                             {
-                                Debug.Log()
+                                Debug.Log("no Name found");
                                 break;
                             }
                     }
-                    */
-
-                    hasPlaced = true;
+                    
                 }
             }
             else if (Input.GetMouseButtonDown(1))
