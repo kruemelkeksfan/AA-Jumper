@@ -18,7 +18,7 @@ public class BuildingManager : MonoBehaviour
         {
             for (int i = 0; i < Towers.Length; i++)
             {
-                if (GUI.Button(new Rect(Screen.width / 1.2f, Screen.height / 18 + Screen.height / 20 * i, 170, 30), Towers[i].name) && TowerPlacement.hasPlaced == true)
+                if (GUI.Button(new Rect(Screen.width / 1.3f, Screen.height / 18 + Screen.height / 20 * i, 200, 30), Towers[i].name) && TowerPlacement.hasPlaced == true)
                 {
                     towerPlacement.SetItem(Towers[i]);
                 }
