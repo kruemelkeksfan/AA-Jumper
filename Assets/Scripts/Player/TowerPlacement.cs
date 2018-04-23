@@ -4,20 +4,24 @@ using UnityEngine;
 
 public class TowerPlacement : MonoBehaviour
 {
+    public static bool hasPlaced = true;
     [Tooltip("Machine Cannon")][SerializeField] int prizeTower1 = 25;
     [Tooltip("Quadruple Machine Cannon")][SerializeField] int prizeTower2 = 100;
     [Tooltip("Heavy Anti Air Artillery")][SerializeField] int prizeTower3 = 125;
     [Tooltip("Mine Launcher")][SerializeField] int prizeTower4 = 50;
     [Tooltip("Rocket Launcher")][SerializeField] int prizeTower5 = 75;
     [SerializeField] GameObject Player;
+    [SerializeField] GameObject RangeDisplay;
+    [SerializeField] Transform RangeDisplayTransform;
 
     float towerLaneDepth = -1.5f;
     float cameraZPosition = 63.5f;
     float halfPlatformRange = 1.75f;
-
+    bool rangeDisplayOn = false;
+    
     float playerXPosition;
     float buildArea;
-    public static bool hasPlaced = true;
+    
     Transform currentTower;
 
     void FixedUpdate()
@@ -35,11 +39,16 @@ public class TowerPlacement : MonoBehaviour
     {
         if (currentTower != null && !hasPlaced)
         {
+            Vector3 rangePosition = new Vector3(currentTower.position.x, currentTower.position.y, currentTower.position.z + 2);
+            if (!rangeDisplayOn)
+            {
+                Instantiate(RangeDisplay, rangePosition, Quaternion.identity);
+                rangeDisplayOn = true;
+            }
             if (Input.GetMouseButtonDown(0))
             {
                 if (IsLegalPosition())
                 {
-                    Debug.Log(currentTower.name);
                     switch (currentTower.name)
                     {
                         case "Machine Cannon(25)(Clone)":
