@@ -10,6 +10,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] byte spawnlevels;
     [SerializeField] byte unobstructedlevels;
     [SerializeField] float levelheight;
+    [SerializeField] int difficulty;
+    [SerializeField] int difficultyperlevel;
     [SerializeField] int gameleveltime;
 
     public const int AIRSHIP = 0;
@@ -53,10 +55,18 @@ public class EnemySpawner : MonoBehaviour
     {
         if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
         {
-            int enemyType = rnd.Next(AIRSHIP, enemies.Length);
-            int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
+            ++gamelevel;
+            print("Reached Level " + gamelevel + "!");
 
-            typequeue[spawnlane].Add(enemyType);
+            int wealth = difficulty + gamelevel * difficultyperlevel;
+            while (wealth > 0)
+            {
+                int enemyType = rnd.Next(AIRSHIP, gamelevel % enemies.Length);
+                int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
+
+                if()
+                typequeue[spawnlane].Add(enemyType);
+            }
 
             for (int I = 0; I < lanes.Length; ++I)
             {
@@ -93,8 +103,33 @@ public class EnemySpawner : MonoBehaviour
                     typequeue[I].RemoveAt(0);
                 }
             }
-            ++gamelevel;
             starttime = System.DateTime.Now;
+        }
+    }
+
+    private int cost(int type)
+    {
+        switch (type)
+        {
+            case EnemySpawner.AIRSHIP:
+                {
+                    return 
+                }
+            case EnemySpawner.BIPLANE:
+                {
+                    specificPosition.z += 4;
+                    break;
+                }
+            case EnemySpawner.BOMBER:
+                {
+                    specificPosition.z += 2;
+                    break;
+                }
+            default:
+                {
+                    specificPosition.z += 0;
+                    break;
+                }
         }
     }
 }
