@@ -13,6 +13,10 @@ public class BombHandler : MonoBehaviour
         {
             rotationZ += sensitivityZ;
         }
+        if (transform.position.y <= -5)
+        {
+            DestroyObject(gameObject);
+        }
 
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rotationZ);
     }
