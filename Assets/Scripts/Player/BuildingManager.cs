@@ -14,7 +14,7 @@ public class BuildingManager : MonoBehaviour
 	}
     void OnGUI()
     {
-        if (TowerPlacement.hasPlaced == true)
+        if (TowerPlacement.hasPlaced == true && PlayerControls.buildingButtons == true)
         {
             for (int i = 0; i < Towers.Length; i++)
             {

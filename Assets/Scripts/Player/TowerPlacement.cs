@@ -14,6 +14,7 @@ public class TowerPlacement : MonoBehaviour
     float buildArea;
     public static bool hasPlaced = true;
     Transform currentTower;
+    GameObject T;
 
     void FixedUpdate()
     {
@@ -34,8 +35,28 @@ public class TowerPlacement : MonoBehaviour
             {
                 if (IsLegalPosition())
                 {
+                  /*  switch (T.name)
+                    {
+                        case "":
+                            {
+                                break;
+                            }
+
+                        default:
+                            {
+                                Debug.Log()
+                                break;
+                            }
+                    }
+                    */
+
                     hasPlaced = true;
                 }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                Destroy(currentTower.gameObject);
+                hasPlaced = true;
             }
         }
         

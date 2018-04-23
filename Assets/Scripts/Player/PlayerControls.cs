@@ -9,12 +9,15 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float speed = 10.0f;
     [SerializeField] float jumpPower = 100.0f;
     [SerializeField] int wreckValue = 10;
+    [SerializeField] int respawnTime = 10;
+    [SerializeField] Transform respawnPoint;
 
     float horizontalThrow;
     bool movementEnabled, verticalThrow, collectable;
+    public static bool buildingButtons = false;
     Rigidbody rigidBody;
 
-    [SerializeField]List<Collider> hittingWreck = new List<Collider>();
+    List<Collider> hittingWreck = new List<Collider>();
 
     void Start()
     {
@@ -23,6 +26,10 @@ public class PlayerControls : MonoBehaviour
 
     void Update ()
     {
+    if (Input.GetKeyDown("b"))
+        {
+            buildingButtons = !buildingButtons;
+        }
     if (movementEnabled == true)
         {
             horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -40,8 +47,6 @@ public class PlayerControls : MonoBehaviour
                 Destroy(hittingWreck[I].gameObject);
                 hittingWreck.Remove(hittingWreck[I]);
             }
-            
-            
         }
     HorizontalMovement();
     }
@@ -56,8 +61,11 @@ public class PlayerControls : MonoBehaviour
         {
             hittingWreck.Add(other);
         }
+        if (other.tag == "Ground")
+        {
+            Invoke("Respawn", respawnTime);
+        }
     }
-
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Environment")
@@ -70,6 +78,10 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
+    void Respawn()
+    {
+        gameObject.transform.position = respawnPoint.position;
+    }
     void HorizontalMovement()
     {
         float xOffset = horizontalThrow * speed * Time.deltaTime;
