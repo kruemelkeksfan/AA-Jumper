@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject[] enemies = new GameObject[4];
+    [SerializeField] GameObject[] enemyTypes = new GameObject[4];
     [SerializeField] Vector3 spawnPosition;
     [SerializeField] Quaternion spawnRotation = Quaternion.identity;
     [SerializeField] byte spawnlevels;
@@ -18,6 +18,8 @@ public class EnemySpawner : MonoBehaviour
     public const int BIPLANE = 1;
     public const int BOMBER = 2;
     public const int DREADNOUGHT = 3;
+
+    public static List<GameObject> enemies;
 
     private Lane[] lanes;
     private List<int>[] typequeue;
@@ -40,6 +42,8 @@ public class EnemySpawner : MonoBehaviour
             print("meh, this map is pretty unobstructed...");
         }
 
+        enemies = new List<GameObject>();
+
         lanes = new Lane[spawnlevels];
         typequeue = new List<int>[spawnlevels];
         for (int I = 0; I < lanes.Length; ++I)
@@ -53,6 +57,8 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        enemies = sortEnemies(enemies);
+
         if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
         {
             ++gamelevel;
@@ -61,7 +67,7 @@ public class EnemySpawner : MonoBehaviour
             int wealth = difficulty + gamelevel * difficultyperlevel;
             while (wealth > 0)
             {
-                int enemyType = rnd.Next(AIRSHIP, gamelevel % enemies.Length);
+                int enemyType = rnd.Next(AIRSHIP, gamelevel % enemyTypes.Length);
                 int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
                 if(cost(enemyType) <= wealth)
@@ -101,7 +107,7 @@ public class EnemySpawner : MonoBehaviour
                             }
                     }
 
-                    Instantiate(enemies[(typequeue[I])[0]], specificPosition, spawnRotation);
+                    enemies.Add(Instantiate(enemyTypes[(typequeue[I])[0]], specificPosition, spawnRotation));
                     lanes[I].reserveLane((typequeue[I])[0]);
                     typequeue[I].RemoveAt(0);
                 }
@@ -131,5 +137,26 @@ public class EnemySpawner : MonoBehaviour
                     return 8;
                 }
         }
+    }
+
+    private List<GameObject> sortEnemies(List<GameObject> enemies)
+    {
+        bool sorted = false;
+        GameObject predecessor;
+        while(!sorted)
+        {
+            sorted = true;
+            for(int I = 0; I < enemies.Count - 1; ++I)
+            {
+                if (enemies[I+1].transform.position.x > enemies[I].transform.position.x)
+                {
+                    predecessor = enemies[I];
+                    enemies[I] = enemies[I + 1];
+                    enemies[I + 1] = predecessor;
+                    sorted = false;
+                }
+            }
+        }
+        return enemies;
     }
 }
