@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject Airship;
-    [SerializeField] GameObject Biplane;
-    [SerializeField] GameObject Bomber;
-    [SerializeField] GameObject Dreadnought;
+    [SerializeField] GameObject[] enemies = new GameObject[4];
     [SerializeField] Vector3 spawnPosition;
     [SerializeField] Quaternion spawnRotation = Quaternion.identity;
     [SerializeField] byte spawnlevels;
@@ -15,10 +12,16 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] float levelheight;
     [SerializeField] int gameleveltime;
 
-    GameObject[] enemies = new GameObject[4];
-    int gamelevel = 0;
-    System.DateTime starttime;
-    System.Random rnd = new System.Random();
+    public const int AIRSHIP = 0;
+    public const int BIPLANE = 1;
+    public const int BOMBER = 2;
+    public const int DREADNOUGHT = 3;
+
+    private Lane[] lanes;
+    private List<int>[] typequeue;
+    private int gamelevel = 0;
+    private System.DateTime starttime;
+    private System.Random rnd = new System.Random();
 
     void Start()
     {
@@ -35,26 +38,63 @@ public class EnemySpawner : MonoBehaviour
             print("meh, this map is pretty unobstructed...");
         }
 
-        enemies[0] = Airship;
-        enemies[1] = Biplane;
-        enemies[2] = Bomber;
-        enemies[3] = Dreadnought;
-
-        starttime = System.DateTime.UtcNow;
+        lanes = new Lane[spawnlevels];
+        typequeue = new List<int>[spawnlevels];
+        for (int I = 0; I < lanes.Length; ++I)
+        {
+            lanes[I] = new Lane();
+            typequeue[I] = new List<int>();
+        }
+        starttime = System.DateTime.Now;
     }
 
 
     void Update()
     {
-        if (System.DateTime.UtcNow.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
+        if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
         {
-            Vector3 specificPosition = spawnPosition;
-            specificPosition.y += rnd.Next(0, spawnlevels) * levelheight;
+            int enemyType = rnd.Next(AIRSHIP, enemies.Length);
+            int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
-            Instantiate(enemies[rnd.Next(0, enemies.Length)], specificPosition, spawnRotation);
+            typequeue[spawnlane].Add(enemyType);
 
+            for (int I = 0; I < lanes.Length; ++I)
+            {
+                if (lanes[I].isFree() && typequeue[I].Count > 0)
+                {
+                    Vector3 specificPosition = spawnPosition;
+                    specificPosition.y += I * levelheight;
+                    switch((typequeue[I])[0])
+                    {
+                        case EnemySpawner.AIRSHIP:
+                            {
+                                specificPosition.z += 8;
+                                break;
+                            }
+                        case EnemySpawner.BIPLANE:
+                            {
+                                specificPosition.z += 4;
+                                break;
+                            }
+                        case EnemySpawner.BOMBER:
+                            {
+                                specificPosition.z += 2;
+                                break;
+                            }
+                        default:
+                            {
+                                specificPosition.z += 0;
+                                break;
+                            }
+                    }
+
+                    Instantiate(enemies[(typequeue[I])[0]], specificPosition, spawnRotation);
+                    lanes[I].reserveLane((typequeue[I])[0]);
+                    typequeue[I].RemoveAt(0);
+                }
+            }
             ++gamelevel;
-            starttime = System.DateTime.UtcNow;
+            starttime = System.DateTime.Now;
         }
     }
 }
