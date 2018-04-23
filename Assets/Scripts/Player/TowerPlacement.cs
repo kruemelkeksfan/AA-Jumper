@@ -12,7 +12,7 @@ public class TowerPlacement : MonoBehaviour
 
     float playerXPosition;
     float buildArea;
-    bool hasPlaced;
+    public static bool hasPlaced = true;
     Transform currentTower;
 
     void FixedUpdate()
@@ -50,7 +50,10 @@ public class TowerPlacement : MonoBehaviour
     }
     public void SetItem(GameObject T)
     {
-        hasPlaced = false;
-        currentTower = ((GameObject)Instantiate(T)).transform;
+        {
+            hasPlaced = false;
+            currentTower = ((GameObject)Instantiate(T)).transform;
+        }
+        
     }
 }
