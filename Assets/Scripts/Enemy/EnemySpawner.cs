@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemieSpawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour
 {
 
     [SerializeField] GameObject Dreadnought;
