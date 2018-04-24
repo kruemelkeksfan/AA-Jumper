@@ -7,6 +7,7 @@ public class ScrapManager : MonoBehaviour
 {
     public static int scrapCount = 75;
     Text text;
+    System.DateTime starttime = System.DateTime.Now;
 
     void Start()
     {
@@ -14,6 +15,12 @@ public class ScrapManager : MonoBehaviour
     }
     void Update()
     {
+        if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, 1))
+        {
+            ++scrapCount;
+            starttime = System.DateTime.Now;
+        }
+
         text.text = "Scrap: " + scrapCount;
     }
 }
