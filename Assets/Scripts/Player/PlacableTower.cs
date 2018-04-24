@@ -7,11 +7,12 @@ public class PlacableTower : MonoBehaviour
     public static int TowerCCount;
     public static int EnvironmentCCount;
 
-    [SerializeField] List<Collider> hittingTower = new List<Collider>();
-    [SerializeField] List<Collider> hittingEnvironment = new List<Collider>();
+    List<Collider> hittingTower = new List<Collider>();
+    List<Collider> hittingEnvironment = new List<Collider>();
 
     void OnTriggerEnter (Collider c)
     {
+        
         if (c.tag == "Tower")
         {
             hittingTower.Add(c);

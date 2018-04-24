@@ -5,6 +5,7 @@ using UnityEngine;
 public class TowerPlacement : MonoBehaviour
 {
     public static bool hasPlaced = true;
+    public static float rangeXPosition; 
     [Tooltip("Machine Cannon")][SerializeField] int prizeTower1 = 25;
     [Tooltip("Quadruple Machine Cannon")][SerializeField] int prizeTower2 = 100;
     [Tooltip("Heavy Anti Air Artillery")][SerializeField] int prizeTower3 = 125;
@@ -12,7 +13,7 @@ public class TowerPlacement : MonoBehaviour
     [Tooltip("Rocket Launcher")][SerializeField] int prizeTower5 = 75;
     [SerializeField] GameObject Player;
     [SerializeField] GameObject RangeDisplay;
-    [SerializeField] Transform RangeDisplayTransform;
+    [SerializeField] int towerRange;
 
     float towerLaneDepth = -1.5f;
     float cameraZPosition = 63.5f;
@@ -21,8 +22,10 @@ public class TowerPlacement : MonoBehaviour
     
     float playerXPosition;
     float buildArea;
-    
+
+    GameObject T;
     Transform currentTower;
+    TowerController towerController;
 
     void FixedUpdate()
     {
@@ -35,16 +38,10 @@ public class TowerPlacement : MonoBehaviour
             currentTower.position = new Vector3(buildArea, Player.transform.position.y, towerLaneDepth);
         }
     }
-    void LateUpdate()
+    void Update()
     {
         if (currentTower != null && !hasPlaced)
         {
-            Vector3 rangePosition = new Vector3(currentTower.position.x, currentTower.position.y, currentTower.position.z + 2);
-            if (!rangeDisplayOn)
-            {
-                Instantiate(RangeDisplay, rangePosition, Quaternion.identity);
-                rangeDisplayOn = true;
-            }
             if (Input.GetMouseButtonDown(0))
             {
                 if (IsLegalPosition())
@@ -57,6 +54,7 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower1;
                                     hasPlaced = true;
+                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -66,6 +64,7 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower2;
                                     hasPlaced = true;
+                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -75,6 +74,7 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower3;
                                     hasPlaced = true;
+                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -84,6 +84,7 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower4;
                                     hasPlaced = true;
+                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -93,6 +94,7 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower5;
                                     hasPlaced = true;
+                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }

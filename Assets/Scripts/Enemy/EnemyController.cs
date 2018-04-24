@@ -30,4 +30,14 @@ public class EnemyController : MonoBehaviour
     {
         gameObject.transform.position = new Vector3 (spawnPoint, gameObject.transform.position.y, gameObject.transform.position.z);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Bullet")
+        {
+            rigidBody.useGravity = true;
+            Destroy(gameObject);
+        }
+            
+    }
 }
