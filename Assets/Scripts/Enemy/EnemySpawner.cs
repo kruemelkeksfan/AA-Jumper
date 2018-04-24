@@ -70,7 +70,7 @@ public class EnemySpawner : MonoBehaviour
                 int enemyType = rnd.Next(AIRSHIP, gamelevel % enemyTypes.Length);
                 int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
-                if(cost(enemyType) <= wealth)
+                if (cost(enemyType) <= wealth)
                 {
                     typequeue[spawnlane].Add(enemyType);
                     wealth -= cost(enemyType);
@@ -83,7 +83,7 @@ public class EnemySpawner : MonoBehaviour
                 {
                     Vector3 specificPosition = spawnPosition;
                     specificPosition.y += I * levelheight;
-                    switch((typequeue[I])[0])
+                    switch ((typequeue[I])[0])
                     {
                         case EnemySpawner.AIRSHIP:
                             {
@@ -143,12 +143,12 @@ public class EnemySpawner : MonoBehaviour
     {
         bool sorted = false;
         GameObject predecessor;
-        while(!sorted)
+        while (!sorted)
         {
             sorted = true;
-            for(int I = 0; I < enemies.Count - 1; ++I)
+            for (int I = 0; I < enemies.Count - 1; ++I)
             {
-                if (enemies[I+1].transform.position.x > enemies[I].transform.position.x)
+                if (enemies[I + 1].transform.position.x < enemies[I].transform.position.x)
                 {
                     predecessor = enemies[I];
                     enemies[I] = enemies[I + 1];

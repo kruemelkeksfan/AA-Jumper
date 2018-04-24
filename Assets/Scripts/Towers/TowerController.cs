@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class TowerController : MonoBehaviour
 {
+    [SerializeField] GameObject guns;
+
+    private float oldrot = 0;
+
     public int range;
 
     void Start()
@@ -25,8 +29,15 @@ public class TowerController : MonoBehaviour
                 {
                     GameObject target = enemies[I];
 
+                    if(oldrot != 0)
+                    {
+                        guns.transform.Rotate(new Vector3(0, 0, -oldrot));
+                    }
+
                     float alpha = height / horizontaldistance;
-                    gameObject.transform.Rotate(new Vector3(0, 0, alpha));
+                    print(alpha + "=" + height + "/" + horizontaldistance);
+                    guns.transform.Rotate(new Vector3(0, 0, alpha));
+                    oldrot = alpha;
 
                     break;
                 }
