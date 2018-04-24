@@ -68,7 +68,7 @@ public class EnemySpawner : MonoBehaviour
             while (wealth > 0)
             {
                 int enemyType = rnd.Next(AIRSHIP, gamelevel % enemyTypes.Length);
-                int spawnlane = (enemyType < 3) ? rnd.Next(0, spawnlevels) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
+                int spawnlane = (enemyType < 3) ? rnd.Next(0, Mathf.Min(spawnlevels, gamelevel)) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
                 if (cost(enemyType) <= wealth)
                 {
