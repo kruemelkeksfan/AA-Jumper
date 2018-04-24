@@ -35,7 +35,9 @@ public class EnemyController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Bullet")
+
         {
+            print("hit");
             Vector3 wreckp = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
             Instantiate(Wreck, wreckp, Quaternion.identity);
             rigidBody.useGravity = true;
