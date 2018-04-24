@@ -35,7 +35,6 @@ public class TowerController : MonoBehaviour
                     }
 
                     float alpha = height / horizontaldistance;
-                    print(alpha + "=" + height + "/" + horizontaldistance);
                     guns.transform.Rotate(new Vector3(0, 0, alpha));
                     oldrot = alpha;
 

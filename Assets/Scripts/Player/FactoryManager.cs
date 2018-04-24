@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FactoryManager : MonoBehaviour
 {
-    public static int baseHealth = 1;
+    public static int baseHealth = 1000;
 
     public void Update()
     {

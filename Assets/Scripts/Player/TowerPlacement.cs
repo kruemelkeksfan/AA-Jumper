@@ -18,7 +18,6 @@ public class TowerPlacement : MonoBehaviour
     float towerLaneDepth = -1.5f;
     float cameraZPosition = 63.5f;
     float halfPlatformRange = 1.75f;
-    bool rangeDisplayOn = false;
     
     float playerXPosition;
     float buildArea;
@@ -54,7 +53,6 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower1;
                                     hasPlaced = true;
-                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -64,7 +62,6 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower2;
                                     hasPlaced = true;
-                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -74,7 +71,6 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower3;
                                     hasPlaced = true;
-                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -84,7 +80,6 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower4;
                                     hasPlaced = true;
-                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
@@ -94,7 +89,6 @@ public class TowerPlacement : MonoBehaviour
                                 {
                                     ScrapManager.scrapCount -= prizeTower5;
                                     hasPlaced = true;
-                                    rangeDisplayOn = false;
                                 }
                                 break;
                             }
