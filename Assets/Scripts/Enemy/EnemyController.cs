@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float spawnPoint = 65.0f;
     [SerializeField] float despawnPoint = -5.0f;
+    [SerializeField] GameObject Wreck;
     [Tooltip ("in sec")][SerializeField] int restartTime;
 
     private Rigidbody rigidBody;
@@ -35,6 +36,8 @@ public class EnemyController : MonoBehaviour
     {
         if (other.tag == "Bullet")
         {
+            Vector3 wreckp = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
+            Instantiate(Wreck, wreckp, Quaternion.identity);
             rigidBody.useGravity = true;
             Destroy(gameObject);
         }
