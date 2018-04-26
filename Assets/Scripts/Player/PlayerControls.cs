@@ -43,7 +43,6 @@ public class PlayerControls : MonoBehaviour
             ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
             for (int I = hittingWreck.Count - 1; I > -1; --I)
             {
-                Debug.Log("for");
                 Destroy(hittingWreck[I].gameObject);
                 hittingWreck.Remove(hittingWreck[I]);
             }

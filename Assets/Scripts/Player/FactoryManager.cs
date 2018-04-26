@@ -11,7 +11,7 @@ public class FactoryManager : MonoBehaviour
     {
         if (baseHealth <= 0)
         {
-            System.Environment.Exit(0);
+            Application.Quit();
         }
     }
 }

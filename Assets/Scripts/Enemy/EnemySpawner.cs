@@ -57,12 +57,9 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
-        enemies = sortEnemies(enemies);
-
         if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
         {
             ++gamelevel;
-            print("Reached Level " + gamelevel + "!");
 
             int wealth = difficulty + gamelevel * difficultyperlevel;
             while (wealth > 0)
@@ -139,24 +136,4 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private List<GameObject> sortEnemies(List<GameObject> enemies)
-    {
-        bool sorted = false;
-        GameObject predecessor;
-        while (!sorted)
-        {
-            sorted = true;
-            for (int I = 0; I < enemies.Count - 1; ++I)
-            {
-                if (enemies[I + 1].transform.position.x < enemies[I].transform.position.x)
-                {
-                    predecessor = enemies[I];
-                    enemies[I] = enemies[I + 1];
-                    enemies[I + 1] = predecessor;
-                    sorted = false;
-                }
-            }
-        }
-        return enemies;
-    }
 }

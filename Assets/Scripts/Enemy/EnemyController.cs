@@ -35,14 +35,20 @@ public class EnemyController : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Bullet")
-
         {
-            print("hit");
-            Vector3 wreckp = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, 0);
-            Instantiate(Wreck, wreckp, Quaternion.identity);
+            Destroy(other.gameObject);
+            Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 0);
+            Instantiate(Wreck , wreckp, Quaternion.identity);
             rigidBody.useGravity = true;
-            Destroy(gameObject);
+            gameObject.tag = "Untagged";
+            Invoke("Destroy", 2);
         }
-            
+
+
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

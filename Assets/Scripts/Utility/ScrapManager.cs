@@ -5,22 +5,23 @@ using UnityEngine.UI;
 
 public class ScrapManager : MonoBehaviour
 {
-    public static int scrapCount = 75;
+    public static float scrapCount = 75;
+    [SerializeField] float scrapPSec = 1;
+    [SerializeField] float scrapStartTime = 1;
     Text text;
-    System.DateTime starttime = System.DateTime.Now;
-
+  
     void Start()
     {
+        InvokeRepeating("ScrapPSec", scrapStartTime, 1);
         text = GetComponent<Text>();
     }
     void Update()
     {
-        if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, 1))
-        {
-            ++scrapCount;
-            starttime = System.DateTime.Now;
-        }
-
         text.text = "Scrap: " + scrapCount;
+    }
+
+    private void ScrapPSec()
+    {
+        scrapCount = scrapCount + scrapPSec;
     }
 }
