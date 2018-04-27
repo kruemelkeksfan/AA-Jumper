@@ -4,21 +4,19 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    [SerializeField] float movementSpeed;
     [SerializeField] Vector3 rotationSpeed;
 
+    Vector3 startLocalPosition;
     float deltaSpeed;
-    Rigidbody rigidBody;
 
     void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
-
-        rigidBody.velocity = -transform.right * movementSpeed;
+        startLocalPosition = transform.localPosition;
     }
 
     void Update()
     {
+        transform.localPosition = startLocalPosition;
         transform.Rotate(rotationSpeed.x * Time.deltaTime, rotationSpeed.y * Time.deltaTime, rotationSpeed.z * Time.deltaTime);
     }
 }

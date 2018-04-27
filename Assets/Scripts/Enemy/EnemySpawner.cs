@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] int difficulty;
     [SerializeField] int difficultyperlevel;
     [SerializeField] int gameleveltime;
+    [SerializeField] Text text;
 
     public const int AIRSHIP = 0;
     public const int BIPLANE = 1;
@@ -23,7 +25,7 @@ public class EnemySpawner : MonoBehaviour
 
     private Lane[] lanes;
     private List<int>[] typequeue;
-    private int gamelevel = 0;
+    int gameLevel = 0;
     private System.DateTime starttime;
     private System.Random rnd = new System.Random();
 
@@ -57,15 +59,16 @@ public class EnemySpawner : MonoBehaviour
 
     void Update()
     {
+        text.text = "Level: " + gameLevel;
         if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
         {
-            ++gamelevel;
+            ++gameLevel;
 
-            int wealth = difficulty + gamelevel * difficultyperlevel;
+            int wealth = difficulty + gameLevel * difficultyperlevel;
             while (wealth > 0)
             {
-                int enemyType = rnd.Next(AIRSHIP, gamelevel % enemyTypes.Length);
-                int spawnlane = (enemyType < 3) ? rnd.Next(0, Mathf.Min(spawnlevels, gamelevel)) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
+                int enemyType = rnd.Next(AIRSHIP, gameLevel % enemyTypes.Length);
+                int spawnlane = (enemyType < 3) ? rnd.Next(0, Mathf.Min(spawnlevels, gameLevel)) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
                 if (cost(enemyType) <= wealth)
                 {
@@ -79,7 +82,7 @@ public class EnemySpawner : MonoBehaviour
                 if (lanes[I].isFree() && typequeue[I].Count > 0)
                 {
                     Vector3 specificPosition = spawnPosition;
-                    specificPosition.y += I * levelheight;
+                    specificPosition.y += ((I * levelheight) + levelheight / 2);
                     switch ((typequeue[I])[0])
                     {
                         case EnemySpawner.AIRSHIP:

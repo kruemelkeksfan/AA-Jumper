@@ -35,7 +35,7 @@ public class TowerController : MonoBehaviour
         foreach (GameObject enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, new Vector3(enemy.transform.position.x, enemy.transform.position.y, transform.position.z));
-            if (distanceToEnemy < shortestDistance)
+            if (distanceToEnemy < shortestDistance && transform.position.y <= enemy.transform.position.y)
             {
                 shortestDistance = distanceToEnemy;
                 nearestEnemy = enemy;
@@ -64,7 +64,7 @@ public class TowerController : MonoBehaviour
         Quaternion lookRotation = Quaternion.LookRotation(dir);
         Vector3 rotation = lookRotation.eulerAngles;
         Base.rotation = Quaternion.Euler(0f, rotation.y - 90, 0f);
-        Guns.rotation = Quaternion.Euler(0f, rotation.y - 90, -rotation.x);
+        Guns.localRotation = Quaternion.Euler(0f, 0f, -rotation.x);
 
         if (fireCountdown <= 0f)
         {
