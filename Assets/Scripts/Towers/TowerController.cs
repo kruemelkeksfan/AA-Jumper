@@ -21,13 +21,13 @@ public class TowerController : MonoBehaviour
 
     float targetingLead = 0.5f;
     float fireCountdown = 0f;
-
+    
     Vector3 targetingRotation;
     Quaternion qRotation;
     GameObject[] enemies;
     Transform Target;
 
-    void Start()
+    public void SetActiv()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
