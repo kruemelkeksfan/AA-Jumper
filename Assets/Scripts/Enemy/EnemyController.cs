@@ -7,11 +7,15 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float spawnPoint = 65.0f;
     [SerializeField] float despawnPoint = -5.0f;
+    [SerializeField] int enemyHealth;
+    [SerializeField] int enemyScoreCount;
+    [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
-    [Tooltip ("in sec")][SerializeField] int restartTime;
 
+    bool destroyed = false;
     private Rigidbody rigidBody;
    
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -32,16 +36,23 @@ public class EnemyController : MonoBehaviour
         gameObject.transform.position = new Vector3 (spawnPoint, gameObject.transform.position.y, gameObject.transform.position.z);
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) // damage from ammunition Name
     {
-        if (other.tag == "Bullet")
+        if (other.tag == "Shell")
         {
             Destroy(other.gameObject);
+            int sDamage = int.Parse(other.name);
+            enemyHealth -= sDamage;
+        }
+        if (enemyHealth <= 0 && !destroyed)
+        {
+            Displayer.score = Displayer.score + enemyScoreCount;
+            destroyed = true; 
             Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 0);
-            Instantiate(Wreck , wreckp, Quaternion.identity);
+            Instantiate(Wreck, wreckp, Quaternion.identity);
             rigidBody.useGravity = true;
             gameObject.tag = "Untagged";
-            Invoke("Destroy", 2);
+            Invoke("Destroy", 3);
         }
 
 
