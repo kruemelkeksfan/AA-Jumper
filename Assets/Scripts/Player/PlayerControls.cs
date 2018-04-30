@@ -14,6 +14,8 @@ public class PlayerControls : MonoBehaviour
 
     float horizontalThrow;
     bool movementEnabled, verticalThrow, collectable;
+    bool pause = false;
+    bool controllsEnabled = true;
     public static bool buildingButtons = false;
     Rigidbody rigidBody;
 
@@ -26,27 +28,51 @@ public class PlayerControls : MonoBehaviour
 
     void Update ()
     {
-    if (Input.GetKeyDown("b"))
+        if (Input.GetKeyDown("escape"))
         {
-            buildingButtons = !buildingButtons;
+            Application.Quit();
         }
-    if (movementEnabled == true)
+
+        if (Input.GetKeyDown("p"))
         {
-            horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
-            if (CrossPlatformInputManager.GetButtonDown("Jump") == true)
+            if (!pause)
             {
-                rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+                pause = true;
+                controllsEnabled = false;
+                Time.timeScale = 0;
+            }
+            else if (pause)
+            {
+                pause = false;
+                controllsEnabled = true;
+                Time.timeScale = 1;
             }
         }
-        if (hittingWreck.Count > 0 && Input.GetKeyDown("e"))
+        if (controllsEnabled)
         {
-            ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
-            for (int I = hittingWreck.Count - 1; I > -1; --I)
+            if (Input.GetKeyDown("b"))
             {
-                Destroy(hittingWreck[I].gameObject);
-                hittingWreck.Remove(hittingWreck[I]);
+                buildingButtons = !buildingButtons;
+            }
+            if (movementEnabled == true)
+            {
+                horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
+                if (CrossPlatformInputManager.GetButtonDown("Jump") == true)
+                {
+                    rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+                }
+            }
+            if (hittingWreck.Count > 0 && Input.GetKeyDown("e"))
+            {
+                ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
+                for (int I = hittingWreck.Count - 1; I > -1; --I)
+                {
+                    Destroy(hittingWreck[I].gameObject);
+                    hittingWreck.Remove(hittingWreck[I]);
+                }
             }
         }
+    
     HorizontalMovement();
     }
 
