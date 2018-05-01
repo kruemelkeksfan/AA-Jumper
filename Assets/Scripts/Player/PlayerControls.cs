@@ -7,6 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerControls : MonoBehaviour
 {
     [SerializeField] float speed = 10.0f;
+    [SerializeField] float turnSpeed = 2f;
     [SerializeField] float jumpPower = 100.0f;
     [SerializeField] int wreckValue = 10;
     [SerializeField] int respawnTime = 10;
@@ -50,6 +51,7 @@ public class PlayerControls : MonoBehaviour
         }
         if (controllsEnabled)
         {
+
             if (Input.GetKeyDown("b"))
             {
                 buildingButtons = !buildingButtons;
@@ -90,6 +92,10 @@ public class PlayerControls : MonoBehaviour
         {
             Invoke("Respawn", respawnTime);
         }
+        if (other.tag == "Factory")
+        {
+            transform.position = new Vector3(2.2f, transform.position.y, transform.position.z);
+        }
     }
     void OnTriggerExit(Collider other)
     {
@@ -106,11 +112,20 @@ public class PlayerControls : MonoBehaviour
     void Respawn()
     {
         gameObject.transform.position = respawnPoint.position;
+        rigidBody.velocity = new Vector3(0, 0, 0);
     }
     void HorizontalMovement()
     {
         float xOffset = horizontalThrow * speed * Time.deltaTime;
-        float NewXPos = transform.localPosition.x + xOffset;
-        transform.localPosition = new Vector3(NewXPos, transform.localPosition.y, transform.localPosition.z);
+        float newXPos = transform.position.x + xOffset;
+        transform.position = new Vector3(newXPos, transform.position.y, transform.position.z);
+        if (xOffset < 0)
+        {
+            transform.rotation =Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, 0), Time.deltaTime * turnSpeed);
+        }
+        else if (xOffset > 0)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 0, 0), Time.deltaTime * turnSpeed);
+        }
     }
 }

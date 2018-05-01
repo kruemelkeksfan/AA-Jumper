@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
         {
             Displayer.score = Displayer.score + enemyScoreCount;
             destroyed = true; 
-            Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 0);
+            Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 1);
             Instantiate(Wreck, wreckp, Quaternion.identity);
             rigidBody.useGravity = true;
             gameObject.tag = "Untagged";

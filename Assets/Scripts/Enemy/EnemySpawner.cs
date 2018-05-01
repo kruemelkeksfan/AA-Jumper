@@ -7,14 +7,16 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject[] enemyTypes = new GameObject[4];
     [SerializeField] Vector3 spawnPosition;
-    [SerializeField] Quaternion spawnRotation = Quaternion.identity;
+    [SerializeField] Text LevelDisplay;
+
     [SerializeField] byte spawnlevels;
     [SerializeField] byte unobstructedlevels;
     [SerializeField] float levelheight;
+    [SerializeField] int startTime;
     [SerializeField] int difficulty;
     [SerializeField] int difficultyperlevel;
     [SerializeField] int gameleveltime;
-    [SerializeField] Text text;
+    [SerializeField] int dreadnoughtMinLevel;
 
     public const int AIRSHIP = 0;
     public const int BIPLANE = 1;
@@ -24,9 +26,8 @@ public class EnemySpawner : MonoBehaviour
     public static List<GameObject> enemies;
 
     private Lane[] lanes;
-    private List<int>[] typequeue;
+    List<int>[] typequeue;
     int gameLevel = 0;
-    private System.DateTime starttime;
     private System.Random rnd = new System.Random();
 
     void Start()
@@ -53,66 +54,72 @@ public class EnemySpawner : MonoBehaviour
             lanes[I] = new Lane();
             typequeue[I] = new List<int>();
         }
-        starttime = System.DateTime.Now;
+        InvokeRepeating("NextLevel", startTime, gameleveltime);
+        InvokeRepeating("SpawnEnemy", startTime, 0.5f);
     }
-
 
     void Update()
     {
-        text.text = "Level: " + gameLevel;
-        if (System.DateTime.Now.Subtract(starttime) >= new System.TimeSpan(0, 0, gameleveltime))
+        LevelDisplay.text = "Level: " + gameLevel;
+    }
+
+    private void NextLevel()
+    {
+        ++gameLevel;
+        int spawnlevel = (gameLevel / 2) + 1;
+        int wealth = difficulty * (gameLevel * difficultyperlevel);
+        while (wealth > 0)
         {
-            ++gameLevel;
-
-            int wealth = difficulty + gameLevel * difficultyperlevel;
-            while (wealth > 0)
+            int enemyType = rnd.Next(0, gameLevel % (enemyTypes.Length + 1));
+            if (enemyType == 3 && gameLevel <= dreadnoughtMinLevel)
             {
-                int enemyType = rnd.Next(AIRSHIP, gameLevel % enemyTypes.Length);
-                int spawnlane = (enemyType < 3) ? rnd.Next(0, Mathf.Min(spawnlevels, gameLevel)) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
-
-                if (cost(enemyType) <= wealth)
-                {
-                    typequeue[spawnlane].Add(enemyType);
-                    wealth -= cost(enemyType);
-                }
+                return;
             }
+            int spawnlane = (enemyType < 3) ? rnd.Next(0, Mathf.Min(spawnlevels, spawnlevel)) : rnd.Next(spawnlevels - unobstructedlevels, spawnlevels);
 
-            for (int I = 0; I < lanes.Length; ++I)
+            if (cost(enemyType) <= wealth)
             {
-                if (lanes[I].isFree() && typequeue[I].Count > 0)
-                {
-                    Vector3 specificPosition = spawnPosition;
-                    specificPosition.y += ((I * levelheight) + levelheight / 2);
-                    switch ((typequeue[I])[0])
-                    {
-                        case EnemySpawner.AIRSHIP:
-                            {
-                                specificPosition.z += 8;
-                                break;
-                            }
-                        case EnemySpawner.BIPLANE:
-                            {
-                                specificPosition.z += 4;
-                                break;
-                            }
-                        case EnemySpawner.BOMBER:
-                            {
-                                specificPosition.z += 2;
-                                break;
-                            }
-                        default:
-                            {
-                                specificPosition.z += 0;
-                                break;
-                            }
-                    }
-
-                    enemies.Add(Instantiate(enemyTypes[(typequeue[I])[0]], specificPosition, spawnRotation));
-                    lanes[I].reserveLane((typequeue[I])[0]);
-                    typequeue[I].RemoveAt(0);
-                }
+                typequeue[spawnlane].Add(enemyType);
+                wealth -= cost(enemyType);
             }
-            starttime = System.DateTime.Now;
+        }
+    }
+
+    private void SpawnEnemy()
+    {
+        for (int I = 0; I < lanes.Length; ++I)
+        {
+            if (lanes[I].isFree() && typequeue[I].Count > 0)
+            {
+                Vector3 specificPosition = spawnPosition;
+                specificPosition.y += ((I * levelheight) + ((levelheight / 2) - 0.8f));
+                switch ((typequeue[I])[0])
+                {
+                    case EnemySpawner.AIRSHIP:
+                        {
+                            specificPosition.z += 8;
+                            break;
+                        }
+                    case EnemySpawner.BIPLANE:
+                        {
+                            specificPosition.z += 4;
+                            break;
+                        }
+                    case EnemySpawner.BOMBER:
+                        {
+                            specificPosition.z += 2;
+                            break;
+                        }
+                    default:
+                        {
+                            specificPosition.z += 0;
+                            break;
+                        }
+                }
+                enemies.Add(Instantiate(enemyTypes[(typequeue[I])[0]], specificPosition, Quaternion.identity));
+                lanes[I].reserveLane((typequeue[I])[0]);
+                typequeue[I].RemoveAt(0);
+            }
         }
     }
 
