@@ -121,7 +121,7 @@ public class PlayerControls : MonoBehaviour
         transform.position = new Vector3(newXPos, transform.position.y, transform.position.z);
         if (xOffset < 0)
         {
-            transform.rotation =Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, 0), Time.deltaTime * turnSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, 0), Time.deltaTime * turnSpeed);
         }
         else if (xOffset > 0)
         {

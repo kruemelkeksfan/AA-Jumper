@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] ParticleSystem explosionParticles;
     [SerializeField] float movementSpeed;
-    [SerializeField] float spawnPoint = 65.0f;
     [SerializeField] float despawnPoint = -5.0f;
     [SerializeField] int enemyHealth;
     [SerializeField] int enemyScoreCount;
@@ -13,27 +13,33 @@ public class EnemyController : MonoBehaviour
     [SerializeField] GameObject Wreck;
 
     bool destroyed = false;
+    bool gapClear = true;
+    bool restarting = false;
     private Rigidbody rigidBody;
-   
+    float spawnPoint = EnemySpawner.spawnXPosition + 5;
+
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-
-        rigidBody.velocity = -transform.right * movementSpeed;
     }
-
     void Update()
     {
-        if (gameObject.transform.position.x <= despawnPoint)
+        if (gameObject.transform.position.x <= despawnPoint && !restarting)
         {
+            restarting = true;
             Invoke("Restart", restartTime);
+        }
+        if (gapClear)
+        {
+            transform.position = new Vector3(transform.position.x - movementSpeed * Time.deltaTime, transform.position.y, transform.position.z);
         }
     }
 
     void Restart()
     {
-        gameObject.transform.position = new Vector3 (spawnPoint, gameObject.transform.position.y, gameObject.transform.position.z);
+        transform.position = new Vector3 (spawnPoint, transform.position.y, transform.position.z);
+        restarting = false;
     }
 
     void OnTriggerEnter(Collider other) // damage from ammunition Name
@@ -44,6 +50,10 @@ public class EnemyController : MonoBehaviour
             int sDamage = int.Parse(other.name);
             enemyHealth -= sDamage;
         }
+        if (other.tag == "Enemy" && transform.position.x > other.transform.position.x)
+        {
+            gapClear = false;
+        }
         if (enemyHealth <= 0 && !destroyed)
         {
             Displayer.score = Displayer.score + enemyScoreCount;
@@ -52,14 +62,21 @@ public class EnemyController : MonoBehaviour
             Instantiate(Wreck, wreckp, Quaternion.identity);
             rigidBody.useGravity = true;
             gameObject.tag = "Untagged";
-            Invoke("Destroy", 3);
+            Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);
+            Invoke("Destroy", 2);
         }
-
-
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Enemy")
+        {
+            gapClear = true;
+        }
     }
 
     private void Destroy()
     {
+        Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

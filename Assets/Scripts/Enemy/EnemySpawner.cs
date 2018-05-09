@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static float spawnXPosition;
+
     [SerializeField] GameObject[] enemyTypes = new GameObject[4];
     [SerializeField] Vector3 spawnPosition;
     [SerializeField] Text LevelDisplay;
@@ -44,6 +46,7 @@ public class EnemySpawner : MonoBehaviour
         {
             print("meh, this map is pretty unobstructed...");
         }
+        spawnXPosition = spawnPosition.x;
 
         enemies = new List<GameObject>();
 
