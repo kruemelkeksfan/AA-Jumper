@@ -5,14 +5,20 @@ using UnityEngine.UI;
 
 public class ScrapManager : MonoBehaviour
 {
-    public static float scrapCount = 75;
-    [SerializeField] float scrapPSec = 1;
-    [SerializeField] float scrapStartTime = 1;
+    public static float scrapCount = 25;
+    [SerializeField] float autoScrapAmount = 2;
+    [SerializeField] float autoScrapStartTime = 15;
+    [SerializeField] int autoScrapIntervall = 5;
+    [SerializeField] float startScrap = 25;
     Text text;
-  
+
+    private void Awake()
+    {
+        scrapCount = startScrap;
+    }
     void Start()
     {
-        InvokeRepeating("ScrapPSec", scrapStartTime, 1);
+        InvokeRepeating("AutoAddScrap", autoScrapStartTime, autoScrapIntervall);
         text = GetComponent<Text>();
     }
     void Update()
@@ -20,8 +26,8 @@ public class ScrapManager : MonoBehaviour
         text.text = "Scrap: " + scrapCount;
     }
 
-    private void ScrapPSec()
+    private void AutoAddScrap()
     {
-        scrapCount = scrapCount + scrapPSec;
+        scrapCount = scrapCount + autoScrapAmount;
     }
 }

@@ -16,7 +16,7 @@ public class BombHandler : MonoBehaviour
         }
         if (transform.position.y <= -5)
         {
-            DestroyObject(gameObject);
+            Object.Destroy(gameObject);
         }
 
         transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, rotationZ);

@@ -1,7 +1,5 @@
 fileFormatVersion: 2
 guid: 07e2b3f11697a9244b68b5af399f66a2
-timeCreated: 1524333797
-licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -10,6 +8,7 @@ ModelImporter:
     400000: towerbase
     400002: //RootNode
     2100000: palette
+    2100002: towerbaseMat
     2300000: towerbase
     3300000: towerbase
     4300000: towerbase
@@ -32,6 +31,7 @@ ModelImporter:
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
