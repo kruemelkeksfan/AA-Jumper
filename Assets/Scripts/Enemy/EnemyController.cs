@@ -5,12 +5,14 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] ParticleSystem explosionParticles;
+    [SerializeField] bool dropWreck;
     [SerializeField] float movementSpeed;
     [SerializeField] float despawnPoint = -5.0f;
     [SerializeField] int enemyHealth;
     [SerializeField] int enemyScoreCount;
     [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
+   
 
     bool destroyed = false;
     bool gapClear = true;
@@ -58,8 +60,11 @@ public class EnemyController : MonoBehaviour
         {
             Displayer.score = Displayer.score + enemyScoreCount;
             destroyed = true; 
-            Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 1);
-            Instantiate(Wreck, wreckp, Quaternion.identity);
+            if (dropWreck)
+            {
+                Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 1);
+                Instantiate(Wreck, wreckp, Quaternion.identity);
+            }
             rigidBody.useGravity = true;
             gameObject.tag = "Untagged";
             Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);

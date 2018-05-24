@@ -167,7 +167,22 @@ public class TowerPlacement : MonoBehaviour
         {
             return true;
         }
-        return false;
+        else if (PlacableTower.TowerCCount > 0)
+        {
+            Debug.Log("Colliding with other tower");
+            return false;
+        }
+        else if (PlacableTower.EnvironmentCCount < 3)
+        {
+            Debug.Log("Tower not entirely on the ground");
+            return false;
+        }
+        else
+        {
+            Debug.Log("PlaceableTower collider not working correct");
+            return false;
+        }
+        
     }
     public void SetItem(GameObject T)
     {

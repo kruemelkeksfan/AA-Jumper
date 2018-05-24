@@ -7,9 +7,14 @@ public class PlacableTower : MonoBehaviour
     public static int TowerCCount;
     public static int EnvironmentCCount;
 
-    List<Collider> hittingTower = new List<Collider>();
-    List<Collider> hittingEnvironment = new List<Collider>();
+    [SerializeField] List<Collider> hittingTower = new List<Collider>();
+    [SerializeField] List<Collider> hittingEnvironment = new List<Collider>();
 
+    private void Start()
+    {
+        TowerCCount = 0;
+        EnvironmentCCount = 0;
+    }
     void OnTriggerEnter (Collider c)
     {
         
