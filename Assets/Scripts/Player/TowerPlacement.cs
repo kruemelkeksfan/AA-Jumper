@@ -15,7 +15,8 @@ public class TowerPlacement : MonoBehaviour
     [Tooltip("Rocket Launcher")][SerializeField] int prizeTower5 = 75;
 
     [SerializeField] GameObject Player;
-    [SerializeField] GameObject RangeDisplay;
+    [SerializeField] Color placeable;
+    [SerializeField] Color notPlaceable;
     
     [SerializeField] Text text;
 
@@ -31,16 +32,18 @@ public class TowerPlacement : MonoBehaviour
     GameObject T;
     Transform currentTower;
     TowerController towerController;
+    Renderer placeableIndicatorRenderer;
 
     private void Start()
     {
         text.text = "";
+
     }
     void FixedUpdate()
     {
         if (currentTower != null && !hasPlaced)
         {
-            Vector3 mousePosition = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, cameraZPosition + towerLaneDepth);
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraZPosition + towerLaneDepth);
             Vector3 mouseRPosition = Camera.main.ScreenToWorldPoint(mousePosition);
             playerXPosition = Player.transform.position.x;
             buildArea = Mathf.Clamp(mouseRPosition.x, playerXPosition - halfPlatformRange, playerXPosition + halfPlatformRange);
@@ -140,12 +143,20 @@ public class TowerPlacement : MonoBehaviour
                 Destroy(currentTower.gameObject);
                 hasPlaced = true;
             }
+
+            if (IsLegalPosition())
+            {
+                placeableIndicatorRenderer.material.color = placeable;
+            }
+            else if (!IsLegalPosition())
+            {
+                placeableIndicatorRenderer.material.color = notPlaceable;
+            }
         }
         if (Time.time >= textDeleteTime)
         {
             text.text = "";
         }
-        
     }
 
     private void SetText(string displayedText)
@@ -167,19 +178,8 @@ public class TowerPlacement : MonoBehaviour
         {
             return true;
         }
-        else if (PlacableTower.TowerCCount > 0)
-        {
-            Debug.Log("Colliding with other tower");
-            return false;
-        }
-        else if (PlacableTower.EnvironmentCCount < 3)
-        {
-            Debug.Log("Tower not entirely on the ground");
-            return false;
-        }
         else
-        {
-            Debug.Log("PlaceableTower collider not working correct");
+        { 
             return false;
         }
         
@@ -189,6 +189,8 @@ public class TowerPlacement : MonoBehaviour
         {
             hasPlaced = false;
             currentTower = ((GameObject)Instantiate(T)).transform;
+            GameObject placeableIndicator = GameObject.FindGameObjectWithTag("Indicator");
+            placeableIndicatorRenderer = placeableIndicator.GetComponent<Renderer>();
         }
         
     }

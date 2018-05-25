@@ -9,8 +9,11 @@ public class Displayer : MonoBehaviour
 
     [SerializeField] Text healthText;
     [SerializeField] Text scoreText;
-    
 
+    private void Start()
+    {
+        score = 0;
+    }
     void Update ()
     {
         healthText.text = "Health: " + FactoryManager.baseHealth;

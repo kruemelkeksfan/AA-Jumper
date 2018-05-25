@@ -14,6 +14,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] byte spawnlevels;
     [SerializeField] byte unobstructedlevels;
     [SerializeField] float levelheight;
+    [SerializeField] float spawnIntervall;
     [SerializeField] int startTime;
     [SerializeField] int difficulty;
     [SerializeField] int difficultyperlevel;
@@ -58,7 +59,7 @@ public class EnemySpawner : MonoBehaviour
             typequeue[I] = new List<int>();
         }
         InvokeRepeating("NextLevel", startTime, gameleveltime);
-        InvokeRepeating("SpawnEnemy", startTime, 0.5f);
+        InvokeRepeating("SpawnEnemy", startTime, spawnIntervall);
     }
 
     void Update()
@@ -69,7 +70,7 @@ public class EnemySpawner : MonoBehaviour
     private void NextLevel()
     {
         ++gameLevel;
-        int spawnlevel = (gameLevel / 2) + 1;
+        int spawnlevel = (gameLevel / 3) + 1;
         int wealth = difficulty * (gameLevel * difficultyperlevel);
         while (wealth > 0)
         {
