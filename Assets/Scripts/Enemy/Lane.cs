@@ -18,7 +18,7 @@ public class Lane
         {
             case EnemySpawner.AIRSHIP:
                 {
-                    reserve = new System.TimeSpan(0, 0, 5);
+                    reserve = new System.TimeSpan(0, 0, 3);
                     break;
                 }
             case EnemySpawner.BIPLANE:
@@ -28,12 +28,12 @@ public class Lane
                 }
             case EnemySpawner.BOMBER:
                 {
-                    reserve = new System.TimeSpan(0, 0, 10);
+                    reserve = new System.TimeSpan(0, 0, 5);
                     break;
                 }
             case EnemySpawner.DREADNOUGHT:
                 {
-                    reserve = new System.TimeSpan(0, 0, 25);
+                    reserve = new System.TimeSpan(0, 0, 15);
                     break;
                 }
             default:

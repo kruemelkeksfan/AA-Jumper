@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DifficultySet : MonoBehaviour {
 
-    public bool easy;
+    public static bool easy;
     public static bool normal;
     public static bool hard;
     public static bool dreadnought;

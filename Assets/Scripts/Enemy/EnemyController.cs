@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] int enemyScoreCount;
     [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
+    [SerializeField] bool destroyOnMapEnd = false;
    
 
     bool destroyed = false;
@@ -36,6 +37,10 @@ public class EnemyController : MonoBehaviour
         if (gapClear)
         {
             transform.position = new Vector3(transform.position.x - movementSpeed * Time.deltaTime, transform.position.y, transform.position.z);
+        }
+        if (destroyOnMapEnd && transform.position.x < 5)
+        {
+            Object.Destroy(gameObject);
         }
     }
 

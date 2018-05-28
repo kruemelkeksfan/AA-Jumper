@@ -11,7 +11,7 @@ public class WreckCollector : MonoBehaviour
 
     private void Start()
     {
-        if (transform.position.x > wakableMapEndX)
+        if (transform.position.x < wakableMapEndX)
         {
             transform.position = new Vector3(wreckDumpX, transform.position.y, transform.position.z);
         }
