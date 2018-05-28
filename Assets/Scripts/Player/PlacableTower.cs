@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlacableTower : MonoBehaviour
 {
@@ -11,23 +12,33 @@ public class PlacableTower : MonoBehaviour
     [SerializeField] List<Collider> hittingEnvironment = new List<Collider>();
     [SerializeField] GameObject towerCanvas;
 
-    float canvasDisplayTime = 10;
-    float canvasDisplayStart = -10;
+    int platformWidth = 5;
+    float errorDisplayTime = 3;
+
+    float errorDisplayStartTime;
+
+    Transform Player;
+    Text TowerErrorText;
 
     private void Start()
     {
         TowerCCount = 0;
         EnvironmentCCount = 0;
+        GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        Player = playerGameObject.GetComponent<Transform>();
+        GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
+        TowerErrorText = towerErrorTextGameObject.GetComponent<Text>();
+        InvokeRepeating("AutoDeactivateCanvas", 1, 2); //deactivates Canvas every 2 sec if player is not nearby
     }
     private void Update()
     {
-        if ((canvasDisplayStart + canvasDisplayTime) < Time.time)
+        if (Input.GetMouseButtonDown(1))
         {
             towerCanvas.SetActive(false);
         }
-        else if (Input.GetMouseButtonDown(1))
+        if (errorDisplayStartTime + errorDisplayTime < Time.time)
         {
-            towerCanvas.SetActive(false);
+            TowerErrorText.text = "";
         }
     }
     void OnTriggerEnter (Collider c)
@@ -59,9 +70,41 @@ public class PlacableTower : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Debug.Log("Hello Dev");
-        canvasDisplayStart = Time.time;
-        towerCanvas.SetActive(true);
+        if (PlayerNearby())
+        {
+            towerCanvas.SetActive(true);
+        }
+        else
+        {
+            errorDisplayStartTime = Time.time;
+            TowerErrorText.text = "player to far away";
+        }
+        
+    }
+    private void AutoDeactivateCanvas() //deactivates Canvas every 2 sec if player is not nearby
+    {
+        if (!PlayerNearby())
+        {
+            towerCanvas.SetActive(false);
+        }
+    }
+    bool PlayerNearby()
+    {
+        if (transform.position.y == Player.position.y)
+        {
+            if (transform.position.x - platformWidth < Player.position.x && Player.position.x < transform.position.x + platformWidth)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 }
 

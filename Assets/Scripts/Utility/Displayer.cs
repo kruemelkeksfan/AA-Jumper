@@ -9,10 +9,12 @@ public class Displayer : MonoBehaviour
 
     [SerializeField] Text healthText;
     [SerializeField] Text scoreText;
+    [SerializeField] Text towerErrorText;
 
     private void Start()
     {
         score = 0;
+        towerErrorText.text = "";
     }
     void Update ()
     {

@@ -17,21 +17,18 @@ public class TowerPlacement : MonoBehaviour
     [SerializeField] GameObject Player;
     [SerializeField] Color placeable;
     [SerializeField] Color notPlaceable;
-    
     [SerializeField] Text text;
 
     float towerLaneDepth = -1.5f;
     float cameraZPosition = 63.5f;
     float halfPlatformRange = 1.75f;
-    float textDisplayTime = 5;
+    float textDisplayTime = 3;
     
     float playerXPosition;
     float buildArea;
     float textDeleteTime;
 
-    GameObject T;
     Transform currentTower;
-    TowerController towerController;
     Renderer placeableIndicatorRenderer;
 
     private void Start()
@@ -153,7 +150,7 @@ public class TowerPlacement : MonoBehaviour
                 placeableIndicatorRenderer.material.color = notPlaceable;
             }
         }
-        if (Time.time >= textDeleteTime)
+        if (textDeleteTime < Time.time)
         {
             text.text = "";
         }

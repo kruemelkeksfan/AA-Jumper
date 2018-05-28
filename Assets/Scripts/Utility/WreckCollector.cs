@@ -4,11 +4,23 @@ using UnityEngine;
 
 public class WreckCollector : MonoBehaviour
 {
-	void OnTriggerEnter(Collider c)
+    [SerializeField] int wreckDumpValue = 5;
+
+    float wakableMapEndX = 2;
+    float wreckDumpX = -10;
+
+    private void Start()
+    {
+        if (transform.position.x > wakableMapEndX)
+        {
+            transform.position = new Vector3(wreckDumpX, transform.position.y, transform.position.z);
+        }
+    }
+    void OnTriggerEnter(Collider c)
     {
         if (c.tag == "Ground")
         {
-            ScrapManager.scrapCount = ScrapManager.scrapCount + 5;
+            ScrapManager.scrapCount = ScrapManager.scrapCount + wreckDumpValue;
             Destroy(gameObject);
         }
 	}

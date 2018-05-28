@@ -17,8 +17,9 @@ public class EnemyController : MonoBehaviour
     bool destroyed = false;
     bool gapClear = true;
     bool restarting = false;
-    private Rigidbody rigidBody;
     float spawnPoint = EnemySpawner.spawnXPosition + 5;
+
+    Rigidbody rigidBody;
 
 
     void Start()
