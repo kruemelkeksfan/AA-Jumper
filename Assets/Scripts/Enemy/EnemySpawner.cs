@@ -41,6 +41,10 @@ public class EnemySpawner : MonoBehaviour
 
     System.Random rnd = new System.Random();
 
+    float airshipOffset = 8;
+    float biplaneOffset = 6.5f;
+    float bomberOffset = 3.7f;
+
     bool gameStart = true;
     float nextUpdateTime;
     int availableEnemyTypes;
@@ -156,17 +160,20 @@ public class EnemySpawner : MonoBehaviour
                 {
                     case EnemySpawner.AIRSHIP:
                         {
-                            specificPosition.z += 8;
+                            specificPosition.z += airshipOffset;
+                            specificPosition.y += Random.Range(-0.8f, 0.8f);
                             break;
                         }
                     case EnemySpawner.BIPLANE:
                         {
-                            specificPosition.z += 4;
+                            specificPosition.z += biplaneOffset;
+                            specificPosition.y += Random.Range(-0.8f, 0.8f);
                             break;
                         }
                     case EnemySpawner.BOMBER:
                         {
-                            specificPosition.z += 2;
+                            specificPosition.z += bomberOffset;
+                            specificPosition.y += Random.Range(-0.4f, 0.4f);
                             break;
                         }
                     default:

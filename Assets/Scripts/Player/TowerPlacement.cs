@@ -165,7 +165,9 @@ public class TowerPlacement : MonoBehaviour
     private void TowerPlaced()
     {
         TowerController towerController = currentTower.GetComponent<TowerController>();
-        towerController.SetActiv();
+        PlacableTower placableTower = currentTower.GetComponent<PlacableTower>();
+        towerController.SetTowerActiv();
+        placableTower.SetCanvasActive();
         hasPlaced = true;
     }
 

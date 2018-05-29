@@ -14,6 +14,7 @@ public class PlacableTower : MonoBehaviour
 
     int platformWidth = 5;
     float errorDisplayTime = 3;
+    bool canvasActive = false;
 
     float errorDisplayStartTime;
 
@@ -70,11 +71,11 @@ public class PlacableTower : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (PlayerNearby())
+        if (PlayerNearby() && canvasActive)
         {
             towerCanvas.SetActive(true);
         }
-        else
+        else if (canvasActive)
         {
             errorDisplayStartTime = Time.time;
             TowerErrorText.text = "player to far away";
@@ -105,6 +106,10 @@ public class PlacableTower : MonoBehaviour
         {
             return false;
         }
+    }
+    public void SetCanvasActive()
+    {
+        canvasActive = true;
     }
 }
 

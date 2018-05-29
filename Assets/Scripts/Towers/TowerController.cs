@@ -27,7 +27,7 @@ public class TowerController : MonoBehaviour
     GameObject[] enemies;
     Transform Target;
 
-    public void SetActiv()
+    public void SetTowerActiv()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
