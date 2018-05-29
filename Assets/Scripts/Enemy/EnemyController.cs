@@ -30,11 +30,11 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-       /* enemyMultipliedHealth = Mathf.RoundToInt(EnemySpawner.gameLevel * enemyHealthMultiplyer);
+       enemyMultipliedHealth = Mathf.RoundToInt(EnemySpawner.gameLevel * enemyHealthMultiplyer);
         if (enemyMultipliedHealth > enemyHealth)
         {
             enemyHealth = enemyMultipliedHealth;
-        }*/
+        }
     }
     void Update()
     {

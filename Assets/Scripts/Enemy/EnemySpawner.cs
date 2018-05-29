@@ -15,6 +15,7 @@ public class EnemySpawner : MonoBehaviour
     public const int BOMBER = 2;
     public const int DREADNOUGHT = 3;
 
+    [SerializeField] bool active = true;
     [SerializeField] GameObject[] enemyTypes = new GameObject[4];
     [SerializeField] Vector3 spawnPosition;
     [Header("Spawn parameters")]
@@ -40,8 +41,8 @@ public class EnemySpawner : MonoBehaviour
 
     System.Random rnd = new System.Random();
 
-    float airshipOffset = 8;
-    float biplaneOffset = 5.5f;
+    float airshipOffset = 5f;
+    float biplaneOffset = 7.4f;
     float bomberOffset = 2.7f;
 
     bool gameStart = true;
@@ -57,6 +58,10 @@ public class EnemySpawner : MonoBehaviour
         gameLevel = 0;
         SetMultiplier();
 
+        if (!active)
+        {
+            return;
+        }
         enemies = new List<GameObject>();
 
         lanes = new Lane[spawnLevels];
