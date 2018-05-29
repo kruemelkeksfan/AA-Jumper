@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -42,8 +41,8 @@ public class EnemySpawner : MonoBehaviour
     System.Random rnd = new System.Random();
 
     float airshipOffset = 8;
-    float biplaneOffset = 6.5f;
-    float bomberOffset = 3.7f;
+    float biplaneOffset = 5.5f;
+    float bomberOffset = 2.7f;
 
     bool gameStart = true;
     float nextUpdateTime;

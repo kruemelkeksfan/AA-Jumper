@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float movementSpeed;
     [SerializeField] float despawnPoint = -5.0f;
     [SerializeField] int enemyHealth;
+    [SerializeField] float enemyHealthMultiplyer;
     [SerializeField] int enemyScoreCount;
     [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
@@ -20,12 +21,20 @@ public class EnemyController : MonoBehaviour
     bool restarting = false;
     float spawnPoint = EnemySpawner.spawnXPosition + 5;
 
+    int enemyMultipliedHealth;
+
     Rigidbody rigidBody;
+
 
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+       /* enemyMultipliedHealth = Mathf.RoundToInt(EnemySpawner.gameLevel * enemyHealthMultiplyer);
+        if (enemyMultipliedHealth > enemyHealth)
+        {
+            enemyHealth = enemyMultipliedHealth;
+        }*/
     }
     void Update()
     {
