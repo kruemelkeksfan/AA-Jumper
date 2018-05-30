@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class TowerController : MonoBehaviour
     [SerializeField] Transform Base;
     [SerializeField] Transform FirePoint;
     [SerializeField] GameObject Shell;
+    [SerializeField] Toggle targetFocusBig;
+    [SerializeField] Toggle targetFocusSmall;
 
     [Header ("Atributes")]
     [SerializeField] int range;
@@ -37,6 +40,41 @@ public class TowerController : MonoBehaviour
         enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
+        if (TargetFocus())
+        {
+            foreach (GameObject enemy in enemies)
+            {
+                if (enemy.name == FocusNameOne() || enemy.name == FocusNameTwo())
+                {
+                    float distanceToEnemy = Vector3.Distance(transform.position, new Vector3(enemy.transform.position.x, enemy.transform.position.y, transform.position.z));
+                    if (distanceToEnemy < shortestDistance && transform.position.y <= enemy.transform.position.y)
+                    {
+                        shortestDistance = distanceToEnemy;
+                        nearestEnemy = enemy;
+                    }
+                }
+            }
+            if (nearestEnemy != null && shortestDistance <= range)
+            {
+                Target = nearestEnemy.transform;
+            }
+            else
+            {
+                Target = null;
+            }
+            if (Target == null)
+            {
+                SearchNearestTarget(ref shortestDistance, ref nearestEnemy);
+            }
+        }
+        else
+        {
+            SearchNearestTarget(ref shortestDistance, ref nearestEnemy);
+        }
+    }
+
+    private void SearchNearestTarget(ref float shortestDistance, ref GameObject nearestEnemy)
+    {
         foreach (GameObject enemy in enemies)
         {
             float distanceToEnemy = Vector3.Distance(transform.position, new Vector3(enemy.transform.position.x, enemy.transform.position.y, transform.position.z));
@@ -54,7 +92,6 @@ public class TowerController : MonoBehaviour
         {
             Target = null;
         }
-
     }
 
     void Update()
@@ -94,6 +131,43 @@ public class TowerController : MonoBehaviour
             Instantiate(Shell, FirePoint.position, FirePoint.rotation);
         }
     }
+    bool TargetFocus()
+    {
+        if (targetFocusBig.isOn)
+        {
+            return true;
+        }
+        if (targetFocusSmall.isOn)
+        {
+            return true;
+        }
+        else return false;
+    }
+    string FocusNameOne()
+    {
+        if (targetFocusBig.isOn)
+        {
+            return "Bomber(Clone)";
+        }
+        if (targetFocusSmall.isOn)
+        {
+            return "SmallShip(Clone)";
+        }
+        else return "";
+    }
+    string FocusNameTwo()
+    {
+        if (targetFocusBig.isOn)
+        {
+            return "Dreadnought(Clone)";
+        }
+        if (targetFocusSmall.isOn)
+        {
+            return "Biplane(Clone)";
+        }
+        else return "";
+    }
+
 
     private void OnDrawGizmosSelected()
     {

@@ -12,6 +12,7 @@ public class Displayer : MonoBehaviour
     [SerializeField] Text towerErrorText;
     [SerializeField] Text difficultyText;
     [SerializeField] Text LevelText;
+    [SerializeField] Text infoDisplay;
     [Header("Difficulty Color")]
     [SerializeField] Color easyColor;
     [SerializeField] Color normalColor;
@@ -24,6 +25,7 @@ public class Displayer : MonoBehaviour
     {
         score = 0;
         towerErrorText.text = "";
+        infoDisplay.text = "";
         if (DifficultySet.easy)
         {
             difficultyText.color = easyColor;
