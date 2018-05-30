@@ -1,27 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] ParticleSystem explosionParticles;
+    [SerializeField] GameObject EnemyCanvas;
+    [SerializeField] Image HealthBar;
     [SerializeField] bool dropWreck;
     [SerializeField] float movementSpeed;
     [SerializeField] float despawnPoint = -5.0f;
-    [SerializeField] int enemyHealth;
+    [SerializeField] float enemyHealth;
     [SerializeField] float enemyHealthMultiplyer;
     [SerializeField] int enemyScoreCount;
     [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
     [SerializeField] bool destroyOnMapEnd = false;
-   
 
+
+    bool displayed = false;
     bool destroyed = false;
     bool gapClear = true;
     bool restarting = false;
     float spawnPoint = EnemySpawner.spawnXPosition + 5;
 
+
     int enemyMultipliedHealth;
+    float onePercentHealth;
 
     Rigidbody rigidBody;
 
@@ -35,9 +41,14 @@ public class EnemyController : MonoBehaviour
         {
             enemyHealth = enemyMultipliedHealth;
         }
+        onePercentHealth = enemyHealth / 100;
     }
     void Update()
     {
+        if (displayed)
+        {
+            HealthBar.fillAmount = (enemyHealth / onePercentHealth) / 100;
+        }
         if (gameObject.transform.position.x <= despawnPoint && !restarting)
         {
             restarting = true;
@@ -92,6 +103,17 @@ public class EnemyController : MonoBehaviour
         {
             gapClear = true;
         }
+    }
+    private void OnMouseEnter()
+    {
+        EnemyCanvas.SetActive(true);
+        displayed = true;
+    }
+
+    private void OnMouseExit()
+    {
+        EnemyCanvas.SetActive(false);
+        displayed = false;
     }
 
     private void Destroy()
