@@ -14,6 +14,7 @@ public class PlacableTower : MonoBehaviour
 
     int platformWidth = 5;
     float errorDisplayTime = 3;
+    float irregularityCompensation = 0.1f;
     bool canvasActive = false;
 
     float errorDisplayStartTime;
@@ -91,7 +92,7 @@ public class PlacableTower : MonoBehaviour
     }
     bool PlayerNearby()
     {
-        if (transform.position.y == Player.position.y)
+        if (transform.position.y - irregularityCompensation < Player.position.y && Player.position.y < transform.position.y + irregularityCompensation)
         {
             if (transform.position.x - platformWidth < Player.position.x && Player.position.x < transform.position.x + platformWidth)
             {

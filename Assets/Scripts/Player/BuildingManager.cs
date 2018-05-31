@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BuildingManager : MonoBehaviour
 {
-    public GameObject[] Towers;
+    [SerializeField] GameObject[] Towers;
 
     TowerPlacement towerPlacement;
 
@@ -12,17 +12,11 @@ public class BuildingManager : MonoBehaviour
     {
         towerPlacement = GetComponent<TowerPlacement>();
 	}
-    void OnGUI()
+    public void SelectTower(int i)
     {
-        if (TowerPlacement.hasPlaced == true && PlayerControls.buildingButtons == true)
+        if (TowerPlacement.hasPlaced == true)
         {
-            for (int i = 0; i < Towers.Length; i++)
-            {
-                if (GUI.Button(new Rect(Screen.width / 1.3f, Screen.height / 18 + Screen.height / 20 * i, 200, 30), Towers[i].name) && TowerPlacement.hasPlaced == true)
-                {
-                    towerPlacement.SetItem(Towers[i]);
-                }
-            }
+            towerPlacement.SetItem(Towers[i]);
         }
     }
 }

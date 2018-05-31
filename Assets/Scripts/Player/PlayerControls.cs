@@ -18,6 +18,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] Transform respawnPoint;
     [SerializeField] GameObject controllsHelpText;
     [SerializeField] Text respawnTimeDisplay;
+    [SerializeField] GameObject buildingButtonDisplay;
 
     float horizontalThrow;
     float rewiveTime;
@@ -71,6 +72,7 @@ public class PlayerControls : MonoBehaviour
                 if (Input.GetKeyDown("b"))
                 {
                     buildingButtons = !buildingButtons;
+                    buildingButtonDisplay.SetActive(buildingButtons);
                 }
                 if (movementEnabled == true)
                 {

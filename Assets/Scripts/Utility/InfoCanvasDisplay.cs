@@ -30,4 +30,8 @@ public class InfoCanvasDisplay : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         infoText.text = "";
     }
+    private void OnDisable()
+    {
+        infoText.text = "";
+    }
 }
