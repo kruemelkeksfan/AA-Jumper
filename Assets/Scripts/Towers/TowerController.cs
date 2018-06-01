@@ -14,14 +14,21 @@ public class TowerController : MonoBehaviour
     [SerializeField] Transform Base;
     [SerializeField] Transform FirePoint;
     [SerializeField] GameObject Shell;
+    [Header("Canvas Objects")]
+    [SerializeField] GameObject amunitionEmptyDisplayer;
+    [SerializeField] GameObject amunitionDisplayer;
+    [SerializeField] Image amunitionDisplay;
     [SerializeField] Toggle targetFocusBig;
     [SerializeField] Toggle targetFocusSmall;
 
     [Header ("Atributes")]
     [SerializeField] int range;
+    [SerializeField] float maxAmunition;
     [SerializeField] float fireRate;
     [SerializeField] float turnSpeed = 1f;
+    [SerializeField] float amunitionPrice;
 
+    [SerializeField] float amunition;
     float targetingLead = 0.5f;
     float fireCountdown = 0f;
     
@@ -30,13 +37,28 @@ public class TowerController : MonoBehaviour
     GameObject[] enemies;
     Transform Target;
 
+    void Start()
+    {
+        amunition = maxAmunition;
+    }
     public void SetTowerActiv()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
-
+    public void RefillAmunition()
+    {
+        if (ScrapManager.scrapCount >= Mathf.RoundToInt((maxAmunition - amunition) * amunitionPrice))
+        {
+            ScrapManager.scrapCount = ScrapManager.scrapCount - Mathf.RoundToInt((maxAmunition - amunition) * amunitionPrice);
+            amunition = maxAmunition;
+        }
+    }
     void UpdateTarget()
     {
+        if (amunition < 1)
+        {
+            return;
+        }
         enemies = GameObject.FindGameObjectsWithTag(enemyTag);
         float shortestDistance = Mathf.Infinity;
         GameObject nearestEnemy = null;
@@ -72,7 +94,42 @@ public class TowerController : MonoBehaviour
             SearchNearestTarget(ref shortestDistance, ref nearestEnemy);
         }
     }
+    void Update()
+    {
+        if (PlayerControls.amunitionDisplayed)
+        {
+            amunitionDisplayer.SetActive(true);
+            amunitionDisplay.fillAmount = amunition / maxAmunition;
+        }
+        if (!PlayerControls.amunitionDisplayed)
+        {
+            amunitionDisplayer.SetActive(false);
+        }
+        if (amunition < 1)
+        {
+            amunitionEmptyDisplayer.SetActive(true);
+            return;
+        }
+        amunitionEmptyDisplayer.SetActive(false);
+        fireCountdown -= Time.deltaTime;
+        if (Target != null)
+        {
+            targetingLead = (Target.position.z / zLeadDivisor) + ((Target.position.y - transform.position.y) / yLeadDivisor);
+            Vector3 dir = new Vector3(Target.position.x - targetingLead, Target.position.y, Target.position.z) - transform.position;
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            qRotation = Quaternion.Lerp(qRotation, lookRotation, Time.deltaTime * turnSpeed);
+            Vector3 realRotation = qRotation.eulerAngles;
+            Base.rotation = Quaternion.Euler(0f, realRotation.y - 90, 0f);
+            Guns.localRotation = Quaternion.Euler(0f, 0f, -realRotation.x);
 
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                amunition = amunition - 1;
+                fireCountdown = 1f / fireRate;
+            }
+        }
+    }
     private void SearchNearestTarget(ref float shortestDistance, ref GameObject nearestEnemy)
     {
         foreach (GameObject enemy in enemies)
@@ -93,27 +150,6 @@ public class TowerController : MonoBehaviour
             Target = null;
         }
     }
-
-    void Update()
-    {
-        fireCountdown -= Time.deltaTime;
-        if (Target != null)
-        {
-            targetingLead = (Target.position.z / zLeadDivisor) + ((Target.position.y - transform.position.y) / yLeadDivisor);
-            Vector3 dir = new Vector3(Target.position.x - targetingLead, Target.position.y, Target.position.z) - transform.position;
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
-            qRotation = Quaternion.Lerp(qRotation, lookRotation, Time.deltaTime * turnSpeed);
-            Vector3 realRotation = qRotation.eulerAngles;
-            Base.rotation = Quaternion.Euler(0f, realRotation.y - 90, 0f);
-            Guns.localRotation = Quaternion.Euler(0f, 0f, -realRotation.x);
-
-            if (fireCountdown <= 0f)
-            {
-                Shoot();
-                fireCountdown = 1f / fireRate;
-            }
-        }
-    }
     void Shoot()
     {
         if (Shell.name == "Rocket")
@@ -130,6 +166,11 @@ public class TowerController : MonoBehaviour
         {
             Instantiate(Shell, FirePoint.position, FirePoint.rotation);
         }
+    }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
     bool TargetFocus()
     {
@@ -166,12 +207,5 @@ public class TowerController : MonoBehaviour
             return "Biplane(Clone)";
         }
         else return "";
-    }
-
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, range);
     }
 }

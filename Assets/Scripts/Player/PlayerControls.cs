@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class PlayerControls : MonoBehaviour
 {
     public static bool buildingButtons = false;
+    public static bool amunitionDisplayed = true;
 
     [SerializeField] float speed = 10.0f;
     [SerializeField] float turnSpeed = 2f;
@@ -66,7 +67,10 @@ public class PlayerControls : MonoBehaviour
             {
                 TogglePause();
             }
-
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                amunitionDisplayed = !amunitionDisplayed;
+            }
             if (controllsEnabled)
             {
                 if (Input.GetKeyDown("b"))
