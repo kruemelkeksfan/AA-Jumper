@@ -32,18 +32,19 @@ public class TowerController : MonoBehaviour
     float targetingLead = 0.5f;
     float fireCountdown = 0f;
 
+    int rangeUpgradeCount = 0;
+    int firerateUpgradeCount = 0;
+    int damageUpgradeCount = 0;
+    int maxAmmunitionUpgradeCount = 0;
+    bool autoRefillActive = false;
+
     TowerErrorMassageHandler towerErrorMassageHandler;
+    TowerController towerController;
     Vector3 targetingRotation;
     Quaternion qRotation;
     GameObject[] enemies;
     Transform Target;
-
-    void Start()
-    {
-        ammunition = maxAmmunition;
-        GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
-        towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
-    }
+   
     public void SetTowerActiv()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -58,6 +59,65 @@ public class TowerController : MonoBehaviour
         else
         {
             towerErrorMassageHandler.SetTowerError("not enough scrap");
+        }
+    }
+    public void SetUpgradeState(UpgradeHandler upgradeHandler)
+    {
+        upgradeHandler.UpdateUpgradeStatus(towerController, rangeUpgradeCount, firerateUpgradeCount, damageUpgradeCount, maxAmmunitionUpgradeCount, autoRefillActive);
+    }
+    public int AmmunitonRefillCost()
+    {
+        int refillCost = Mathf.RoundToInt((maxAmmunition - ammunition) * ammunitionPrice);
+        if (refillCost < 1)
+        {
+            return 1;
+        }
+        else
+        {
+            return refillCost;
+        }
+    }
+    void Start()
+    {
+        ammunition = maxAmmunition;
+        towerController = gameObject.GetComponent<TowerController>();
+        GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
+        towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
+    }
+    void Update()
+    {
+        if (PlayerControls.ammunitionDisplayed)
+        {
+            ammunitionDisplayer.SetActive(true);
+            ammunitionDisplay.fillAmount = ammunition / maxAmmunition;
+        }
+        if (!PlayerControls.ammunitionDisplayed)
+        {
+            ammunitionDisplayer.SetActive(false);
+        }
+        if (ammunition < 1)
+        {
+            ammunitionEmptyDisplayer.SetActive(true);
+            return;
+        }
+        ammunitionEmptyDisplayer.SetActive(false);
+        fireCountdown -= Time.deltaTime;
+        if (Target != null)
+        {
+            targetingLead = (Target.position.z / zLeadDivisor) + ((Target.position.y - transform.position.y) / yLeadDivisor);
+            Vector3 dir = new Vector3(Target.position.x - targetingLead, Target.position.y, Target.position.z) - transform.position;
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            qRotation = Quaternion.Lerp(qRotation, lookRotation, Time.deltaTime * turnSpeed);
+            Vector3 realRotation = qRotation.eulerAngles;
+            Base.rotation = Quaternion.Euler(0f, realRotation.y - 90, 0f);
+            Guns.localRotation = Quaternion.Euler(0f, 0f, -realRotation.x);
+
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                ammunition = ammunition - 1;
+                fireCountdown = 1f / fireRate;
+            }
         }
     }
     void UpdateTarget()
@@ -101,43 +161,7 @@ public class TowerController : MonoBehaviour
             SearchNearestTarget(ref shortestDistance, ref nearestEnemy);
         }
     }
-    void Update()
-    {
-        if (PlayerControls.ammunitionDisplayed)
-        {
-            ammunitionDisplayer.SetActive(true);
-            ammunitionDisplay.fillAmount = ammunition / maxAmmunition;
-        }
-        if (!PlayerControls.ammunitionDisplayed)
-        {
-            ammunitionDisplayer.SetActive(false);
-        }
-        if (ammunition < 1)
-        {
-            ammunitionEmptyDisplayer.SetActive(true);
-            return;
-        }
-        ammunitionEmptyDisplayer.SetActive(false);
-        fireCountdown -= Time.deltaTime;
-        if (Target != null)
-        {
-            targetingLead = (Target.position.z / zLeadDivisor) + ((Target.position.y - transform.position.y) / yLeadDivisor);
-            Vector3 dir = new Vector3(Target.position.x - targetingLead, Target.position.y, Target.position.z) - transform.position;
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
-            qRotation = Quaternion.Lerp(qRotation, lookRotation, Time.deltaTime * turnSpeed);
-            Vector3 realRotation = qRotation.eulerAngles;
-            Base.rotation = Quaternion.Euler(0f, realRotation.y - 90, 0f);
-            Guns.localRotation = Quaternion.Euler(0f, 0f, -realRotation.x);
-
-            if (fireCountdown <= 0f)
-            {
-                Shoot();
-                ammunition = ammunition - 1;
-                fireCountdown = 1f / fireRate;
-            }
-        }
-    }
-    private void SearchNearestTarget(ref float shortestDistance, ref GameObject nearestEnemy)
+    void SearchNearestTarget(ref float shortestDistance, ref GameObject nearestEnemy)
     {
         foreach (GameObject enemy in enemies)
         {
@@ -214,17 +238,5 @@ public class TowerController : MonoBehaviour
             return "Biplane(Clone)";
         }
         else return "";
-    }
-    public int AmmunitonRefillCost()
-    {
-        int refillCost = Mathf.RoundToInt((maxAmmunition - ammunition) * ammunitionPrice);
-        if (refillCost < 1)
-        {
-            return 1;
-        }
-        else
-        {
-            return refillCost;
-        }
     }
 }

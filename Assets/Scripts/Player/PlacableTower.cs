@@ -16,23 +16,39 @@ public class PlacableTower : MonoBehaviour
     bool canvasActive = false;
 
     TowerErrorMassageHandler towerErrorMassageHandler;
+    UpgradeMenuStateHandler upgradeMenuStateHandler;
+    TowerController towerController;
     Transform Player;
 
-    private void Start()
+    public void SetCanvasActive()
+    {
+        canvasActive = true;
+    }
+    public void SetUpgradeMenuActive()
+    {
+        UpgradeHandler upgradeHandler = upgradeMenuStateHandler.SetState(true);
+        towerController.SetUpgradeState(upgradeHandler);
+    }
+    void Start()
     {
         TowerCCount = 0;
         EnvironmentCCount = 0;
+
+        towerController = gameObject.GetComponent<TowerController>();
         GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
         Player = playerGameObject.GetComponent<Transform>();
         GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
         towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
-        InvokeRepeating("AutoDeactivateCanvas", 1, 2); //deactivates Canvas every 2 sec if player is not nearby
+        GameObject upgradeCanvasHolder = GameObject.FindGameObjectWithTag("UpgradeMenuHolder");
+        upgradeMenuStateHandler = upgradeCanvasHolder.GetComponent<UpgradeMenuStateHandler>();
+
+        InvokeRepeating("AutoDeactivateCanvas", 1, 2); //controlls every 2 secs that canvases are not active while player is away
     }
-    private void Update()
+    void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {
-            towerCanvas.SetActive(false);
+            DisableCanvases();
         }
     }
     void OnTriggerEnter (Collider c)
@@ -62,7 +78,7 @@ public class PlacableTower : MonoBehaviour
             EnvironmentCCount = hittingEnvironment.Count;
         }
     }
-    private void OnMouseDown()
+    void OnMouseDown()
     {
         if (PlayerNearby() && canvasActive)
         {
@@ -72,15 +88,24 @@ public class PlacableTower : MonoBehaviour
         {
             towerErrorMassageHandler.SetTowerError("player to far away");
         }
-        
     }
-    private void AutoDeactivateCanvas() //deactivates Canvas every 2 sec if player is not nearby
+    void AutoDeactivateCanvas() //controlls every 2 secs that canvases are not active while player is away
     {
-        if (!PlayerNearby())
+        if (!towerCanvas.activeSelf)
         {
-            towerCanvas.SetActive(false);
+            return;
+        }
+        else if (!PlayerNearby())
+        {
+            DisableCanvases();
         }
     }
+    void DisableCanvases()
+    {
+        towerCanvas.SetActive(false);
+        upgradeMenuStateHandler.SetState(false);
+        Debug.Log("colsed Canvases");
+    }//disables both canvases if called
     bool PlayerNearby()
     {
         if (transform.position.y - irregularityCompensation < Player.position.y && Player.position.y < transform.position.y + irregularityCompensation)
@@ -98,11 +123,7 @@ public class PlacableTower : MonoBehaviour
         {
             return false;
         }
-    }
-    public void SetCanvasActive()
-    {
-        canvasActive = true;
-    }
+    }//checks if player is near enough to interact
 }
 
 
