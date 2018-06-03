@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class PlayerControls : MonoBehaviour
 {
     public static bool buildingButtons = false;
-    public static bool amunitionDisplayed = true;
+    public static bool ammunitionDisplayed = true;
 
     [SerializeField] float speed = 10.0f;
     [SerializeField] float turnSpeed = 2f;
@@ -67,13 +67,13 @@ public class PlayerControls : MonoBehaviour
             {
                 TogglePause();
             }
-            if (Input.GetKeyDown(KeyCode.M))
+            if (Input.GetKeyDown(KeyCode.R))
             {
-                amunitionDisplayed = !amunitionDisplayed;
+                ammunitionDisplayed = !ammunitionDisplayed;
             }
             if (controllsEnabled)
             {
-                if (Input.GetKeyDown("b"))
+                if (Input.GetKeyDown(KeyCode.Q))
                 {
                     buildingButtons = !buildingButtons;
                     buildingButtonDisplay.SetActive(buildingButtons);

@@ -15,23 +15,24 @@ public class TowerController : MonoBehaviour
     [SerializeField] Transform FirePoint;
     [SerializeField] GameObject Shell;
     [Header("Canvas Objects")]
-    [SerializeField] GameObject amunitionEmptyDisplayer;
-    [SerializeField] GameObject amunitionDisplayer;
-    [SerializeField] Image amunitionDisplay;
+    [SerializeField] GameObject ammunitionEmptyDisplayer;
+    [SerializeField] GameObject ammunitionDisplayer;
+    [SerializeField] Image ammunitionDisplay;
     [SerializeField] Toggle targetFocusBig;
     [SerializeField] Toggle targetFocusSmall;
 
     [Header ("Atributes")]
     [SerializeField] int range;
-    [SerializeField] float maxAmunition;
+    [SerializeField] float maxAmmunition;
     [SerializeField] float fireRate;
     [SerializeField] float turnSpeed = 1f;
-    [SerializeField] float amunitionPrice;
+    [SerializeField] float ammunitionPrice;
 
-    [SerializeField] float amunition;
+    float ammunition;
     float targetingLead = 0.5f;
     float fireCountdown = 0f;
-    
+
+    TowerErrorMassageHandler towerErrorMassageHandler;
     Vector3 targetingRotation;
     Quaternion qRotation;
     GameObject[] enemies;
@@ -39,7 +40,9 @@ public class TowerController : MonoBehaviour
 
     void Start()
     {
-        amunition = maxAmunition;
+        ammunition = maxAmmunition;
+        GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
+        towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
     }
     public void SetTowerActiv()
     {
@@ -47,15 +50,19 @@ public class TowerController : MonoBehaviour
     }
     public void RefillAmunition()
     {
-        if (ScrapManager.scrapCount >= Mathf.RoundToInt((maxAmunition - amunition) * amunitionPrice))
+        if (ScrapManager.scrapCount >= AmmunitonRefillCost())
         {
-            ScrapManager.scrapCount = ScrapManager.scrapCount - Mathf.RoundToInt((maxAmunition - amunition) * amunitionPrice);
-            amunition = maxAmunition;
+            ScrapManager.scrapCount = ScrapManager.scrapCount - AmmunitonRefillCost();
+            ammunition = maxAmmunition;
+        }
+        else
+        {
+            towerErrorMassageHandler.SetTowerError("not enough scrap");
         }
     }
     void UpdateTarget()
     {
-        if (amunition < 1)
+        if (ammunition < 1)
         {
             return;
         }
@@ -96,21 +103,21 @@ public class TowerController : MonoBehaviour
     }
     void Update()
     {
-        if (PlayerControls.amunitionDisplayed)
+        if (PlayerControls.ammunitionDisplayed)
         {
-            amunitionDisplayer.SetActive(true);
-            amunitionDisplay.fillAmount = amunition / maxAmunition;
+            ammunitionDisplayer.SetActive(true);
+            ammunitionDisplay.fillAmount = ammunition / maxAmmunition;
         }
-        if (!PlayerControls.amunitionDisplayed)
+        if (!PlayerControls.ammunitionDisplayed)
         {
-            amunitionDisplayer.SetActive(false);
+            ammunitionDisplayer.SetActive(false);
         }
-        if (amunition < 1)
+        if (ammunition < 1)
         {
-            amunitionEmptyDisplayer.SetActive(true);
+            ammunitionEmptyDisplayer.SetActive(true);
             return;
         }
-        amunitionEmptyDisplayer.SetActive(false);
+        ammunitionEmptyDisplayer.SetActive(false);
         fireCountdown -= Time.deltaTime;
         if (Target != null)
         {
@@ -125,7 +132,7 @@ public class TowerController : MonoBehaviour
             if (fireCountdown <= 0f)
             {
                 Shoot();
-                amunition = amunition - 1;
+                ammunition = ammunition - 1;
                 fireCountdown = 1f / fireRate;
             }
         }
@@ -207,5 +214,17 @@ public class TowerController : MonoBehaviour
             return "Biplane(Clone)";
         }
         else return "";
+    }
+    public int AmmunitonRefillCost()
+    {
+        int refillCost = Mathf.RoundToInt((maxAmmunition - ammunition) * ammunitionPrice);
+        if (refillCost < 1)
+        {
+            return 1;
+        }
+        else
+        {
+            return refillCost;
+        }
     }
 }

@@ -145,10 +145,10 @@ public class EnemySpawner : MonoBehaviour
             int enemyType = rnd.Next(0, availableEnemyTypes);
             int spawnlane = (enemyType < 3) ? rnd.Next(0, Mathf.Min(spawnLevels, spawnlevel)) : rnd.Next(spawnLevels - unobstructedLevels, spawnLevels);
 
-            if (cost(enemyType) <= wealth)
+            if (Cost(enemyType) <= wealth)
             {
                 typequeue[spawnlane].Add(enemyType);
-                wealth -= cost(enemyType);
+                wealth -= Cost(enemyType);
             }
         }
     }
@@ -215,7 +215,7 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private int cost(int type)
+    private int Cost(int type)
     {
         switch (type)
         {

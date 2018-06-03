@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlacableTower : MonoBehaviour
 {
@@ -13,14 +12,11 @@ public class PlacableTower : MonoBehaviour
     [SerializeField] GameObject towerCanvas;
 
     int platformWidth = 5;
-    float errorDisplayTime = 3;
     float irregularityCompensation = 0.1f;
     bool canvasActive = false;
 
-    float errorDisplayStartTime;
-
+    TowerErrorMassageHandler towerErrorMassageHandler;
     Transform Player;
-    Text TowerErrorText;
 
     private void Start()
     {
@@ -29,7 +25,7 @@ public class PlacableTower : MonoBehaviour
         GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
         Player = playerGameObject.GetComponent<Transform>();
         GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
-        TowerErrorText = towerErrorTextGameObject.GetComponent<Text>();
+        towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
         InvokeRepeating("AutoDeactivateCanvas", 1, 2); //deactivates Canvas every 2 sec if player is not nearby
     }
     private void Update()
@@ -37,10 +33,6 @@ public class PlacableTower : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             towerCanvas.SetActive(false);
-        }
-        if (errorDisplayStartTime + errorDisplayTime < Time.time)
-        {
-            TowerErrorText.text = "";
         }
     }
     void OnTriggerEnter (Collider c)
@@ -78,8 +70,7 @@ public class PlacableTower : MonoBehaviour
         }
         else if (canvasActive)
         {
-            errorDisplayStartTime = Time.time;
-            TowerErrorText.text = "player to far away";
+            towerErrorMassageHandler.SetTowerError("player to far away");
         }
         
     }
