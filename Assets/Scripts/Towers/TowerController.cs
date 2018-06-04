@@ -24,23 +24,36 @@ public class TowerController : MonoBehaviour
     [Header("Canvas Objects")]
     [SerializeField] GameObject ammunitionEmptyDisplayer;
     [SerializeField] GameObject ammunitionDisplayer;
+    [SerializeField] GameObject autoRefillDisplay;
     [SerializeField] Image ammunitionDisplay;
     [SerializeField] Toggle targetFocusBig;
     [SerializeField] Toggle targetFocusSmall;
 
     [Header ("Atributes")]
-    [SerializeField] int range;
-    [SerializeField] float maxAmmunition;
-    [SerializeField] float fireRate;
+    [SerializeField] int baseRange;
+    [SerializeField] float baseMaxAmmunition;
+    [SerializeField] float baseFireRate;
+    [SerializeField] float baseDamage;
     [SerializeField] float turnSpeed = 1f;
     [SerializeField] float ammunitionPrice;
+    [Header("UpgradeingStats")]
+    [SerializeField] int upgradeRange;
+    [SerializeField] float upgradeFirerate;
+    [SerializeField] float upgradeDamage;
+    [SerializeField] float upgradeMaxAmmunition;
 
     float ammunition;
     float targetingLead = 0.5f;
     float fireCountdown = 0f;
 
+    int range;
+    float fireRate;
+    float damage;
+    float maxAmmunition;
+
     TowerErrorMassageHandler towerErrorMassageHandler;
     TowerController towerController;
+    PlacableTower placableTower;
     Vector3 targetingRotation;
     Quaternion qRotation;
     GameObject[] enemies;
@@ -49,6 +62,26 @@ public class TowerController : MonoBehaviour
     public void SetTowerActiv()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
+    }
+    public string SetTowerInfo()
+    {
+        if (autoRefillActive)
+        {
+            return ("Range: " + range + "                         " +
+               "Fire Rate: " + fireRate + "                      " +
+               "Damage: " + damage + "                         " +
+               "max Ammunition: " + maxAmmunition + "                 " +
+               "auto refill enabled");
+        }
+        else
+        {
+            return ("Range: " + range + "                         " +
+               "Fire Rate: " + fireRate + "                      " +
+               "Damage: " + damage + "                         " +
+               "max Ammunition: " + maxAmmunition + "                 " +
+               "auto refill disabled");
+        }
+       
     }
     public void RefillAmunition()
     {
@@ -64,7 +97,7 @@ public class TowerController : MonoBehaviour
     }
     public void SetUpgradeState(UpgradeHandler upgradeHandler, TowerMenuController towerMenuController)
     {
-        upgradeHandler.UpdateUpgradeStatus(towerController,towerMenuController, gameObject.name);
+        upgradeHandler.UpdateUpgradeStatus(towerController, towerMenuController, upgradeRange, upgradeFirerate, upgradeDamage, upgradeMaxAmmunition);
     }
     public int AmmunitonRefillCost()
     {
@@ -80,10 +113,12 @@ public class TowerController : MonoBehaviour
     }
     void Start()
     {
-        ammunition = maxAmmunition;
+        ammunition = baseMaxAmmunition;
         towerController = gameObject.GetComponent<TowerController>();
+        placableTower = gameObject.GetComponent<PlacableTower>();
         GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
         towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
+        InvokeRepeating("UpdateStats", 1, 1);
     }
     void Update()
     {
@@ -91,6 +126,11 @@ public class TowerController : MonoBehaviour
         {
             ammunitionDisplayer.SetActive(true);
             ammunitionDisplay.fillAmount = ammunition / maxAmmunition;
+            if (autoRefillActive)
+            {
+                autoRefillDisplay.SetActive(true);
+            }
+            else autoRefillDisplay.SetActive(false);
         }
         if (!PlayerControls.ammunitionDisplayed)
         {
@@ -98,8 +138,24 @@ public class TowerController : MonoBehaviour
         }
         if (ammunition < 1)
         {
-            ammunitionEmptyDisplayer.SetActive(true);
-            return;
+            if (autoRefillActive)
+            {
+                if (ScrapManager.scrapCount >= AmmunitonRefillCost())
+                {
+                    ScrapManager.scrapCount = ScrapManager.scrapCount - AmmunitonRefillCost();
+                    ammunition = maxAmmunition;
+                }
+                else
+                {
+                    ammunitionEmptyDisplayer.SetActive(true);
+                    return;
+                }
+            }
+            else
+            {
+                ammunitionEmptyDisplayer.SetActive(true);
+                return;
+            }
         }
         ammunitionEmptyDisplayer.SetActive(false);
         fireCountdown -= Time.deltaTime;
@@ -120,6 +176,13 @@ public class TowerController : MonoBehaviour
                 fireCountdown = 1f / fireRate;
             }
         }
+    }
+    void UpdateStats()
+    {
+        range = baseRange + (upgradeRange * rangeUpgradeCount);
+        fireRate = baseFireRate + (upgradeFirerate * firerateUpgradeCount);
+        damage = baseDamage + (upgradeDamage * damageUpgradeCount);
+        maxAmmunition = baseMaxAmmunition + (upgradeMaxAmmunition * maxAmmunitionUpgradeCount);
     }
     void UpdateTarget()
     {
@@ -187,6 +250,7 @@ public class TowerController : MonoBehaviour
         if (Shell.name == "Rocket")
         {
             GameObject RocketGo = (GameObject)Instantiate(Shell, FirePoint.position, FirePoint.rotation);
+            RocketGo.name = damage.ToString();
             RocketController Rocket = RocketGo.GetComponent<RocketController>();
 
             if (Rocket != null)
@@ -196,7 +260,8 @@ public class TowerController : MonoBehaviour
         }
         else
         {
-            Instantiate(Shell, FirePoint.position, FirePoint.rotation);
+            GameObject currentShell = Instantiate(Shell, FirePoint.position, FirePoint.rotation);
+            currentShell.name = damage.ToString();
         }
     }
     void OnDrawGizmosSelected()

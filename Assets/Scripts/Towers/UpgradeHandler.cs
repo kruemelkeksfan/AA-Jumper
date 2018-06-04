@@ -16,6 +16,12 @@ public class UpgradeHandler : MonoBehaviour {
     [SerializeField] int damageUpgradeBaseCost;
     [SerializeField] int maxAmmunitionUpgradeBaseCost;
     [SerializeField] int autoRefillUpgradeCost;
+    [Header("Buttons")]
+    [SerializeField] GameObject rangeButton;
+    [SerializeField] GameObject firerateButton;
+    [SerializeField] GameObject damageButton;
+    [SerializeField] GameObject maxAmmunitionButton;
+    [SerializeField] GameObject autoRefillButton;
 
     string towerNameRef;
 
@@ -23,38 +29,23 @@ public class UpgradeHandler : MonoBehaviour {
     TowerMenuController towerMenuController;
     TowerController towerController;
 
-    public void UpdateUpgradeStatus(TowerController towerControllerRef,TowerMenuController towerMenuControllerRef, string towerName) // updates upgrade display 
+    InfoUpgradeCanvasDisplay rangeUpgradeInfo;
+    InfoUpgradeCanvasDisplay firerateUpgradeInfo;
+    InfoUpgradeCanvasDisplay damageUpgradeInfo;
+    InfoUpgradeCanvasDisplay maxAmmunitionUpgradeInfo;
+    InfoUpgradeCanvasDisplay autoRefillUpgradeInfo;
+
+    public void UpdateUpgradeStatus(TowerController towerControllerRef,TowerMenuController towerMenuControllerRef, int upgradeRange, float upgradeFirerate, float upgradeDamage, float upgradeMaxAmmunition) // updates upgrade display 
     {
         towerController = towerControllerRef;
         towerMenuController = towerMenuControllerRef;
-        switch (towerName)
-        {
-            case "Machine Cannon(25)(Clone)":
-                {
-                    towerNameRef = "MC";
-                    break;
-                }
-            case "Quadruple Machine Cannon(100)(Clone)":
-                {
-                    towerNameRef = "QMC";
-                    break;
-                }
-            case "Heavy Anti Air Artillery(125)(Clone)":
-                {
-                    towerNameRef = "HAAA";
-                    break;
-                }
-            case "Rocket Launcher(75)(Clone)":
-                {
-                    towerNameRef = "RL";
-                    break;
-                }
-            default:
-                {
-                    Debug.Log("no Name send to UpgradeMenu");
-                    break;
-                }
-        }
+
+        rangeUpgradeInfo.SetUpgradeInfo((" + " + upgradeRange + " Range"), ((rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1)) + " Scrap"));
+        firerateUpgradeInfo.SetUpgradeInfo((" + " + upgradeFirerate + " Fire Rate"), ((firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1)) + " Scrap"));
+        damageUpgradeInfo.SetUpgradeInfo((" + " + upgradeDamage + " Damage"), ((damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1)) + " Scrap"));
+        maxAmmunitionUpgradeInfo.SetUpgradeInfo((" + " + upgradeMaxAmmunition + " max Ammunition"), ((maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1)) + " Scrap"));
+        autoRefillUpgradeInfo.SetUpgradeInfo((" automatic ammunition refill"), (autoRefillUpgradeCost + " Scrap"));
+
         for (int I = 0; I < towerController.rangeUpgradeCount; ++I)
         {
             activeUpgradesDisplayerRange[I].SetActive(true);
@@ -217,5 +208,11 @@ public class UpgradeHandler : MonoBehaviour {
     void Start ()
     {
         towerErrorMassageHandler = towerErrorDisplay.GetComponent<TowerErrorMassageHandler>();
-	}
+        rangeUpgradeInfo = rangeButton.GetComponent<InfoUpgradeCanvasDisplay>();
+        firerateUpgradeInfo = firerateButton.GetComponent<InfoUpgradeCanvasDisplay>();
+        damageUpgradeInfo = damageButton.GetComponent<InfoUpgradeCanvasDisplay>();
+        maxAmmunitionUpgradeInfo = maxAmmunitionButton.GetComponent<InfoUpgradeCanvasDisplay>();
+        autoRefillUpgradeInfo = autoRefillButton.GetComponent<InfoUpgradeCanvasDisplay>();
+        gameObject.SetActive(false);
+    }
 }
