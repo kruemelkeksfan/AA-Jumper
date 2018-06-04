@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class TowerMenuController : MonoBehaviour
 {
+    public int towerCost;
+
     [SerializeField] GameObject Tower;
-    [SerializeField] int towerCost;
 
 	public void SellTower ()
     {

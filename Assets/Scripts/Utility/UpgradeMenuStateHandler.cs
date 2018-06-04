@@ -18,6 +18,11 @@ public class UpgradeMenuStateHandler : MonoBehaviour
         {
             return upgradeHandler;
         }
-        else return null;
+        else
+        {
+            upgradeHandler.DisableActiveUpgradeDisplays();
+            return null;
+        }
+        
     }
 }

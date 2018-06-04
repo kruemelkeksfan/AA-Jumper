@@ -5,6 +5,13 @@ using UnityEngine.UI;
 
 public class TowerController : MonoBehaviour
 {
+    
+    [HideInInspector] public int rangeUpgradeCount = 0;
+    [HideInInspector] public int firerateUpgradeCount = 0;
+    [HideInInspector] public int damageUpgradeCount = 0;
+    [HideInInspector] public int maxAmmunitionUpgradeCount = 0;
+    [HideInInspector] public bool autoRefillActive = false;
+
     [Header ("Unity Setup")]
     [SerializeField] float yLeadDivisor;
     [SerializeField] float zLeadDivisor;
@@ -32,12 +39,6 @@ public class TowerController : MonoBehaviour
     float targetingLead = 0.5f;
     float fireCountdown = 0f;
 
-    int rangeUpgradeCount = 0;
-    int firerateUpgradeCount = 0;
-    int damageUpgradeCount = 0;
-    int maxAmmunitionUpgradeCount = 0;
-    bool autoRefillActive = false;
-
     TowerErrorMassageHandler towerErrorMassageHandler;
     TowerController towerController;
     Vector3 targetingRotation;
@@ -61,9 +62,9 @@ public class TowerController : MonoBehaviour
             towerErrorMassageHandler.SetTowerError("not enough scrap");
         }
     }
-    public void SetUpgradeState(UpgradeHandler upgradeHandler)
+    public void SetUpgradeState(UpgradeHandler upgradeHandler, TowerMenuController towerMenuController)
     {
-        upgradeHandler.UpdateUpgradeStatus(towerController, rangeUpgradeCount, firerateUpgradeCount, damageUpgradeCount, maxAmmunitionUpgradeCount, autoRefillActive);
+        upgradeHandler.UpdateUpgradeStatus(towerController,towerMenuController, gameObject.name);
     }
     public int AmmunitonRefillCost()
     {

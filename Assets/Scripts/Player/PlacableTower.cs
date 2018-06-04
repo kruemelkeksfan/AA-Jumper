@@ -18,6 +18,7 @@ public class PlacableTower : MonoBehaviour
     TowerErrorMassageHandler towerErrorMassageHandler;
     UpgradeMenuStateHandler upgradeMenuStateHandler;
     TowerController towerController;
+    TowerMenuController towerMenuController;
     Transform Player;
 
     public void SetCanvasActive()
@@ -27,7 +28,7 @@ public class PlacableTower : MonoBehaviour
     public void SetUpgradeMenuActive()
     {
         UpgradeHandler upgradeHandler = upgradeMenuStateHandler.SetState(true);
-        towerController.SetUpgradeState(upgradeHandler);
+        towerController.SetUpgradeState(upgradeHandler, towerMenuController);
     }
     void Start()
     {
@@ -35,6 +36,7 @@ public class PlacableTower : MonoBehaviour
         EnvironmentCCount = 0;
 
         towerController = gameObject.GetComponent<TowerController>();
+        towerMenuController = towerCanvas.GetComponent<TowerMenuController>();
         GameObject playerGameObject = GameObject.FindGameObjectWithTag("Player");
         Player = playerGameObject.GetComponent<Transform>();
         GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
