@@ -143,6 +143,5 @@ public class UpgradeHandler : MonoBehaviour {
     {
         upgradeDisplayHandler = gameObject.GetComponent<UpgradeDisplayHandler>();
         towerErrorMassageHandler = towerErrorDisplay.GetComponent<TowerErrorMassageHandler>();
-        gameObject.SetActive(false);
     }
 }

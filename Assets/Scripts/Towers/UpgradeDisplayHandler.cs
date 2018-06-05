@@ -61,7 +61,6 @@ public class UpgradeDisplayHandler : MonoBehaviour
         UpdateMaxAmmunitionDisplay();
         UpdateAutoRefillDisplay();
     }
-
     public void UpdateRangeDisplay()
     {
         if (towerController == null) { return; }
@@ -139,7 +138,6 @@ public class UpgradeDisplayHandler : MonoBehaviour
             autoRefillUpgradeInfo.SetUpgradeInfo("Tower gets automatic ammunition refill for " + autoRefillUpgradeCost + " Scrap");
         }
     }
-
     public void DisableActiveUpgradeDisplays()
     {
         foreach (GameObject upgradeDisplay in activeUpgradesDisplayerRange)
@@ -161,10 +159,6 @@ public class UpgradeDisplayHandler : MonoBehaviour
         activeUpgradeDisplayerAutoRefill.SetActive(false);
         Debug.Log("Reset upgrade active Displayer");
     }
-    public void UpdateUpgradeInfo()
-    {
-
-    }
     void Start()
     {
         upgradeHandler = gameObject.GetComponent<UpgradeHandler>();
@@ -173,5 +167,6 @@ public class UpgradeDisplayHandler : MonoBehaviour
         damageUpgradeInfo = damageButton.GetComponent<InfoUpgradeCanvasDisplay>();
         maxAmmunitionUpgradeInfo = maxAmmunitionButton.GetComponent<InfoUpgradeCanvasDisplay>();
         autoRefillUpgradeInfo = autoRefillButton.GetComponent<InfoUpgradeCanvasDisplay>();
+        gameObject.SetActive(false);
     }
 }
