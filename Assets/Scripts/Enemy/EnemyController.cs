@@ -75,7 +75,7 @@ public class EnemyController : MonoBehaviour
         if (other.tag == "Shell")
         {
             Destroy(other.gameObject);
-            int sDamage = int.Parse(other.name);
+            float sDamage = float.Parse(other.name);
             enemyHealth -= sDamage;
         }
         if (other.tag == "Enemy" && transform.position.x > other.transform.position.x)
