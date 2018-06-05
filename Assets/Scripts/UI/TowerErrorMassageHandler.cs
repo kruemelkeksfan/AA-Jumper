@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class TowerErrorMassageHandler : MonoBehaviour {
 
+    public bool towerCanvasActive;
+
     [SerializeField] float errorDisplayTime = 3;
     [SerializeField] Text TowerErrorText;
 

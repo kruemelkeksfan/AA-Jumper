@@ -5,22 +5,22 @@ using UnityEngine;
 public class UpgradeMenuStateHandler : MonoBehaviour
 {
     [SerializeField] GameObject upgradeMenu;
-    UpgradeHandler upgradeHandler;
+    UpgradeDisplayHandler upgradeDisplayHandler;
 
     private void Start()
     {
-        upgradeHandler = upgradeMenu.GetComponent<UpgradeHandler>();
+        upgradeDisplayHandler = upgradeMenu.GetComponent<UpgradeDisplayHandler>();
     }
-    public UpgradeHandler SetState(bool state)
+    public UpgradeDisplayHandler SetState(bool state)
     {
         upgradeMenu.SetActive(state);
         if (state)
         {
-            return upgradeHandler;
+            return upgradeDisplayHandler;
         }
         else
         {
-            upgradeHandler.DisableActiveUpgradeDisplays();
+            upgradeDisplayHandler.DisableActiveUpgradeDisplays();
             return null;
         }
         

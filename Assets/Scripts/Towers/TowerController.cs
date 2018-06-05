@@ -53,7 +53,6 @@ public class TowerController : MonoBehaviour
 
     TowerErrorMassageHandler towerErrorMassageHandler;
     TowerController towerController;
-    PlacableTower placableTower;
     Vector3 targetingRotation;
     Quaternion qRotation;
     GameObject[] enemies;
@@ -67,19 +66,19 @@ public class TowerController : MonoBehaviour
     {
         if (autoRefillActive)
         {
-            return ("Range: " + range + "                         " +
-               "Fire Rate: " + fireRate + "                      " +
-               "Damage: " + damage + "                         " +
-               "max Ammunition: " + maxAmmunition + "                 " +
-               "auto refill enabled");
+            return ("Range: " + range + "                                        " +
+                    "Fire Rate: " + fireRate + "                                 " +
+                    "Damage: " + damage + "                                      " +
+                    "max Ammunition: " + maxAmmunition + "                       " +
+                    "auto refill enabled");
         }
         else
         {
-            return ("Range: " + range + "                         " +
-               "Fire Rate: " + fireRate + "                      " +
-               "Damage: " + damage + "                         " +
-               "max Ammunition: " + maxAmmunition + "                 " +
-               "auto refill disabled");
+            return ("Range: " + range + "                                        " +
+                    "Fire Rate: " + fireRate + "                                 " +
+                    "Damage: " + damage + "                                      " +
+                    "max Ammunition: " + maxAmmunition + "                       " +
+                    "auto refill disabled");
         }
        
     }
@@ -95,9 +94,9 @@ public class TowerController : MonoBehaviour
             towerErrorMassageHandler.SetTowerError("not enough scrap");
         }
     }
-    public void SetUpgradeState(UpgradeHandler upgradeHandler, TowerMenuController towerMenuController)
+    public void SetUpgradeState(UpgradeDisplayHandler upgradeDisplayHandler, TowerMenuController towerMenuController)
     {
-        upgradeHandler.UpdateUpgradeStatus(towerController, towerMenuController, upgradeRange, upgradeFirerate, upgradeDamage, upgradeMaxAmmunition);
+        upgradeDisplayHandler.UpdateUpgradeStatus(towerController, towerMenuController, upgradeRange, upgradeFirerate, upgradeDamage, upgradeMaxAmmunition);
     }
     public int AmmunitonRefillCost()
     {
@@ -115,7 +114,6 @@ public class TowerController : MonoBehaviour
     {
         ammunition = baseMaxAmmunition;
         towerController = gameObject.GetComponent<TowerController>();
-        placableTower = gameObject.GetComponent<PlacableTower>();
         GameObject towerErrorTextGameObject = GameObject.FindGameObjectWithTag("TowerErrorText");
         towerErrorMassageHandler = towerErrorTextGameObject.GetComponent<TowerErrorMassageHandler>();
         InvokeRepeating("UpdateStats", 1, 1);

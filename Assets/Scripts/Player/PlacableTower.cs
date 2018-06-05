@@ -13,7 +13,7 @@ public class PlacableTower : MonoBehaviour
 
     int platformWidth = 5;
     float irregularityCompensation = 0.1f;
-    bool canvasActive = false;
+    bool canvasvailable = false;
 
     TowerErrorMassageHandler towerErrorMassageHandler;
     UpgradeMenuStateHandler upgradeMenuStateHandler;
@@ -21,14 +21,14 @@ public class PlacableTower : MonoBehaviour
     TowerMenuController towerMenuController;
     Transform Player;
 
-    public void SetCanvasActive()
+    public void SetCanvasAvailable()
     {
-        canvasActive = true;
+        canvasvailable = true;
     }
     public void SetUpgradeMenuActive()
     {
-        UpgradeHandler upgradeHandler = upgradeMenuStateHandler.SetState(true);
-        towerController.SetUpgradeState(upgradeHandler, towerMenuController);
+        UpgradeDisplayHandler upgradeDisplayHandler = upgradeMenuStateHandler.SetState(true);
+        towerController.SetUpgradeState(upgradeDisplayHandler, towerMenuController);
     }
     void Start()
     {
@@ -82,14 +82,20 @@ public class PlacableTower : MonoBehaviour
     }
     void OnMouseDown()
     {
-        if (PlayerNearby() && canvasActive)
+        if (PlayerNearby() && canvasvailable && !towerErrorMassageHandler.towerCanvasActive)
         {
             towerCanvas.SetActive(true);
+            towerErrorMassageHandler.towerCanvasActive = true;
         }
-        else if (canvasActive)
+        else if (canvasvailable && !towerErrorMassageHandler.towerCanvasActive)
         {
             towerErrorMassageHandler.SetTowerError("player to far away");
         }
+        else if (canvasvailable && towerErrorMassageHandler.towerCanvasActive)
+        {
+            towerErrorMassageHandler.SetTowerError("Can´t open another Tower menu");
+        }
+
     }
     void AutoDeactivateCanvas() //controlls every 2 secs that canvases are not active while player is away
     {
@@ -106,6 +112,7 @@ public class PlacableTower : MonoBehaviour
     {
         towerCanvas.SetActive(false);
         upgradeMenuStateHandler.SetState(false);
+        towerErrorMassageHandler.towerCanvasActive = false;
         Debug.Log("colsed Canvases");
     }//disables both canvases if called
     bool PlayerNearby()

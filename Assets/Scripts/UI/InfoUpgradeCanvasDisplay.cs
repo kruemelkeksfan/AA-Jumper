@@ -8,19 +8,21 @@ public class InfoUpgradeCanvasDisplay : MonoBehaviour, IPointerEnterHandler, IPo
 {
     [SerializeField] Text infoText;
 
-    string towerStatGain;
-    string upgradeCost;
-    
+    string info;
 
-    public void SetUpgradeInfo(string towerStatGainRef, string upgradeCostRef)
+    public void SetUpgradeInfo(string infoRef)
     {
-        towerStatGain = towerStatGainRef;
-        upgradeCost = upgradeCostRef;
+        info = infoRef;
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        infoText.text = "Tower gets " + towerStatGain + " for " + upgradeCost;
+        infoText.text = info;
+    }
+
+    public void OnClick()
+    {
+        infoText.text = info;
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)

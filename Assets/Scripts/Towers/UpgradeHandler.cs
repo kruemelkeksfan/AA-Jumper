@@ -5,116 +5,49 @@ using UnityEngine;
 public class UpgradeHandler : MonoBehaviour {
 
     [SerializeField] GameObject towerErrorDisplay;
-    [SerializeField] GameObject[] activeUpgradesDisplayerRange;
-    [SerializeField] GameObject[] activeUpgradesDisplayerFirerate;
-    [SerializeField] GameObject[] activeUpgradesDisplayerDamage;
-    [SerializeField] GameObject[] activeUpgradesDisplayerMaxAmmunition;
-    [SerializeField] GameObject activeUpgradeDisplayerAutoRefill;
     [Header("Upgrade Base Cost")]
     [SerializeField] int rangeUpgradeBaseCost;
     [SerializeField] int firerateUpgradeBaseCost;
     [SerializeField] int damageUpgradeBaseCost;
     [SerializeField] int maxAmmunitionUpgradeBaseCost;
     [SerializeField] int autoRefillUpgradeCost;
-    [Header("Buttons")]
-    [SerializeField] GameObject rangeButton;
-    [SerializeField] GameObject firerateButton;
-    [SerializeField] GameObject damageButton;
-    [SerializeField] GameObject maxAmmunitionButton;
-    [SerializeField] GameObject autoRefillButton;
 
-    string towerNameRef;
-
-    int upgradeRange;
-    float upgradeFirerate;
-    float upgradeDamage;
-    float upgradeMaxAmmunition;
+    int maxRangeUpgrades;
+    int maxFirerateUpgrades;
+    int maxDamageUpgrades;
+    int maxMaxAmmunitionUpgrades;
 
     TowerErrorMassageHandler towerErrorMassageHandler;
+    UpgradeDisplayHandler upgradeDisplayHandler;
     TowerMenuController towerMenuController;
     TowerController towerController;
 
-    InfoUpgradeCanvasDisplay rangeUpgradeInfo;
-    InfoUpgradeCanvasDisplay firerateUpgradeInfo;
-    InfoUpgradeCanvasDisplay damageUpgradeInfo;
-    InfoUpgradeCanvasDisplay maxAmmunitionUpgradeInfo;
-    InfoUpgradeCanvasDisplay autoRefillUpgradeInfo;
-
-    public void UpdateUpgradeStatus(TowerController towerControllerRef,TowerMenuController towerMenuControllerRef, int upgradeRangeRef, float upgradeFirerateRef, float upgradeDamageRef, float upgradeMaxAmmunitionRef) // updates upgrade display 
+    public void UpdateUpgradeMenuData(TowerController towerControllerRef, TowerMenuController towerMenuControllerRef, int rangeDisplayerLength, int firerateDisplayerLength, int damageDisplayerLength, int maxAmmunitionDisplayerLength)
     {
         towerController = towerControllerRef;
         towerMenuController = towerMenuControllerRef;
 
-        upgradeRange = upgradeRangeRef;
-        upgradeFirerate = upgradeFirerateRef;
-        upgradeDamage = upgradeDamageRef;
-        upgradeMaxAmmunition = upgradeMaxAmmunitionRef;
+        maxRangeUpgrades = rangeDisplayerLength;
+        maxFirerateUpgrades = firerateDisplayerLength;
+        maxDamageUpgrades = damageDisplayerLength;
+        maxMaxAmmunitionUpgrades = maxAmmunitionDisplayerLength;
 
-        rangeUpgradeInfo.SetUpgradeInfo((" + " + upgradeRange + " Range"), ((rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1)) + " Scrap"));
-        firerateUpgradeInfo.SetUpgradeInfo((" + " + upgradeFirerate + " Fire Rate"), ((firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1)) + " Scrap"));
-        damageUpgradeInfo.SetUpgradeInfo((" + " + upgradeDamage + " Damage"), ((damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1)) + " Scrap"));
-        maxAmmunitionUpgradeInfo.SetUpgradeInfo((" + " + upgradeMaxAmmunition + " max Ammunition"), ((maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1)) + " Scrap"));
-        autoRefillUpgradeInfo.SetUpgradeInfo((" automatic ammunition refill"), (autoRefillUpgradeCost + " Scrap"));
-
-        for (int I = 0; I < towerController.rangeUpgradeCount; ++I)
-        {
-            activeUpgradesDisplayerRange[I].SetActive(true);
-        }
-        for (int I = 0; I < towerController.firerateUpgradeCount; ++I)
-        {
-            activeUpgradesDisplayerRange[I].SetActive(true);
-        }
-        for (int I = 0; I < towerController.damageUpgradeCount; ++I)
-        {
-            activeUpgradesDisplayerRange[I].SetActive(true);
-        }
-        for (int I = 0; I < towerController.maxAmmunitionUpgradeCount; ++I)
-        {
-            activeUpgradesDisplayerRange[I].SetActive(true);
-        }
-        if (towerController.autoRefillActive)
-        {
-            activeUpgradeDisplayerAutoRefill.SetActive(true);
-        }
-    }
-    public void DisableActiveUpgradeDisplays()
-    {
-        foreach (GameObject upgradeDisplay in activeUpgradesDisplayerRange)
-        {
-            upgradeDisplay.SetActive(false);
-        }
-        foreach (GameObject upgradeDisplay in activeUpgradesDisplayerFirerate)
-        {
-            upgradeDisplay.SetActive(false);
-        }
-        foreach (GameObject upgradeDisplay in activeUpgradesDisplayerDamage)
-        {
-            upgradeDisplay.SetActive(false);
-        }
-        foreach (GameObject upgradeDisplay in activeUpgradesDisplayerMaxAmmunition)
-        {
-            upgradeDisplay.SetActive(false);
-        }
-        activeUpgradeDisplayerAutoRefill.SetActive(false);
+        upgradeDisplayHandler.SetUpgradeInfo(rangeUpgradeBaseCost, firerateUpgradeBaseCost, damageUpgradeBaseCost, maxAmmunitionUpgradeBaseCost, autoRefillUpgradeCost);
     }
     public void RangeUpgrade()
     {
-        if (towerController.rangeUpgradeCount >= activeUpgradesDisplayerRange.Length)
+        if (towerController.rangeUpgradeCount >= maxRangeUpgrades)
         {
-            towerErrorMassageHandler.SetTowerError(towerController.rangeUpgradeCount + "/" + activeUpgradesDisplayerRange.Length + " Upgrades");
+            towerErrorMassageHandler.SetTowerError(towerController.rangeUpgradeCount + "/" + maxRangeUpgrades + " Upgrades");
         }
-        else if (towerController.rangeUpgradeCount < activeUpgradesDisplayerRange.Length)
+        else if (towerController.rangeUpgradeCount < maxRangeUpgrades)
         {
             if (ScrapManager.scrapCount >= rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1))
             {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1));
                 towerController.rangeUpgradeCount = towerController.rangeUpgradeCount + 1;
-                rangeUpgradeInfo.SetUpgradeInfo((" + " + upgradeRange + " Range"), ((rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1)) + " Scrap"));
-                for (int I = 0; I < towerController.rangeUpgradeCount; ++I)
-                {
-                    activeUpgradesDisplayerRange[I].SetActive(true);
-                }
+                upgradeDisplayHandler.UpdateRangeDisplay();
             }
             else
             {
@@ -124,22 +57,18 @@ public class UpgradeHandler : MonoBehaviour {
     }
     public void FirerateUpgrade()
     {
-        if (towerController.firerateUpgradeCount >= activeUpgradesDisplayerFirerate.Length)
+        if (towerController.firerateUpgradeCount >= maxFirerateUpgrades)
         {
-            towerErrorMassageHandler.SetTowerError(towerController.firerateUpgradeCount + "/" + activeUpgradesDisplayerFirerate.Length + " Upgrades");
+            towerErrorMassageHandler.SetTowerError(towerController.firerateUpgradeCount + "/" + maxFirerateUpgrades + " Upgrades");
         }
-        else if (towerController.firerateUpgradeCount < activeUpgradesDisplayerFirerate.Length)
+        else if (towerController.firerateUpgradeCount < maxFirerateUpgrades)
         {
             if (ScrapManager.scrapCount >= firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1))
             {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1));
                 towerController.firerateUpgradeCount = towerController.firerateUpgradeCount + 1;
-                firerateUpgradeInfo.SetUpgradeInfo((" + " + upgradeFirerate + " Fire Rate"), ((firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1)) + " Scrap"));
-                for (int I = 0; I < towerController.firerateUpgradeCount; ++I)
-                {
-                    activeUpgradesDisplayerFirerate[I].SetActive(true);
-                }
+                upgradeDisplayHandler.UpdateFirerateDisplay();
             }
             else
             {
@@ -149,22 +78,18 @@ public class UpgradeHandler : MonoBehaviour {
     }
     public void DamageUpgrade()
     {
-        if (towerController.damageUpgradeCount >= activeUpgradesDisplayerDamage.Length)
+        if (towerController.damageUpgradeCount >= maxDamageUpgrades)
         {
-            towerErrorMassageHandler.SetTowerError(towerController.damageUpgradeCount + " / " + activeUpgradesDisplayerDamage.Length + " Upgrades");
+            towerErrorMassageHandler.SetTowerError(towerController.damageUpgradeCount + " / " + maxDamageUpgrades + " Upgrades");
         }
-        else if (towerController.damageUpgradeCount < activeUpgradesDisplayerDamage.Length)
+        else if (towerController.damageUpgradeCount < maxDamageUpgrades)
         {
             if (ScrapManager.scrapCount >= damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1))
             {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1));
                 towerController.damageUpgradeCount = towerController.damageUpgradeCount + 1;
-                damageUpgradeInfo.SetUpgradeInfo((" + " + upgradeDamage + " Damage"), ((damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1)) + " Scrap"));
-                for (int I = 0; I < towerController.damageUpgradeCount; ++I)
-                {
-                    activeUpgradesDisplayerDamage[I].SetActive(true);
-                }
+                upgradeDisplayHandler.UpdateDamageDisplay();
             }
             else
             {
@@ -174,22 +99,18 @@ public class UpgradeHandler : MonoBehaviour {
     }
     public void MaxAmmunitionUpgrade()
     {
-        if (towerController.maxAmmunitionUpgradeCount >= activeUpgradesDisplayerMaxAmmunition.Length)
+        if (towerController.maxAmmunitionUpgradeCount >= maxMaxAmmunitionUpgrades)
         {
-            towerErrorMassageHandler.SetTowerError(towerController.maxAmmunitionUpgradeCount + "/" + activeUpgradesDisplayerMaxAmmunition.Length + " Upgrades");
+            towerErrorMassageHandler.SetTowerError(towerController.maxAmmunitionUpgradeCount + "/" + maxMaxAmmunitionUpgrades + " Upgrades");
         }
-        else if (towerController.maxAmmunitionUpgradeCount < activeUpgradesDisplayerMaxAmmunition.Length)
+        else if (towerController.maxAmmunitionUpgradeCount < maxMaxAmmunitionUpgrades)
         {
             if (ScrapManager.scrapCount >= maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1))
             {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1));
                 towerController.maxAmmunitionUpgradeCount = towerController.maxAmmunitionUpgradeCount + 1;
-                maxAmmunitionUpgradeInfo.SetUpgradeInfo((" + " + upgradeMaxAmmunition + " max Ammunition"), ((maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1)) + " Scrap"));
-                for (int I = 0; I < towerController.maxAmmunitionUpgradeCount; ++I)
-                {
-                    activeUpgradesDisplayerMaxAmmunition[I].SetActive(true);
-                }
+                upgradeDisplayHandler.UpdateMaxAmmunitionDisplay();
             }
             else
             {
@@ -210,7 +131,7 @@ public class UpgradeHandler : MonoBehaviour {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - autoRefillUpgradeCost;
                 towerMenuController.towerCost = towerMenuController.towerCost + autoRefillUpgradeCost;
                 towerController.autoRefillActive = true;
-                activeUpgradeDisplayerAutoRefill.SetActive(true);
+                upgradeDisplayHandler.UpdateAutoRefillDisplay();
             }
             else
             {
@@ -218,15 +139,10 @@ public class UpgradeHandler : MonoBehaviour {
             }
         }
     }
-
-    void Start ()
+    private void Start()
     {
+        upgradeDisplayHandler = gameObject.GetComponent<UpgradeDisplayHandler>();
         towerErrorMassageHandler = towerErrorDisplay.GetComponent<TowerErrorMassageHandler>();
-        rangeUpgradeInfo = rangeButton.GetComponent<InfoUpgradeCanvasDisplay>();
-        firerateUpgradeInfo = firerateButton.GetComponent<InfoUpgradeCanvasDisplay>();
-        damageUpgradeInfo = damageButton.GetComponent<InfoUpgradeCanvasDisplay>();
-        maxAmmunitionUpgradeInfo = maxAmmunitionButton.GetComponent<InfoUpgradeCanvasDisplay>();
-        autoRefillUpgradeInfo = autoRefillButton.GetComponent<InfoUpgradeCanvasDisplay>();
         gameObject.SetActive(false);
     }
 }
