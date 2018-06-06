@@ -110,10 +110,9 @@ public class PlacableTower : MonoBehaviour
     }
     void DisableCanvases()
     {
+        towerErrorMassageHandler.towerCanvasActive = false;
         towerCanvas.SetActive(false);
         upgradeMenuStateHandler.SetState(false);
-        towerErrorMassageHandler.towerCanvasActive = false;
-        Debug.Log("colsed Canvases");
     }//disables both canvases if called
     bool PlayerNearby()
     {

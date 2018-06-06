@@ -87,6 +87,7 @@ public class TowerController : MonoBehaviour
         if (ScrapManager.scrapCount >= AmmunitonRefillCost())
         {
             ScrapManager.scrapCount = ScrapManager.scrapCount - AmmunitonRefillCost();
+            print("ammunition Refilled");
             ammunition = maxAmmunition;
         }
         else

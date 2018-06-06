@@ -157,7 +157,6 @@ public class UpgradeDisplayHandler : MonoBehaviour
             upgradeDisplay.SetActive(false);
         }
         activeUpgradeDisplayerAutoRefill.SetActive(false);
-        Debug.Log("Reset upgrade active Displayer");
     }
     void Start()
     {
