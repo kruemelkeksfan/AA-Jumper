@@ -14,45 +14,82 @@ public class DifficultySet : MonoBehaviour {
     [SerializeField] Toggle normalT;
     [SerializeField] Toggle hardT;
     [SerializeField] Toggle dreadnoughtT;
+    [SerializeField] GameObject difficultyDataHolder;
 
+    DifficultyData difficultyData;
 
     void Start ()
     {
-        easy = false;
-        normal = true;
-        hard = false;
-        dreadnought = false;
-       
+        difficultyData = difficultyDataHolder.GetComponent<DifficultyData>();
+        DifficultyData.waveSizeMultiplicator = difficultyData.waveSizeMultiplicatorN;
+        DifficultyData.difficultyMultiplicator = difficultyData.difficultyMultiplicatorN;
+        DifficultyData.factoryStartHealth = difficultyData.factoryStartHealthN;
+        DifficultyData.scrapStartAmmount = difficultyData.scrapStartAmmountN;
+        DifficultyData.scrapAutoAmmount = difficultyData.scrapAutoAmmountN;
+        DifficultyData.scrapAutoTime = difficultyData.scrapAutoTimeN;
+        DifficultyData.respawnTime = difficultyData.respawnTimeN;
+        DifficultyData.ammunitionActiv = difficultyData.ammunitionActivN;
+        DifficultyData.wreckCollecterTowerActive = difficultyData.wreckCollecterTowerActiveN;
+        DifficultyData.wreckAutoCollectActiv = difficultyData.wreckAutoCollectActivN;
+        DifficultyData.controlsWhileFlyingActive = difficultyData.controlsWhileFlyingActiveN;
     }
     private void Update()
     {
         if (easyT.isOn)
         {
-            easy = true;
-            normal = false;
-            hard = false;
-            dreadnought = false;
+            DifficultyData.waveSizeMultiplicator = difficultyData.waveSizeMultiplicatorE;
+            DifficultyData.difficultyMultiplicator = difficultyData.difficultyMultiplicatorE;
+            DifficultyData.factoryStartHealth = difficultyData.factoryStartHealthE;
+            DifficultyData.scrapStartAmmount = difficultyData.scrapStartAmmountE;
+            DifficultyData.scrapAutoAmmount = difficultyData.scrapAutoAmmountE;
+            DifficultyData.scrapAutoTime = difficultyData.scrapAutoTimeE;
+            DifficultyData.respawnTime = difficultyData.respawnTimeE;
+            DifficultyData.ammunitionActiv = difficultyData.ammunitionActivE;
+            DifficultyData.wreckCollecterTowerActive = difficultyData.wreckCollecterTowerActiveE;
+            DifficultyData.wreckAutoCollectActiv = difficultyData.wreckAutoCollectActivE;
+            DifficultyData.controlsWhileFlyingActive = difficultyData.controlsWhileFlyingActiveE;
         }
         else if (normalT.isOn)
         {
-            easy = false;
-            normal = true;
-            hard = false;
-            dreadnought = false;
+            DifficultyData.waveSizeMultiplicator = difficultyData.waveSizeMultiplicatorN;
+            DifficultyData.difficultyMultiplicator = difficultyData.difficultyMultiplicatorN;
+            DifficultyData.factoryStartHealth = difficultyData.factoryStartHealthN;
+            DifficultyData.scrapStartAmmount = difficultyData.scrapStartAmmountN;
+            DifficultyData.scrapAutoAmmount = difficultyData.scrapAutoAmmountN;
+            DifficultyData.scrapAutoTime = difficultyData.scrapAutoTimeN;
+            DifficultyData.respawnTime = difficultyData.respawnTimeN;
+            DifficultyData.ammunitionActiv = difficultyData.ammunitionActivN;
+            DifficultyData.wreckCollecterTowerActive = difficultyData.wreckCollecterTowerActiveN;
+            DifficultyData.wreckAutoCollectActiv = difficultyData.wreckAutoCollectActivN;
+            DifficultyData.controlsWhileFlyingActive = difficultyData.controlsWhileFlyingActiveN;
         }
         else if (hardT.isOn)
         {
-            easy = false;
-            normal = false;
-            hard = true;
-            dreadnought = false;
+            DifficultyData.waveSizeMultiplicator = difficultyData.waveSizeMultiplicatorH;
+            DifficultyData.difficultyMultiplicator = difficultyData.difficultyMultiplicatorH;
+            DifficultyData.factoryStartHealth = difficultyData.factoryStartHealthH;
+            DifficultyData.scrapStartAmmount = difficultyData.scrapStartAmmountH;
+            DifficultyData.scrapAutoAmmount = difficultyData.scrapAutoAmmountH;
+            DifficultyData.scrapAutoTime = difficultyData.scrapAutoTimeH;
+            DifficultyData.respawnTime = difficultyData.respawnTimeH;
+            DifficultyData.ammunitionActiv = difficultyData.ammunitionActivH;
+            DifficultyData.wreckCollecterTowerActive = difficultyData.wreckCollecterTowerActiveH;
+            DifficultyData.wreckAutoCollectActiv = difficultyData.wreckAutoCollectActivH;
+            DifficultyData.controlsWhileFlyingActive = difficultyData.controlsWhileFlyingActiveH;
         }
         else if (dreadnoughtT.isOn)
         {
-            easy = false;
-            normal = false;
-            hard = false;
-            dreadnought = true;
+            DifficultyData.waveSizeMultiplicator = difficultyData.waveSizeMultiplicatorD;
+            DifficultyData.difficultyMultiplicator = difficultyData.difficultyMultiplicatorD;
+            DifficultyData.factoryStartHealth = difficultyData.factoryStartHealthD;
+            DifficultyData.scrapStartAmmount = difficultyData.scrapStartAmmountD;
+            DifficultyData.scrapAutoAmmount = difficultyData.scrapAutoAmmountD;
+            DifficultyData.scrapAutoTime = difficultyData.scrapAutoTimeD;
+            DifficultyData.respawnTime = difficultyData.respawnTimeD;
+            DifficultyData.ammunitionActiv = difficultyData.ammunitionActivD;
+            DifficultyData.wreckCollecterTowerActive = difficultyData.wreckCollecterTowerActiveD;
+            DifficultyData.wreckAutoCollectActiv = difficultyData.wreckAutoCollectActivD;
+            DifficultyData.controlsWhileFlyingActive = difficultyData.controlsWhileFlyingActiveD;
         }
     }
 }
