@@ -68,6 +68,4 @@ public class DifficultyData : MonoBehaviour
     public bool wreckCollecterTowerActiveD;
     public bool wreckAutoCollectActivD;
     public bool controlsWhileFlyingActiveD;
-
-
 }

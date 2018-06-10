@@ -63,7 +63,7 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
     private void Start()
     {
         difficultyData = difficultyDataHolder.GetComponent<DifficultyData>();
-        InvokeRepeating("UpdateMultiplicator", 1, 0.5f);
+        InvokeRepeating("UpdateMultiplicator", 0.1f, 0.5f);
         multiplierMax = waveSizeMultiplicatorDMulti + factoryStartHealthDMulti + scrapStartAmmountDMulti + scrapAutoDMulti + respawnTimeDMulti + ammunitionActivOnMulti + wreckAutoCollectActivOffMulti + wreckCollecterTowerActiveOffMulti + controlsWhileFlyingActiveOffMulti;
         multiplierMin = waveSizeMultiplicatorEMulti + factoryStartHealthEMulti + scrapStartAmmountEMulti + scrapAutoEMulti + respawnTimeEMulti + ammunitionActivOffMulti + wreckAutoCollectActivOnMulti + wreckCollecterTowerActiveOnMulti + controlsWhileFlyingActiveOnMulti;
 }

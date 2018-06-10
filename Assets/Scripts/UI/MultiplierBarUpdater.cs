@@ -20,7 +20,6 @@ public class MultiplierBarUpdater : MonoBehaviour {
 	void Update ()
     {
         multiplierText.text = DifficultyData.difficultyMultiplicator.ToString();
-        Debug.Log(difficultyMultiplyerSet.multiplierMax + " | " + difficultyMultiplyerSet.multiplierMin);
         multiplierFillAmmount = ((DifficultyData.difficultyMultiplicator - difficultyMultiplyerSet.multiplierMin) / ((difficultyMultiplyerSet.multiplierMax - difficultyMultiplyerSet.multiplierMin) / 100)) /100;
         multiplierBar.fillAmount = multiplierFillAmmount;
 	}

@@ -10,13 +10,6 @@ public class BoolOptionsSet : MonoBehaviour {
     [SerializeField] Toggle autoCollectT;
     [SerializeField] Toggle flyControlsT;
     [SerializeField] GameObject difficultyDataHolder;
-
-    DifficultyData difficultyData;
-
-	void Start ()
-    {
-        difficultyData = difficultyDataHolder.GetComponent<DifficultyData>();
-	}
 	
 	void Update ()
     {
