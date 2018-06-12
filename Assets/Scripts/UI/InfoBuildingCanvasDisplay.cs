@@ -4,25 +4,30 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class RefillInfoCanvasDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InfoBuildingCanvasDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 
-    [SerializeField] string info = "Refill ammunition, scrap cost: ";
-    [SerializeField] GameObject tower;
+    [SerializeField] string info;
+    [SerializeField] string noAmmoInfo;
 
-    TowerController towerController;
     Text infoText;
 
     void Start()
     {
         GameObject infoDisplay = GameObject.FindGameObjectWithTag("InfoDisplay");
         infoText = infoDisplay.GetComponent<Text>();
-        towerController = tower.GetComponent<TowerController>();
     }
 
     public void OnPointerEnter(PointerEventData pointerEventData)
     {
-        infoText.text = info + towerController.AmmunitonRefillCost();
+        if (DifficultyData.ammunitionActiv)
+        {
+            infoText.text = info;
+        }
+        else
+        {
+            infoText.text = noAmmoInfo;
+        }
     }
 
     public void OnPointerExit(PointerEventData pointerEventData)
@@ -31,18 +36,10 @@ public class RefillInfoCanvasDisplay : MonoBehaviour, IPointerEnterHandler, IPoi
     }
     private void OnDestroy()
     {
-        if (!DifficultyData.ammunitionActiv)
-        {
-            return;
-        }
         infoText.text = "";
     }
     private void OnDisable()
     {
-        if (!DifficultyData.ammunitionActiv)
-        {
-            return;
-        }
         infoText.text = "";
     }
 }

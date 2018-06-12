@@ -22,6 +22,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] GameObject buildingButtonDisplay;
 
     float horizontalThrow;
+    float jumpHorizontalThrow = 0;
     float rewiveTime;
     bool movementEnabled, verticalThrow, collectable;
     bool pause = false;
@@ -40,6 +41,7 @@ public class PlayerControls : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        respawnTime = DifficultyData.respawnTime;
     }
 
     void Update ()
@@ -67,7 +69,7 @@ public class PlayerControls : MonoBehaviour
             {
                 TogglePause();
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) && DifficultyData.ammunitionActiv)
             {
                 ammunitionDisplayed = !ammunitionDisplayed;
             }
@@ -78,7 +80,7 @@ public class PlayerControls : MonoBehaviour
                     buildingButtons = !buildingButtons;
                     buildingButtonDisplay.SetActive(buildingButtons);
                 }
-                if (movementEnabled == true)
+                if (movementEnabled == true && !DifficultyData.controlsWhileFlyingActive)
                 {
                     horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
                     if (CrossPlatformInputManager.GetButtonDown("Jump") == true)
@@ -86,14 +88,21 @@ public class PlayerControls : MonoBehaviour
                         rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
                     }
                 }
-                if (hittingWreck.Count > 0 && Input.GetKeyDown("e"))
+                if (DifficultyData.controlsWhileFlyingActive)
                 {
-                    ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
-                    for (int I = hittingWreck.Count - 1; I > -1; --I)
+                    horizontalThrow = CrossPlatformInputManager.GetAxis("Horizontal");
+                    if (CrossPlatformInputManager.GetButtonDown("Jump") && movementEnabled)
                     {
-                        Destroy(hittingWreck[I].gameObject);
-                        hittingWreck.Remove(hittingWreck[I]);
+                        rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
                     }
+                }
+                if (!DifficultyData.wreckAutoCollectActiv && hittingWreck.Count > 0 && Input.GetKeyDown("e"))
+                {
+                    CollectWrecks();
+                }
+                if (DifficultyData.wreckAutoCollectActiv && hittingWreck.Count > 0)
+                {
+                    CollectWrecks();
                 }
             }
 
@@ -102,6 +111,17 @@ public class PlayerControls : MonoBehaviour
 
     HorizontalMovement();
     }
+
+    private void CollectWrecks()
+    {
+        ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
+        for (int I = hittingWreck.Count - 1; I > -1; --I)
+        {
+            Destroy(hittingWreck[I].gameObject);
+            hittingWreck.Remove(hittingWreck[I]);
+        }
+    }
+
     public static void OnGameLost()
     {
         gameLost = true;
@@ -130,6 +150,7 @@ public class PlayerControls : MonoBehaviour
         if (other.tag == "Environment")
         {
             movementEnabled = true;
+            jumpHorizontalThrow = 0;
         }
         if (other.tag == "Scrap")
         {
@@ -150,6 +171,10 @@ public class PlayerControls : MonoBehaviour
         if (other.tag == "Environment")
         {
             movementEnabled = false;
+            if (DifficultyData.controlsWhileFlyingActive)
+            {
+                jumpHorizontalThrow = horizontalThrow;
+            }
         }
         if (other.tag == "Scrap")
         {
@@ -164,7 +189,7 @@ public class PlayerControls : MonoBehaviour
     }
     void HorizontalMovement()
     {
-        float xOffset = horizontalThrow * speed * Time.deltaTime;
+        float xOffset = Mathf.Clamp((horizontalThrow + jumpHorizontalThrow), -1, 1) * speed * Time.deltaTime;
         float newXPos = transform.position.x + xOffset;
         transform.position = new Vector3(newXPos, transform.position.y, transform.position.z);
         if (xOffset < 0)

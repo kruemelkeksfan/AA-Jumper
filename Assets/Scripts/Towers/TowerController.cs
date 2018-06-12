@@ -64,30 +64,46 @@ public class TowerController : MonoBehaviour
     }
     public string SetTowerInfo()
     {
-        if (autoRefillActive)
+        if (DifficultyData.ammunitionActiv)
         {
-            return ("Range: " + range + "                                        " +
-                    "Fire Rate: " + fireRate + "                                 " +
-                    "Damage: " + damage + "                                      " +
-                    "max Ammunition: " + maxAmmunition + "                       " +
-                    "auto refill enabled");
+            if (autoRefillActive)
+            {
+                return ("Range: " + range + "                                        " +
+                        "Fire Rate: " + fireRate + "                                 " +
+                        "Damage: " + damage + "                                      " +
+                        "max Ammunition: " + maxAmmunition + "                       " +
+                        "auto refill enabled");
+            }
+            else
+            {
+                return ("Range: " + range + "                                        " +
+                        "Fire Rate: " + fireRate + "                                 " +
+                        "Damage: " + damage + "                                      " +
+                        "max Ammunition: " + maxAmmunition + "                       " +
+                        "auto refill disabled");
+            }
         }
         else
         {
-            return ("Range: " + range + "                                        " +
-                    "Fire Rate: " + fireRate + "                                 " +
-                    "Damage: " + damage + "                                      " +
-                    "max Ammunition: " + maxAmmunition + "                       " +
-                    "auto refill disabled");
+            if (autoRefillActive)
+            {
+                return ("Range: " + range + "                                        " +
+                        "Fire Rate: " + fireRate + "                                 " +
+                        "Damage: " + damage);
+            }
+            else
+            {
+                return ("Range: " + range + "                                        " +
+                        "Fire Rate: " + fireRate + "                                 " +
+                        "Damage: " + damage);
+            }
         }
-       
     }
     public void RefillAmunition()
     {
         if (ScrapManager.scrapCount >= AmmunitonRefillCost())
         {
             ScrapManager.scrapCount = ScrapManager.scrapCount - AmmunitonRefillCost();
-            print("ammunition Refilled");
             ammunition = maxAmmunition;
         }
         else
@@ -121,7 +137,7 @@ public class TowerController : MonoBehaviour
     }
     void Update()
     {
-        if (PlayerControls.ammunitionDisplayed)
+        if (PlayerControls.ammunitionDisplayed && DifficultyData.ammunitionActiv)
         {
             ammunitionDisplayer.SetActive(true);
             ammunitionDisplay.fillAmount = ammunition / maxAmmunition;
@@ -131,7 +147,7 @@ public class TowerController : MonoBehaviour
             }
             else autoRefillDisplay.SetActive(false);
         }
-        if (!PlayerControls.ammunitionDisplayed)
+        if (!PlayerControls.ammunitionDisplayed && DifficultyData.ammunitionActiv)
         {
             ammunitionDisplayer.SetActive(false);
         }
@@ -156,7 +172,10 @@ public class TowerController : MonoBehaviour
                 return;
             }
         }
-        ammunitionEmptyDisplayer.SetActive(false);
+        if (DifficultyData.ammunitionActiv)
+        {
+            ammunitionEmptyDisplayer.SetActive(false);
+        }
         fireCountdown -= Time.deltaTime;
         if (Target != null)
         {
@@ -171,7 +190,10 @@ public class TowerController : MonoBehaviour
             if (fireCountdown <= 0f)
             {
                 Shoot();
-                ammunition = ammunition - 1;
+                if (DifficultyData.ammunitionActiv)
+                {
+                    ammunition = ammunition - 1;
+                }
                 fireCountdown = 1f / fireRate;
             }
         }

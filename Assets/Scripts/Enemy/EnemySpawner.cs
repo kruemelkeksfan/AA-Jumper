@@ -56,7 +56,7 @@ public class EnemySpawner : MonoBehaviour
     {
         spawnXPosition = spawnPosition.x;
         gameLevel = 0;
-        SetMultiplier();
+        difficulty = DifficultyData.waveSizeMultiplicator;
 
         if (!active)
         {
@@ -83,31 +83,6 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("Lane 3: " + typequeue[3].Count);
         Debug.Log("Lane 4: " + typequeue[4].Count);
         Debug.Log("Lane 5: " + typequeue[5].Count);*/
-    }
-    private void SetMultiplier()
-    {
-        if (DifficultySet.easy)
-        {
-            difficulty = easyMultiplier;
-        }
-        else if (DifficultySet.normal)
-        {
-            difficulty = normalMultiplier;
-        }
-        else if (DifficultySet.hard)
-        {
-            difficulty = hardMultiplier;
-        }
-        else if (DifficultySet.dreadnought)
-        {
-            difficulty = dreadnoughtMultiplier;
-        }
-        else
-        {
-            Debug.Log("No difficulty level found");
-            DifficultySet.normal = true;
-            difficulty = normalMultiplier;
-        }
     }
     void UpdateLevel()
     {

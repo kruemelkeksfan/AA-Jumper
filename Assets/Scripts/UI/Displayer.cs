@@ -19,43 +19,43 @@ public class Displayer : MonoBehaviour
     [SerializeField] Color hardColor;
     [SerializeField] Color dreadnoughtColor;
 
-    string difficultyLetter;
+    string difficultyMultiText;
 
     private void Start()
     {
         score = 0;
         towerErrorText.text = "";
         infoDisplay.text = "";
-        if (DifficultySet.easy)
+        if (DifficultyData.difficultyMultiplicator <= 1.75f)
         {
             difficultyText.color = easyColor;
-            difficultyLetter = "E";
+            difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
-        else if (DifficultySet.normal)
+        else if (DifficultyData.difficultyMultiplicator > 1.75f && DifficultyData.difficultyMultiplicator <= 4f)
         {
             difficultyText.color = normalColor;
-            difficultyLetter = "N";
+            difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
-        else if (DifficultySet.hard)
+        else if (DifficultyData.difficultyMultiplicator > 4f && DifficultyData.difficultyMultiplicator <= 6.5f)
         {
             difficultyText.color = hardColor;
-            difficultyLetter = "H";
+            difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
-        else if (DifficultySet.dreadnought)
+        else if (DifficultyData.difficultyMultiplicator > 6.5f)
         {
             difficultyText.color = dreadnoughtColor;
-            difficultyLetter = "D";
+            difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
         else
         {
-            difficultyLetter = "E";
+            difficultyMultiText = "E";
         }
     }
     void Update ()
     {
         healthText.text = "Health: " + FactoryManager.baseHealth;
-        scoreText.text = "Score: " + score;
-        difficultyText.text = difficultyLetter;
+        scoreText.text = "Score: " + (score * DifficultyData.difficultyMultiplicator);
+        difficultyText.text = difficultyMultiText;
         LevelText.text = "Level: " + EnemySpawner.gameLevel;
     }
 }
