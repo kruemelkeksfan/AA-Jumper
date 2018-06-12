@@ -64,8 +64,8 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
     {
         difficultyData = difficultyDataHolder.GetComponent<DifficultyData>();
         InvokeRepeating("UpdateMultiplicator", 0.1f, 0.5f);
-        multiplierMax = waveSizeMultiplicatorDMulti + factoryStartHealthDMulti + scrapStartAmmountDMulti + scrapAutoDMulti + respawnTimeDMulti + ammunitionActivOnMulti + wreckAutoCollectActivOffMulti + wreckCollecterTowerActiveOffMulti + controlsWhileFlyingActiveOffMulti;
-        multiplierMin = waveSizeMultiplicatorEMulti + factoryStartHealthEMulti + scrapStartAmmountEMulti + scrapAutoEMulti + respawnTimeEMulti + ammunitionActivOffMulti + wreckAutoCollectActivOnMulti + wreckCollecterTowerActiveOnMulti + controlsWhileFlyingActiveOnMulti;
+        multiplierMax = (factoryStartHealthDMulti + scrapStartAmmountDMulti + scrapAutoDMulti + respawnTimeDMulti  + wreckAutoCollectActivOffMulti + wreckCollecterTowerActiveOffMulti) * (waveSizeMultiplicatorDMulti + ammunitionActivOnMulti + controlsWhileFlyingActiveOffMulti);
+        multiplierMin = (factoryStartHealthEMulti + scrapStartAmmountEMulti + scrapAutoEMulti + respawnTimeEMulti + wreckAutoCollectActivOnMulti + wreckCollecterTowerActiveOnMulti) * (waveSizeMultiplicatorEMulti + ammunitionActivOffMulti + controlsWhileFlyingActiveOnMulti);
 }
 
     void UpdateMultiplicator()
@@ -76,7 +76,7 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
         ScrapAutoMulti();
         RespawnTimeMulti();
         BoolMulti();
-        DifficultyData.difficultyMultiplicator = waveSizeMultiplicatorMulti + factoryStartHealthMulti + scrapStartAmmountMulti + scrapAutoMulti + respawnTimeMulti + ammunitionActivMulti + wreckCollecterTowerActiveMulti + wreckAutoCollectActivMulti + controlsWhileFlyingActiveMulti;
+        DifficultyData.difficultyMultiplicator = (factoryStartHealthMulti + scrapStartAmmountMulti + scrapAutoMulti + respawnTimeMulti + wreckCollecterTowerActiveMulti + wreckAutoCollectActivMulti) * (waveSizeMultiplicatorMulti + ammunitionActivMulti + controlsWhileFlyingActiveMulti);
     }
     private void WaveSizeMulti()
     {

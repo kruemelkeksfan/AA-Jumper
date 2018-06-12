@@ -21,27 +21,31 @@ public class Displayer : MonoBehaviour
 
     string difficultyMultiText;
 
+    float easyMaxMulti = 3;
+    float normalMaxMulti = 15;
+    float harhMaxMulti = 40;
+
     private void Start()
     {
         score = 0;
         towerErrorText.text = "";
         infoDisplay.text = "";
-        if (DifficultyData.difficultyMultiplicator <= 1.75f)
+        if (DifficultyData.difficultyMultiplicator <= easyMaxMulti)
         {
             difficultyText.color = easyColor;
             difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
-        else if (DifficultyData.difficultyMultiplicator > 1.75f && DifficultyData.difficultyMultiplicator <= 4f)
+        else if (DifficultyData.difficultyMultiplicator > easyMaxMulti && DifficultyData.difficultyMultiplicator <= normalMaxMulti)
         {
             difficultyText.color = normalColor;
             difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
-        else if (DifficultyData.difficultyMultiplicator > 4f && DifficultyData.difficultyMultiplicator <= 6.5f)
+        else if (DifficultyData.difficultyMultiplicator > normalMaxMulti && DifficultyData.difficultyMultiplicator <= harhMaxMulti)
         {
             difficultyText.color = hardColor;
             difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
         }
-        else if (DifficultyData.difficultyMultiplicator > 6.5f)
+        else if (DifficultyData.difficultyMultiplicator > harhMaxMulti)
         {
             difficultyText.color = dreadnoughtColor;
             difficultyMultiText = DifficultyData.difficultyMultiplicator.ToString();
