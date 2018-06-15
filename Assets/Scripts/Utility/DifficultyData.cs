@@ -17,6 +17,9 @@ public class DifficultyData : MonoBehaviour
     public static bool wreckAutoCollectActiv = false;
     public static bool controlsWhileFlyingActive = false;
 
+    [Header("General")]
+    public static int wreckValue = 15;
+
     [Header("Easy")]
     public float waveSizeMultiplicatorE;
     public float difficultyMultiplicatorE;

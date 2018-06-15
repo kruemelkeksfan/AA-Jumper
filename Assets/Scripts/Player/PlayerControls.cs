@@ -14,8 +14,6 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float speed = 10.0f;
     [SerializeField] float turnSpeed = 2f;
     [SerializeField] float jumpPower = 100.0f;
-    [SerializeField] int wreckValue = 10;
-    [SerializeField] int respawnTime = 10;
     [SerializeField] Transform respawnPoint;
     [SerializeField] GameObject controllsHelpText;
     [SerializeField] Text respawnTimeDisplay;
@@ -24,6 +22,7 @@ public class PlayerControls : MonoBehaviour
     float horizontalThrow;
     float jumpHorizontalThrow = 0;
     float rewiveTime;
+    int respawnTime;
     bool movementEnabled, verticalThrow, collectable;
     bool pause = false;
     bool controllsEnabled = true;
@@ -114,7 +113,7 @@ public class PlayerControls : MonoBehaviour
 
     private void CollectWrecks()
     {
-        ScrapManager.scrapCount = ScrapManager.scrapCount + wreckValue * hittingWreck.Count;
+        ScrapManager.scrapCount = ScrapManager.scrapCount + DifficultyData.wreckValue * hittingWreck.Count;
         for (int I = hittingWreck.Count - 1; I > -1; --I)
         {
             Destroy(hittingWreck[I].gameObject);

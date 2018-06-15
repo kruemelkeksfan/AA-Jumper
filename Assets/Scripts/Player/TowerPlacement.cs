@@ -11,7 +11,7 @@ public class TowerPlacement : MonoBehaviour
     [Tooltip("Machine Cannon")][SerializeField] int prizeTower1 = 25;
     [Tooltip("Quadruple Machine Cannon")][SerializeField] int prizeTower2 = 100;
     [Tooltip("Heavy Anti Air Artillery")][SerializeField] int prizeTower3 = 125;
-    [Tooltip("Mine Launcher")][SerializeField] int prizeTower4 = 50;
+    [Tooltip("Collector Tower")][SerializeField] int prizeTower4 = 100;
     [Tooltip("Rocket Launcher")][SerializeField] int prizeTower5 = 75;
 
     [SerializeField] GameObject Player;
@@ -96,12 +96,12 @@ public class TowerPlacement : MonoBehaviour
                                 }
                                 break;
                             }
-                        case "Mine Launcher(50)(Clone)":
+                        case "CollectorTower(Clone)":
                             {
                                 if (prizeTower4 <= ScrapManager.scrapCount)
                                 {
                                     ScrapManager.scrapCount -= prizeTower4;
-                                    TowerPlaced();
+                                    CollectorTowerPlaced();
                                 }
                                 else
                                 {
@@ -170,18 +170,39 @@ public class TowerPlacement : MonoBehaviour
         placableTower.SetCanvasAvailable();
         hasPlaced = true;
     }
+    private void CollectorTowerPlaced()
+    {
+        CollectorTowerController collectorTowerController = currentTower.GetComponent<CollectorTowerController>();
+        PlacableCollectorTower placableCollectorTower = currentTower.GetComponent<PlacableCollectorTower>();
+        collectorTowerController.SetTowerActiv();
+        placableCollectorTower.SetCanvasAvailable();
+        hasPlaced = true;
+    }
 
     bool IsLegalPosition()
     {
-        if (PlacableTower.TowerCCount == 0 && PlacableTower.EnvironmentCCount == 3)
+        if (currentTower.name == "CollectorTower(Clone)")
         {
-            return true;
+            if (PlacableCollectorTower.TowerColCount == 0 && PlacableCollectorTower.EnvironmentColCount == 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
-        { 
-            return false;
+        {
+            if (PlacableTower.TowerCCount == 0 && PlacableTower.EnvironmentCCount == 3)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        
     }
     public void SetItem(GameObject T)
     {

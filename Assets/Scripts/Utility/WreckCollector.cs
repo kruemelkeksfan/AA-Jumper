@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WreckCollector : MonoBehaviour
 {
-    [SerializeField] int wreckDumpValue = 5;
+    [SerializeField] int wreckDumpDivisor = 3;
 
     float wakableMapEndX = 2;
     float wreckDumpX = -10;
@@ -20,7 +20,7 @@ public class WreckCollector : MonoBehaviour
     {
         if (c.tag == "Ground")
         {
-            ScrapManager.scrapCount = ScrapManager.scrapCount + wreckDumpValue;
+            ScrapManager.scrapCount = ScrapManager.scrapCount + (DifficultyData.wreckValue / wreckDumpDivisor);
             Destroy(gameObject);
         }
 	}
