@@ -34,7 +34,6 @@ public class TowerPlacement : MonoBehaviour
     private void Start()
     {
         text.text = "";
-
     }
     void FixedUpdate()
     {
