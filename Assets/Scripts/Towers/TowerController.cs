@@ -11,6 +11,10 @@ public class TowerController : MonoBehaviour
     [HideInInspector] public int damageUpgradeCount = 0;
     [HideInInspector] public int maxAmmunitionUpgradeCount = 0;
     [HideInInspector] public bool autoRefillActive = false;
+    [HideInInspector] public bool rangeFullUpgrade;
+    [HideInInspector] public bool firerateFullUpgrade;
+    [HideInInspector] public bool damageFullUpgrade;
+    [HideInInspector] public bool maxAmmunitionFullUpgrade;
 
     [Header ("Unity Setup")]
     [SerializeField] float yLeadDivisor;
@@ -28,6 +32,7 @@ public class TowerController : MonoBehaviour
     [SerializeField] Image ammunitionDisplay;
     [SerializeField] Toggle targetFocusBig;
     [SerializeField] Toggle targetFocusSmall;
+    [SerializeField] GameObject fullUpgradeDisplay;
 
     [Header ("Atributes")]
     [SerializeField] int baseRange;
@@ -204,6 +209,10 @@ public class TowerController : MonoBehaviour
         fireRate = baseFireRate + (upgradeFirerate * firerateUpgradeCount);
         damage = baseDamage + (upgradeDamage * damageUpgradeCount);
         maxAmmunition = baseMaxAmmunition + (upgradeMaxAmmunition * maxAmmunitionUpgradeCount);
+        if (rangeFullUpgrade && firerateFullUpgrade && damageFullUpgrade && maxAmmunitionFullUpgrade && autoRefillActive)
+        {
+            fullUpgradeDisplay.SetActive(true);
+        }
     }
     void UpdateTarget()
     {

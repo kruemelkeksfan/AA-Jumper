@@ -17,7 +17,7 @@ public class EnemyController : MonoBehaviour
     [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
     [SerializeField] bool destroyOnMapEnd = false;
-
+    [SerializeField] bool dropWreckOnDestroy = false;
 
     bool displayed = false;
     bool destroyed = false;
@@ -119,6 +119,11 @@ public class EnemyController : MonoBehaviour
     private void Destroy()
     {
         Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);
+        if (dropWreckOnDestroy)
+        {
+            Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 1);
+            Instantiate(Wreck, wreckp, Quaternion.identity);
+        }
         Destroy(gameObject);
     }
 }

@@ -47,6 +47,10 @@ public class UpgradeHandler : MonoBehaviour {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (rangeUpgradeBaseCost * (towerController.rangeUpgradeCount + 1));
                 towerController.rangeUpgradeCount = towerController.rangeUpgradeCount + 1;
+                if (towerController.rangeUpgradeCount >= maxRangeUpgrades)
+                {
+                    towerController.rangeFullUpgrade = true;
+                }
                 upgradeDisplayHandler.UpdateRangeDisplay();
             }
             else
@@ -68,6 +72,10 @@ public class UpgradeHandler : MonoBehaviour {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (firerateUpgradeBaseCost * (towerController.firerateUpgradeCount + 1));
                 towerController.firerateUpgradeCount = towerController.firerateUpgradeCount + 1;
+                if (towerController.firerateUpgradeCount >= maxFirerateUpgrades)
+                {
+                    towerController.firerateFullUpgrade = true;
+                }
                 upgradeDisplayHandler.UpdateFirerateDisplay();
             }
             else
@@ -89,6 +97,10 @@ public class UpgradeHandler : MonoBehaviour {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (damageUpgradeBaseCost * (towerController.damageUpgradeCount + 1));
                 towerController.damageUpgradeCount = towerController.damageUpgradeCount + 1;
+                if (towerController.damageUpgradeCount >= maxDamageUpgrades)
+                {
+                    towerController.damageFullUpgrade = true;
+                }
                 upgradeDisplayHandler.UpdateDamageDisplay();
             }
             else
@@ -110,6 +122,10 @@ public class UpgradeHandler : MonoBehaviour {
                 ScrapManager.scrapCount = ScrapManager.scrapCount - (maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1));
                 towerMenuController.towerCost = towerMenuController.towerCost + (maxAmmunitionUpgradeBaseCost * (towerController.maxAmmunitionUpgradeCount + 1));
                 towerController.maxAmmunitionUpgradeCount = towerController.maxAmmunitionUpgradeCount + 1;
+                if (towerController.maxAmmunitionUpgradeCount >= maxMaxAmmunitionUpgrades)
+                {
+                    towerController.damageFullUpgrade = true;
+                }
                 upgradeDisplayHandler.UpdateMaxAmmunitionDisplay();
             }
             else

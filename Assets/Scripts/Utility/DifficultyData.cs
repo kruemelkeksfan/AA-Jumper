@@ -5,7 +5,7 @@ using UnityEngine;
 public class DifficultyData : MonoBehaviour
 {
     public static float waveSizeMultiplicator = 1;
-    public static float difficultyMultiplicator = 3;
+    public static float difficultyMultiplicator = 10;
     public static int factoryStartHealth = 750;
     public static int scrapStartAmmount = 60;
     public static int scrapAutoAmmount = 2;

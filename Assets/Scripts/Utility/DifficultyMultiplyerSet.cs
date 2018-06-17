@@ -47,6 +47,11 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
     [SerializeField] float scrapAutoDMulti;
     [SerializeField] float respawnTimeDMulti;
 
+    float normalMultiAdition = 0.2f;
+    float dreadnoughtMultiAdition = 0.5f;
+
+    float multiAdition;
+
     float waveSizeMultiplicatorMulti;
     float factoryStartHealthMulti;
     float scrapStartAmmountMulti;
@@ -64,8 +69,8 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
     {
         difficultyData = difficultyDataHolder.GetComponent<DifficultyData>();
         InvokeRepeating("UpdateMultiplicator", 0.1f, 0.5f);
-        multiplierMax = (factoryStartHealthDMulti + scrapStartAmmountDMulti + scrapAutoDMulti + respawnTimeDMulti  + wreckAutoCollectActivOffMulti + wreckCollecterTowerActiveOffMulti) * (waveSizeMultiplicatorDMulti + ammunitionActivOnMulti + controlsWhileFlyingActiveOffMulti);
-        multiplierMin = (factoryStartHealthEMulti + scrapStartAmmountEMulti + scrapAutoEMulti + respawnTimeEMulti + wreckAutoCollectActivOnMulti + wreckCollecterTowerActiveOnMulti) * (waveSizeMultiplicatorEMulti + ammunitionActivOffMulti + controlsWhileFlyingActiveOnMulti);
+        multiplierMax = ((factoryStartHealthDMulti + scrapStartAmmountDMulti + scrapAutoDMulti + respawnTimeDMulti  + wreckAutoCollectActivOffMulti + wreckCollecterTowerActiveOffMulti) * (waveSizeMultiplicatorDMulti + ammunitionActivOnMulti + controlsWhileFlyingActiveOffMulti)) + multiAdition;
+        multiplierMin = ((factoryStartHealthEMulti + scrapStartAmmountEMulti + scrapAutoEMulti + respawnTimeEMulti + wreckAutoCollectActivOnMulti + wreckCollecterTowerActiveOnMulti) * (waveSizeMultiplicatorEMulti + ammunitionActivOffMulti + controlsWhileFlyingActiveOnMulti)) + multiAdition;
     }
     void UpdateMultiplicator()
     {
@@ -75,25 +80,29 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
         ScrapAutoMulti();
         RespawnTimeMulti();
         BoolMulti();
-        DifficultyData.difficultyMultiplicator = (factoryStartHealthMulti + scrapStartAmmountMulti + scrapAutoMulti + respawnTimeMulti + wreckCollecterTowerActiveMulti + wreckAutoCollectActivMulti) * (waveSizeMultiplicatorMulti + ammunitionActivMulti + controlsWhileFlyingActiveMulti);
+        DifficultyData.difficultyMultiplicator = ((factoryStartHealthMulti + scrapStartAmmountMulti + scrapAutoMulti + respawnTimeMulti + wreckCollecterTowerActiveMulti + wreckAutoCollectActivMulti) * (waveSizeMultiplicatorMulti + ammunitionActivMulti + controlsWhileFlyingActiveMulti)) + multiAdition;
     }
     private void WaveSizeMulti()
     {
         if (DifficultyData.waveSizeMultiplicator == difficultyData.waveSizeMultiplicatorE)
         {
             waveSizeMultiplicatorMulti = waveSizeMultiplicatorEMulti;
+            multiAdition = normalMultiAdition;
         }
         else if (DifficultyData.waveSizeMultiplicator == difficultyData.waveSizeMultiplicatorN)
         {
             waveSizeMultiplicatorMulti = waveSizeMultiplicatorNMulti;
+            multiAdition = normalMultiAdition;
         }
         else if (DifficultyData.waveSizeMultiplicator == difficultyData.waveSizeMultiplicatorH)
         {
             waveSizeMultiplicatorMulti = waveSizeMultiplicatorHMulti;
+            multiAdition = normalMultiAdition;
         }
         else if (DifficultyData.waveSizeMultiplicator == difficultyData.waveSizeMultiplicatorD)
         {
             waveSizeMultiplicatorMulti = waveSizeMultiplicatorDMulti;
+            multiAdition = dreadnoughtMultiAdition;
         }
     }
     private void FactoryHealthMulti()
