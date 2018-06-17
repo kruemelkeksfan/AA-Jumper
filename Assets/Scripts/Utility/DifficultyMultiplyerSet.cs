@@ -66,8 +66,7 @@ public class DifficultyMultiplyerSet : MonoBehaviour {
         InvokeRepeating("UpdateMultiplicator", 0.1f, 0.5f);
         multiplierMax = (factoryStartHealthDMulti + scrapStartAmmountDMulti + scrapAutoDMulti + respawnTimeDMulti  + wreckAutoCollectActivOffMulti + wreckCollecterTowerActiveOffMulti) * (waveSizeMultiplicatorDMulti + ammunitionActivOnMulti + controlsWhileFlyingActiveOffMulti);
         multiplierMin = (factoryStartHealthEMulti + scrapStartAmmountEMulti + scrapAutoEMulti + respawnTimeEMulti + wreckAutoCollectActivOnMulti + wreckCollecterTowerActiveOnMulti) * (waveSizeMultiplicatorEMulti + ammunitionActivOffMulti + controlsWhileFlyingActiveOnMulti);
-}
-
+    }
     void UpdateMultiplicator()
     {
         WaveSizeMulti();

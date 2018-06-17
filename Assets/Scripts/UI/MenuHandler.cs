@@ -21,4 +21,8 @@ public class MenuHandler : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+    public void closeWindow(GameObject window)
+    {
+        window.SetActive(false);
+    }
 }

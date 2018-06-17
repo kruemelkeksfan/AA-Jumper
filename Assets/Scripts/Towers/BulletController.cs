@@ -11,6 +11,10 @@ public class BulletController : MonoBehaviour
     {
         gameObject.name = shellHeader.name;
         transform.localPosition = new Vector3 (transform.localPosition.x + shellSpeed * Time.deltaTime, transform.localPosition.y, transform.localPosition.z);
+        if (transform.localPosition.x > 1000)
+        {
+            Object.Destroy(gameObject);
+        }
 	}
     private void OnDestroy()
     {

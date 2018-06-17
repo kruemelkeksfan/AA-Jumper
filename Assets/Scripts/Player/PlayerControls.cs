@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -15,8 +14,9 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] float turnSpeed = 2f;
     [SerializeField] float jumpPower = 100.0f;
     [SerializeField] Transform respawnPoint;
-    [SerializeField] GameObject controllsHelpText;
     [SerializeField] Text respawnTimeDisplay;
+    [SerializeField] GameObject controllsHelpText;
+    [SerializeField] GameObject escapeMenuWindow;
     [SerializeField] GameObject buildingButtonDisplay;
 
     float horizontalThrow;
@@ -42,7 +42,6 @@ public class PlayerControls : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         respawnTime = DifficultyData.respawnTime;
     }
-
     void Update ()
     {
         if (rewiveTime >= Time.time)
@@ -53,10 +52,6 @@ public class PlayerControls : MonoBehaviour
         {
             respawnTimeDisplay.text = "";
         }
-        if (Input.GetKeyDown("escape"))
-        {
-            SceneManager.LoadScene(0);
-        }
         if (Input.GetKeyDown(KeyCode.F1))
         {
             helpTextActive = !helpTextActive;
@@ -64,6 +59,10 @@ public class PlayerControls : MonoBehaviour
         }
         if (!gameLost)
         {
+            if (Input.GetKeyDown("escape"))
+            {
+                escapeMenuWindow.SetActive(true);
+            }
             if (Input.GetKeyDown("p"))
             {
                 TogglePause();
@@ -104,13 +103,9 @@ public class PlayerControls : MonoBehaviour
                     CollectWrecks();
                 }
             }
-
-       
         }
-
     HorizontalMovement();
     }
-
     private void CollectWrecks()
     {
         ScrapManager.scrapCount = ScrapManager.scrapCount + DifficultyData.wreckValue * hittingWreck.Count;
@@ -120,14 +115,12 @@ public class PlayerControls : MonoBehaviour
             hittingWreck.Remove(hittingWreck[I]);
         }
     }
-
     public static void OnGameLost()
     {
         gameLost = true;
         Time.timeScale = 0;
         buildingButtons = false;
     }
-
     private void TogglePause()
     {
         if (!pause)
@@ -143,7 +136,6 @@ public class PlayerControls : MonoBehaviour
             Time.timeScale = 1;
         }
     }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Environment")
@@ -180,7 +172,6 @@ public class PlayerControls : MonoBehaviour
             hittingWreck.Remove(other);
         }
     }
-
     void Respawn()
     {
         gameObject.transform.position = respawnPoint.position;
