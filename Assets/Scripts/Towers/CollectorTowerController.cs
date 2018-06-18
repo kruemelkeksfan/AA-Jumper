@@ -37,14 +37,21 @@ public class CollectorTowerController : MonoBehaviour
     Vector3 realClawRotation;
     Transform nearestWreck;
 
+    Dissolve dissolve;
+
     public void SetTowerActiv()
     {
         InvokeRepeating("Collect", collectingIntervall, collectingIntervall);
+        dissolve.SetDissolveIn(1);
     }
     public string SetTowerInfo()
     {
         return ("collects every " + collectingIntervall + " Sec all Wrecks in range or after 2 times without Wrecks in Range " + generatedScrapAmmount + " Scrap" + "                         " +
                 "Scrap Collected: " + scrapCollected);
+    }
+    private void Start()
+    {
+        dissolve = gameObject.GetComponent<Dissolve>();
     }
     private void Update()
     {
@@ -116,7 +123,6 @@ public class CollectorTowerController : MonoBehaviour
         else // preperation so that the next fail will generate Scrap
         {
             nothingCollected = true;
-            Debug.Log("nothing collected");
         }
     }
 

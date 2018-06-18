@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Dissolve : MonoBehaviour
 {
-    [SerializeField] Color dissolveEdgeColor;
+    [SerializeField] Color dissolveInEdgeColor;
+    [SerializeField] Color dissolveOutEdgeColor;
     [SerializeField] Renderer[] objectsToDissolve;
     bool dissolveIn;
     bool dissolveOut;
@@ -22,6 +23,10 @@ public class Dissolve : MonoBehaviour
         {
             objectToDissolve.receiveShadows = false;
         }
+        foreach (Material materialToDissolve in materialsToDissolve)
+        {
+            materialToDissolve.SetColor("Color_BB502008", dissolveInEdgeColor);
+        }
         dissolveTime = dissolveTimeRef;
         dissolveIn = true;
     }
@@ -32,6 +37,10 @@ public class Dissolve : MonoBehaviour
         {
             objectToDissolve.receiveShadows = false;
         }
+        foreach (Material materialToDissolve in materialsToDissolve)
+        {
+            materialToDissolve.SetColor("Color_BB502008", dissolveOutEdgeColor);
+        }
         dissolveTime = dissolveTimeRef;
         dissolveOut = true;
     }
@@ -40,10 +49,6 @@ public class Dissolve : MonoBehaviour
         foreach (Renderer objectToDissolve in objectsToDissolve)
         {
             materialsToDissolve.Add(objectToDissolve.material);
-        }
-        foreach (Material materialToDissolve in materialsToDissolve)
-        {
-            materialToDissolve.SetColor("Color_BB502008", dissolveEdgeColor);
         }
     }
 	void Update ()

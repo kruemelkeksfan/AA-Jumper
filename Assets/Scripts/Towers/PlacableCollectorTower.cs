@@ -23,6 +23,11 @@ public class PlacableCollectorTower : MonoBehaviour
     {
         canvasvailable = true;
     }
+    public void DisableCanvas()
+    {
+        towerErrorMassageHandler.towerCanvasActive = false;
+        towerCanvas.SetActive(false);
+    }//disables canvas if called
     void Start()
     {
         TowerColCount = 0;
@@ -39,7 +44,7 @@ public class PlacableCollectorTower : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            DisableCanvases();
+            DisableCanvas();
         }
     }
     void OnMouseDown()
@@ -52,10 +57,6 @@ public class PlacableCollectorTower : MonoBehaviour
         else if (canvasvailable && !towerErrorMassageHandler.towerCanvasActive)
         {
             towerErrorMassageHandler.SetTowerError("player to far away");
-        }
-        else if (canvasvailable && towerErrorMassageHandler.towerCanvasActive)
-        {
-            towerErrorMassageHandler.SetTowerError("Can´t open another Tower menu");
         }
     }
     void OnTriggerEnter(Collider c)
@@ -92,14 +93,9 @@ public class PlacableCollectorTower : MonoBehaviour
         }
         else if (!PlayerNearby())
         {
-            DisableCanvases();
+            DisableCanvas();
         }
     }
-    void DisableCanvases()
-    {
-        towerErrorMassageHandler.towerCanvasActive = false;
-        towerCanvas.SetActive(false);
-    }//disables canvas if called
     bool PlayerNearby()
     {
         if (transform.position.y - irregularityCompensation < Player.position.y && Player.position.y < transform.position.y + irregularityCompensation)

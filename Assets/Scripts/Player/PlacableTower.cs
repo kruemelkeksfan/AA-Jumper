@@ -10,6 +10,8 @@ public class PlacableTower : MonoBehaviour
     [SerializeField] List<Collider> hittingTower = new List<Collider>();
     [SerializeField] List<Collider> hittingEnvironment = new List<Collider>();
     [SerializeField] GameObject towerCanvas;
+    [SerializeField] GameObject ammunitionCanvas;
+    [SerializeField] GameObject displayCanvas;
 
     int platformWidth = 5;
     float irregularityCompensation = 0.1f;
@@ -21,14 +23,23 @@ public class PlacableTower : MonoBehaviour
     TowerMenuController towerMenuController;
     Transform Player;
 
-    public void SetCanvasAvailable()
+    public void SetCanvasesAvailable(float invokeTime)
     {
-        canvasvailable = true;
+        Invoke("CanvasasAvailable", invokeTime);
     }
     public void SetUpgradeMenuActive()
     {
         UpgradeDisplayHandler upgradeDisplayHandler = upgradeMenuStateHandler.SetState(true);
         towerController.SetUpgradeState(upgradeDisplayHandler, towerMenuController);
+    }
+    public void DisableAllCanvases()
+    {
+        DisableCanvases();
+        displayCanvas.SetActive(false);
+        if (DifficultyData.ammunitionActiv)
+        {
+            ammunitionCanvas.SetActive(false);
+        }
     }
     void Start()
     {
@@ -91,11 +102,16 @@ public class PlacableTower : MonoBehaviour
         {
             towerErrorMassageHandler.SetTowerError("player to far away");
         }
-        else if (canvasvailable && towerErrorMassageHandler.towerCanvasActive)
-        {
-            towerErrorMassageHandler.SetTowerError("Can´t open another Tower menu");
-        }
 
+    }
+    void CanvasasAvailable()
+    {
+        canvasvailable = true;
+        displayCanvas.SetActive(true);
+        if (DifficultyData.ammunitionActiv)
+        {
+            ammunitionCanvas.SetActive(true);
+        }
     }
     void AutoDeactivateCanvas() //controlls every 2 secs that canvases are not active while player is away
     {
@@ -113,7 +129,7 @@ public class PlacableTower : MonoBehaviour
         towerErrorMassageHandler.towerCanvasActive = false;
         towerCanvas.SetActive(false);
         upgradeMenuStateHandler.SetState(false);
-    }//disables both canvases if called
+    }//disables button and upgrade canvases if called
     bool PlayerNearby()
     {
         if (transform.position.y - irregularityCompensation < Player.position.y && Player.position.y < transform.position.y + irregularityCompensation)

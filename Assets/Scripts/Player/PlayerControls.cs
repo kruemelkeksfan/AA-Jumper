@@ -157,12 +157,14 @@ public class PlayerControls : MonoBehaviour
         }
         if (other.tag == "Ground")
         {
+            horizontalThrow = 0;
             Invoke("Respawn", respawnTime);
             rewiveTime = Time.time + respawnTime;
         }
         if (other.tag == "Factory")
         {
-            transform.position = new Vector3(2.2f, transform.position.y, transform.position.z);
+            horizontalThrow = 0;
+            transform.position = respawnPoint.transform.position;
         }
     }
     void OnTriggerExit(Collider other)
@@ -192,7 +194,7 @@ public class PlayerControls : MonoBehaviour
         transform.position = new Vector3(newXPos, transform.position.y, transform.position.z);
         if (xOffset < 0)
         {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, 180, 0), Time.deltaTime * turnSpeed);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0, -180, 0), Time.deltaTime * turnSpeed);
         }
         else if (xOffset > 0)
         {
