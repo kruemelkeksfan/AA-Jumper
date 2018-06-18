@@ -98,7 +98,7 @@ public class EnemyController : MonoBehaviour
             gameObject.tag = "Untagged";
             Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);
             dissolve.SetDissolveOut(fallTime);
-            Invoke("Destroy", fallTime);
+            Invoke("Destroy", fallTime - 0.2f);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -122,7 +122,6 @@ public class EnemyController : MonoBehaviour
 
     private void Destroy()
     {
-        Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);
         if (dropWreckOnDestroy)
         {
             Vector3 wreckp = new Vector3(transform.position.x, transform.position.y, 1);
