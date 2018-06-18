@@ -209,7 +209,11 @@ public class TowerController : MonoBehaviour
         fireRate = baseFireRate + (upgradeFirerate * firerateUpgradeCount);
         damage = baseDamage + (upgradeDamage * damageUpgradeCount);
         maxAmmunition = baseMaxAmmunition + (upgradeMaxAmmunition * maxAmmunitionUpgradeCount);
-        if (rangeFullUpgrade && firerateFullUpgrade && damageFullUpgrade && maxAmmunitionFullUpgrade && autoRefillActive)
+        if (DifficultyData.ammunitionActiv && (rangeFullUpgrade && firerateFullUpgrade && damageFullUpgrade && maxAmmunitionFullUpgrade && autoRefillActive))
+        {
+            fullUpgradeDisplay.SetActive(true);
+        }
+        else if (!DifficultyData.ammunitionActiv && (rangeFullUpgrade && firerateFullUpgrade && damageFullUpgrade))
         {
             fullUpgradeDisplay.SetActive(true);
         }

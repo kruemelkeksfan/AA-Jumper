@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CollectorTowerController : MonoBehaviour
 {
+    public List<Collider> wrecksInRange = new List<Collider>();
+
     [SerializeField] float collectingIntervall;
     [SerializeField] int generatedScrapAmmount;
     [SerializeField] float baseTurnSpeed;
@@ -24,6 +26,7 @@ public class CollectorTowerController : MonoBehaviour
     [SerializeField] Vector3 clawPull;
 
     int scrapCollected;
+    float animationDoneTolerance = 0.5f;
     bool nothingCollected;
     bool animationDone = true;
 
@@ -33,8 +36,6 @@ public class CollectorTowerController : MonoBehaviour
     Vector3 realTopArmRotation;
     Vector3 realClawRotation;
     Transform nearestWreck;
-
-    List<Collider> wrecksInRange = new List<Collider>();
 
     public void SetTowerActiv()
     {
@@ -47,6 +48,7 @@ public class CollectorTowerController : MonoBehaviour
     }
     private void Update()
     {
+        Debug.Log(animationDone);
         if (nearestWreck != null)
         {
             Vector3 dir = nearestWreck.position - transform.position;
@@ -63,9 +65,10 @@ public class CollectorTowerController : MonoBehaviour
             topArm.localRotation = Quaternion.Euler(0f, 0f, realTopArmRotation.z);
             realClawRotation = Vector3.Lerp(realClawRotation, clawGrab, Time.deltaTime * armTurnSpeed);
             claw.localRotation = Quaternion.Euler(0f, 0f, realClawRotation.z);
-
-            if (qBaseRotation == lookRotation && realBaseArmRotation == baseArmGrab)
+            
+            if (qBaseRotation.y < (lookRotation.y + animationDoneTolerance) && qBaseRotation.y > (lookRotation.y - animationDoneTolerance) && realBaseArmRotation.z > (baseArmGrab.z - animationDoneTolerance))
             {
+                Debug.Log("animation partly done");
                 CollectWrecks();
                 nearestWreck = null;
                 animationDone = false;
@@ -81,7 +84,7 @@ public class CollectorTowerController : MonoBehaviour
             topArm.localRotation = Quaternion.Euler(0f, 0f, realTopArmRotation.z);
             realClawRotation = Vector3.Lerp(realClawRotation, clawPull, Time.deltaTime * armTurnSpeed);
             claw.localRotation = Quaternion.Euler(0f, 0f, realClawRotation.z);
-            if (realBaseArmRotation == baseArmPull)
+            if (realBaseArmRotation.z < (baseArmPull.z + animationDoneTolerance))
             {
                 animationDone = true;
             }
@@ -127,8 +130,9 @@ public class CollectorTowerController : MonoBehaviour
             Destroy(wrecksInRange[I].gameObject);
             wrecksInRange.Remove(wrecksInRange[I]);
         }
+        Debug.Log("Wrecks collected properly");
+        
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Scrap")
