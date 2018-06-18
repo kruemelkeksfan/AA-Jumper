@@ -61,7 +61,15 @@ public class PlayerControls : MonoBehaviour
         {
             if (Input.GetKeyDown("escape"))
             {
-                escapeMenuWindow.SetActive(true);
+                if (escapeMenuWindow.activeSelf)
+                {
+                    escapeMenuWindow.SetActive(false);
+                }
+                else
+                {
+                    escapeMenuWindow.SetActive(true);
+                }
+                TogglePause();
             }
             if (Input.GetKeyDown("p"))
             {
