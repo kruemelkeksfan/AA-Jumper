@@ -48,7 +48,6 @@ public class CollectorTowerController : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(animationDone);
         if (nearestWreck != null)
         {
             Vector3 dir = nearestWreck.position - transform.position;
@@ -68,7 +67,6 @@ public class CollectorTowerController : MonoBehaviour
             
             if (qBaseRotation.y < (lookRotation.y + animationDoneTolerance) && qBaseRotation.y > (lookRotation.y - animationDoneTolerance) && realBaseArmRotation.z > (baseArmGrab.z - animationDoneTolerance))
             {
-                Debug.Log("animation partly done");
                 CollectWrecks();
                 nearestWreck = null;
                 animationDone = false;
@@ -98,21 +96,22 @@ public class CollectorTowerController : MonoBehaviour
             nearestWreck = null;
             foreach (Collider wreck in wrecksInRange)
             {
-                float distanceToEnemy = Vector3.Distance(transform.position, new Vector3(wreck.transform.position.x, transform.position.y, wreck.transform.position.z));
-                if (distanceToEnemy < shortestDistance)
+                if (wreck != null)
                 {
-                    shortestDistance = distanceToEnemy;
-                    nearestWreck = wreck.transform;
+                    float distanceToEnemy = Vector3.Distance(transform.position, new Vector3(wreck.transform.position.x, transform.position.y, wreck.transform.position.z));
+                    if (distanceToEnemy < shortestDistance)
+                    {
+                        shortestDistance = distanceToEnemy;
+                        nearestWreck = wreck.transform;
+                    }
                 }
             }
-            Debug.Log("Wrecks collected");
         }
         else if (nothingCollected) // generates scrap every second time no wrecks were in Range
         {
             nothingCollected = false;
             ScrapManager.scrapCount = ScrapManager.scrapCount + generatedScrapAmmount;
             scrapCollected += generatedScrapAmmount;
-            Debug.Log("Scrap collected");
         }
         else // preperation so that the next fail will generate Scrap
         {
@@ -127,10 +126,16 @@ public class CollectorTowerController : MonoBehaviour
         scrapCollected = DifficultyData.wreckValue * wrecksInRange.Count;
         for (int I = wrecksInRange.Count - 1; I > -1; --I)
         {
-            Destroy(wrecksInRange[I].gameObject);
-            wrecksInRange.Remove(wrecksInRange[I]);
+            if (wrecksInRange[I] == null)
+            {
+                wrecksInRange.Remove(wrecksInRange[I]);
+            }
+            else
+            {
+                Destroy(wrecksInRange[I].gameObject);
+                wrecksInRange.Remove(wrecksInRange[I]);
+            }
         }
-        Debug.Log("Wrecks collected properly");
         
     }
     private void OnTriggerEnter(Collider other)

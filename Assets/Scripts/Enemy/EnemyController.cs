@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float enemyHealth;
     [SerializeField] float enemyHealthMultiplyer;
     [SerializeField] int enemyScoreCount;
+    [SerializeField] float fallTime = 2;
     [Tooltip("in sec")] [SerializeField] int restartTime;
     [SerializeField] GameObject Wreck;
     [SerializeField] bool destroyOnMapEnd = false;
@@ -30,13 +31,15 @@ public class EnemyController : MonoBehaviour
     float onePercentHealth;
 
     Rigidbody rigidBody;
+    Dissolve dissolve;
 
 
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
-       enemyMultipliedHealth = Mathf.RoundToInt(EnemySpawner.gameLevel * enemyHealthMultiplyer);
+        enemyMultipliedHealth = Mathf.RoundToInt(EnemySpawner.gameLevel * enemyHealthMultiplyer);
+        dissolve = gameObject.GetComponent<Dissolve>();
         if (enemyMultipliedHealth > enemyHealth)
         {
             enemyHealth = enemyMultipliedHealth;
@@ -94,7 +97,8 @@ public class EnemyController : MonoBehaviour
             rigidBody.useGravity = true;
             gameObject.tag = "Untagged";
             Instantiate(explosionParticles, gameObject.transform.position, Quaternion.identity);
-            Invoke("Destroy", 2);
+            dissolve.SetDissolveOut(fallTime);
+            Invoke("Destroy", fallTime);
         }
     }
     private void OnTriggerExit(Collider other)
