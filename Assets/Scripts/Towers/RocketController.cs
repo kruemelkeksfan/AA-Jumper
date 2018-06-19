@@ -18,6 +18,9 @@ public class RocketController : MonoBehaviour
             return;
         }
         Vector3 dir = Target.position - transform.position;
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+        Vector3 realRotation = lookRotation.eulerAngles;
+        transform.rotation = lookRotation;
         float distanceThisFrame = speed * Time.deltaTime;
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
 	}
