@@ -46,7 +46,7 @@ public class CollectorTowerController : MonoBehaviour
     }
     public string SetTowerInfo()
     {
-        return ("collects every " + collectingIntervall + " Sec all Wrecks in range or after 2 times without Wrecks in Range " + generatedScrapAmmount + " Scrap" + "                         " +
+        return ("collects every " + collectingIntervall + " Sec all Wrecks in range or every 10 Sec " + generatedScrapAmmount + " Scrap" + "                         " +
                 "Scrap Collected: " + scrapCollected);
     }
     private void Start()
